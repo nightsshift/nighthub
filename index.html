@@ -1,17 +1,101 @@
-<!DOCTYPE html>
-<html>
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>NightHub</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightHub Welcome</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.9/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background: black; color: white; font-family: Arial; text-align: center; }
-    h1 { font-size: 50px; }
-    img { width: 200px; }
+    body {
+      background: linear-gradient(180deg, #0a0a0a, #1a1a3a);
+      font-family: 'Inter', sans-serif;
+    }
+    .neon-glow {
+      box-shadow: 0 0 10px #00D4FF, 0 0 20px #00D4FF;
+      transition: all 0.3s ease;
+    }
+    .neon-glow:hover {
+      box-shadow: 0 0 15px #7B00FF, 0 0 30px #7B00FF;
+    }
   </style>
 </head>
 <body>
-  <img src="logo.png" alt="NightHub Logo">
-  <h1>NightHub: Thrive After Dark</h1>
-  <p><a href="game.html">Play Hangman</a></p>
-  <p>Play. Listen. Shop. Secrets drop soon.</p>
+  <div id="root"></div>
+  <script type="text/babel">
+    const WelcomeScreen = () => {
+      return (
+        <div className="flex flex-col items-center justify-center min-h-screen text-white">
+          <div className="text-center">
+            <h1 className="text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#00D4FF] to-[#7B00FF]">
+              NightHub
+            </h1>
+            <p className="text-xl mb-8">Private. Fast. Yours.</p>
+          </div>
+          <div className="flex flex-col space-y-4 w-80">
+            <button className="bg-[#1a1a3a] text-white py-3 rounded-lg neon-glow flex items-center justify-center">
+              <span className="mr-2">🔐</span> Use Phone Number
+            </button>
+            <button className="bg-[#1a1a3a] text-white py-3 rounded-lg neon-glow flex items-center justify-center">
+              <span className="mr-2">🕶️</span> Continue Anonymously
+            </button>
+            <button className="bg-[#1a1a3a] text-white py-3 rounded-lg neon-glow flex items-center justify-center">
+              Connect with Email (Optional)
+            </button>
+            <button className="bg-[#00D4FF] text-black py-3 rounded-lg font-bold neon-glow">
+              Continue
+            </button>
+          </div>
+          <div className="mt-8 text-sm text-gray-400">
+            <a href="#" className="hover:text-[#00D4FF]">Privacy Policy</a> | 
+            <a href="#" className="hover:text-[#00D4FF]"> Terms of Service</a>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<WelcomeScreen />, document.getElementById('root'));
+  </script>
 </body>
 </html>
