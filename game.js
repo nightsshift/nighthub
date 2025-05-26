@@ -1,4 +1,4 @@
-const words = ["NIGHT", "CAGE", "HUB"];
+const words = ["NIGHT CAGE HUB"];
 let word = words[Math.floor(Math.random() * words.length)];
 let answer = "_".repeat(word.length).split("");
 let attempts = 6;
