@@ -28,6 +28,9 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: system-ui, sans-serif;
+  background-color: #000;
+  color: white;
 }
 
 h1 {
