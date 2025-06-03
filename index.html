@@ -63,23 +63,39 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
   <script>
-    const socket = io('https://nighthub-backend.onrender.com'); // Replace with your Render backend URL
+    const socket = io('https://nighthub-backend.onrender.com', {
+      transports: ['websocket'], // Force WebSocket transport
+      reconnectionAttempts: 5
+    });
     const chatLog = document.getElementById('chat-log');
     const chatInput = document.getElementById('chat-input');
     const startChatBtn = document.getElementById('start-chat');
     const endChatBtn = document.getElementById('end-chat');
     const reportUserBtn = document.getElementById('report-user');
 
+    socket.on('connect', () => {
+      console.log('Connected to backend');
+      chatLog.innerHTML += '<p>Connected to server.</p>';
+    });
+
+    socket.on('connect_error', (err) => {
+      console.error('Connection error:', err.message);
+      chatLog.innerHTML += `<p>Error: Failed to connect to server - ${err.message}</p>`;
+    });
+
     startChatBtn.addEventListener('click', () => {
+      console.log('Start chat clicked');
       socket.emit('join');
       startChatBtn.style.display = 'none';
       endChatBtn.style.display = 'inline';
       reportUserBtn.style.display = 'inline';
       chatInput.disabled = false;
       chatLog.innerHTML += '<p>Connecting to a stranger...</p>';
+      chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     endChatBtn.addEventListener('click', () => {
+      console.log('End chat clicked');
       socket.emit('leave');
       startChatBtn.style.display = 'inline';
       endChatBtn.style.display = 'none';
@@ -87,15 +103,19 @@
       chatInput.disabled = true;
       chatLog.innerHTML += '<p>Chat ended.</p>';
       chatInput.value = '';
+      chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     reportUserBtn.addEventListener('click', () => {
-      socket.emit('report');
+      console.log('Report user clicked');
+      socket.emit('report', { timestamp: new Date().toISOString() });
       chatLog.innerHTML += '<p>User reported to moderators.</p>';
+      chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter' && chatInput.value.trim()) {
+        console.log('Sending message:', chatInput.value);
         socket.emit('message', chatInput.value);
         chatLog.innerHTML += `<p><strong>You:</strong> ${chatInput.value}</p>`;
         chatInput.value = '';
@@ -104,24 +124,31 @@
     });
 
     socket.on('message', (msg) => {
+      console.log('Received message:', msg);
       chatLog.innerHTML += `<p><strong>Stranger:</strong> ${msg}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     socket.on('paired', () => {
+      console.log('Paired with a stranger');
       chatLog.innerHTML += '<p>Connected to a stranger!</p>';
+      chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     socket.on('disconnected', () => {
+      console.log('Stranger disconnected');
       chatLog.innerHTML += '<p>Stranger disconnected.</p>';
       startChatBtn.style.display = 'inline';
       endChatBtn.style.display = 'none';
       reportUserBtn.style.display = 'none';
       chatInput.disabled = true;
+      chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     socket.on('error', (msg) => {
+      console.error('Server error:', msg);
       chatLog.innerHTML += `<p>Error: ${msg}</p>`;
+      chatLog.scrollTop = chatLog.scrollHeight;
     });
   </script>
 </body>
