@@ -1,82 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NightHub Welcome</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.9/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      background-color: #1C2526;
-      font-family: 'Inter', sans-serif;
-      color: #F5F6F5;
-    }
-    .button {
-      background-color: #4A919E;
-      color: #F5F6F5;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 500;
-      transition: background-color 0.3s ease;
-    }
-    .button:hover {
-      background-color: #3A7A85;
-    }
-    .secondary-button {
-      background-color: #2E3A3B;
-      color: #A8B5B8;
-    }
-    .secondary-button:hover {
-      background-color: #3A4A4C;
-    }
-    a {
-      color: #A8B5B8;
-      text-decoration: none;
-    }
-    a:hover {
-      color: #F5F6F5;
-    }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-  <script type="text/babel">
-    const WelcomeScreen = () => {
-      return (
-        <div className="flex flex-col items-center justify-center min-h-screen px-4">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-3" style={{ fontFamily: 'SF Pro, sans-serif' }}>
-              NightHub
-            </h1>
-            <p className="text-lg text-[#A8B5B8]">Private. Fast. Yours.</p>
-          </div>
-          <div className="flex flex-col space-y-4 w-full max-w-xs">
-            <button className="button flex items-center justify-center">
-              <span className="mr-2">🔐</span> Use Phone Number
-            </button>
-            <button className="button secondary-button flex items-center justify-center">
-              <span className="mr-2">🕶️</span> Continue Anonymously
-            </button>
-            <button className="button secondary-button flex items-center justify-center">
-              Connect with Email (Optional)
-            </button>
-            <button className="button font-bold">
-              Continue
-            </button>
-          </div>
-          <div className="mt-6 text-sm text-[#A8B5B8]">
-            <a href="#" className="mr-2">Privacy Policy</a> | 
-            <a href="#"> Terms of Service</a>
-          </div>
-        </div>
-      );
-    };
-
-    ReactDOM.render(<WelcomeScreen />, document.getElementById('root'));
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
