@@ -31,6 +31,7 @@
       padding: 20px;
       box-shadow: 0 0 20px rgba(187, 134, 252, 0.3);
       backdrop-filter: blur(5px);
+      position: relative;
     }
     h1 {
       text-align: center;
@@ -40,6 +41,28 @@
       letter-spacing: 2px;
       margin-bottom: 20px;
       text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+    }
+    #safe-mode-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 0.9rem;
+      color: #e0e0e0;
+    }
+    #safe-mode-toggle input {
+      display: none;
+    }
+    #safe-mode-toggle label {
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 15px;
+      background: #6200ea;
+      transition: background 0.2s;
+    }
+    #safe-mode-toggle input:checked + label {
+      background: #0288d1;
     }
     #chat-log {
       height: 450px;
@@ -91,6 +114,14 @@
       display: none;
       animation: pulse 1.5s infinite;
     }
+    #countdown-timer {
+      display: none;
+      text-align: center;
+      font-size: 1rem;
+      color: #ff5252;
+      margin: 10px 0;
+      text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+    }
     #chat-input {
       width: 100%;
       padding: 12px;
@@ -130,6 +161,12 @@
     button:active {
       transform: translateY(0);
     }
+    #cancel-disconnect {
+      background: linear-gradient(45deg, #ff5252, #d32f2f);
+    }
+    #cancel-disconnect:hover {
+      box-shadow: 0 0 15px rgba(255, 82, 82, 0.5);
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateX(-20px); }
       to { opacity: 1; transform: translateX(0); }
@@ -156,19 +193,30 @@
       button {
         font-size: 0.85rem;
       }
+      #safe-mode-toggle {
+        font-size: 0.8rem;
+        top: 15px;
+        right: 15px;
+      }
     }
   </style>
 </head>
 <body>
   <div id="chat-container">
     <h1>Night Hub</h1>
+    <div id="safe-mode-toggle">
+      <input type="checkbox" id="safe-mode" checked>
+      <label for="safe-mode">Safe Mode</label>
+    </div>
     <div id="chat-log"></div>
     <div id="typing-indicator">Stranger is typing...</div>
+    <div id="countdown-timer">Disconnecting in <span id="countdown">5</span> seconds...</div>
     <input id="chat-input" type="text" placeholder="Type your message..." disabled>
     <div class="button-group">
       <button id="start-chat">Start Chat</button>
       <button id="end-chat" style="display:none;">End Chat</button>
       <button id="report-user" style="display:none;">Report User</button>
+      <button id="cancel-disconnect" style="display:none;">Cancel Disconnect</button>
     </div>
   </div>
   <audio id="message-sound" src="/assets/Notification.mp3"></audio>
@@ -183,8 +231,12 @@
     const startChatBtn = document.getElementById('start-chat');
     const endChatBtn = document.getElementById('end-chat');
     const reportUserBtn = document.getElementById('report-user');
+    const cancelDisconnectBtn = document.getElementById('cancel-disconnect');
     const typingIndicator = document.getElementById('typing-indicator');
+    const countdownTimer = document.getElementById('countdown-timer');
+    const countdownSpan = document.getElementById('countdown');
     const messageSound = document.getElementById('message-sound');
+    const safeModeToggle = document.getElementById('safe-mode');
     let isTyping = false;
     let typingTimeout;
 
@@ -215,14 +267,20 @@
     endChatBtn.addEventListener('click', () => {
       console.log('End chat clicked, Socket ID:', socket.id);
       socket.emit('leave');
-      startChatBtn.style.display = 'inline';
       endChatBtn.style.display = 'none';
-      reportUserBtn.style.display = 'none';
+      cancelDisconnectBtn.style.display = 'inline';
+      countdownTimer.style.display = 'block';
       chatInput.disabled = true;
-      chatInput.value = '';
-      typingIndicator.style.display = 'none';
-      chatLog.innerHTML += '<p>Chat ended.</p>';
-      chatLog.scrollTop = chatLog.scrollHeight;
+    });
+
+    cancelDisconnectBtn.addEventListener('click', () => {
+      console.log('Cancel disconnect clicked, Socket ID:', socket.id);
+      socket.emit('cancel_disconnect');
+      cancelDisconnectBtn.style.display = 'none';
+      endChatBtn.style.display = 'inline';
+      countdownTimer.style.display = 'none';
+      chatInput.disabled = false;
+      chatInput.focus();
     });
 
     reportUserBtn.addEventListener('click', () => {
@@ -230,6 +288,12 @@
       socket.emit('report', { timestamp: new Date().toISOString() });
       chatLog.innerHTML += '<p>User reported to moderators.</p>';
       chatLog.scrollTop = chatLog.scrollHeight;
+    });
+
+    safeModeToggle.addEventListener('change', () => {
+      const safeMode = safeModeToggle.checked;
+      console.log('Safe Mode toggled:', safeMode, 'Socket ID:', socket.id);
+      socket.emit('toggle_safe_mode', safeMode);
     });
 
     chatInput.addEventListener('input', () => {
@@ -274,9 +338,26 @@
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
+    socket.on('countdown', (seconds) => {
+      console.log('Countdown:', seconds, 'Socket ID:', socket.id);
+      countdownSpan.textContent = seconds;
+      countdownTimer.style.display = 'block';
+    });
+
+    socket.on('countdown_cancelled', () => {
+      console.log('Countdown cancelled, Socket ID:', socket.id);
+      countdownTimer.style.display = 'none';
+      cancelDisconnectBtn.style.display = 'none';
+      endChatBtn.style.display = 'inline';
+      reportUserBtn.style.display = 'inline';
+      chatInput.disabled = false;
+      chatInput.focus();
+    });
+
     socket.on('paired', () => {
       console.log('Paired with a stranger, Socket ID:', socket.id);
       chatLog.innerHTML += '<p>Connected to a stranger!</p>';
+      safeModeToggle.checked = true; // Ensure Safe Mode is on by default
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
@@ -286,6 +367,8 @@
       startChatBtn.style.display = 'inline';
       endChatBtn.style.display = 'none';
       reportUserBtn.style.display = 'none';
+      cancelDisconnectBtn.style.display = 'none';
+      countdownTimer.style.display = 'none';
       chatInput.disabled = true;
       typingIndicator.style.display = 'none';
       chatLog.scrollTop = chatLog.scrollHeight;
@@ -293,8 +376,15 @@
 
     socket.on('error', (msg) => {
       console.error('Server error:', msg, 'Socket ID:', socket.id);
-      chatLog.innerHTML += `<p>Error: ${msg}</p>`;
+      chatLog.innerHTML += `<p style="color: #ff5252;">Error: ${msg}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
+      if (msg.includes('banned')) {
+        startChatBtn.style.display = 'none';
+        endChatBtn.style.display = 'none';
+        reportUserBtn.style.display = 'none';
+        cancelDisconnectBtn.style.display = 'none';
+        chatInput.disabled = true;
+      }
     });
   </script>
 </body>
