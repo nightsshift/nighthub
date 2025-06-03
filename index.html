@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Night Hub - Anonymous Chat</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -13,42 +13,66 @@
     }
     body {
       font-family: 'Orbitron', sans-serif;
-      background: #0a0a0a url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M0 0h100v100H0z" fill="none"/%3E%3Cpath d="M0 50h100M50 0v100" stroke="%231a1a1a" stroke-width="0.5"/%3E%3C/svg%3E') repeat;
+      background: linear-gradient(135deg, #0a0a0a, #1c2526);
       color: #e0e0e0;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 15px;
-      overflow: hidden;
+      padding: 20px;
+      overflow-x: hidden;
+      animation: gradientShift 15s ease infinite;
+      background-size: 200% 200%
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
     #chat-container {
       width: 100%;
-      max-width: 550px;
-      background: rgba(20, 20, 20, 0.95);
-      border: 2px solid #bb86fc;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(187, 134, 252, 0.3);
-      backdrop-filter: blur(5px);
+      max-width: 600px;
+      background: rgba(10, 10, 10, 0.9);
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 0 30px rgba(187, 134, 252, 0.4), 0 0 10px rgba(2, 136, 209, 0.2);
+      backdrop-filter: blur(8px);
       position: relative;
+      overflow: hidden;
     }
     h1 {
-      text-align: center;
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: #bb86fc;
+      text-align: center;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 3px;
       margin-bottom: 20px;
-      text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+      text-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
+      animation: glowPulse 2s ease-in-out infinite;
     }
-    #safe-mode-toggle {
+    @keyframes glowPulse {
+      0% { text-shadow: 0 0 10px rgba(187, 134, 252, 0.4); }
+      50% { text-shadow: 0 0 20px rgba(187, 134, 252, 0.8); }
+      100% { text-shadow: 0 0 10px rgba(187, 134, 252, 0.4); }
+    }
+    .top-left-controls {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 15px;
+      left: 15px;
       display: flex;
       align-items: center;
-      font-size: 0.9rem;
+    }
+    .top-right-controls {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      display: flex;
+      align-items: center;
+    }
+    #safe-mode-toggle {
+      display: flex;
+      align-items: center;
+      font-size: 0.85rem;
       color: #e0e0e0;
     }
     #safe-mode-toggle input {
@@ -56,63 +80,176 @@
     }
     #safe-mode-toggle label {
       cursor: pointer;
-      padding: 5px 10px;
-      border-radius: 15px;
-      background: #6200ea;
-      transition: background 0.2s;
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #6200ea, #7b1fa2);
+      transition: all 0.3s ease;
+      box-shadow: 0 0 8px rgba(98, 0, 234, 0.3);
     }
     #safe-mode-toggle input:checked + label {
-      background: #0288d1;
+      background: linear-gradient(45deg, #0288d1, #01579b);
+      box-shadow: 0 0 8px rgba(2, 136, 209, 0.5);
+    }
+    #help-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #bb86fc, #6200ea);
+      color: #fff;
+      font-size: 1.2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 8px rgba(187, 134, 252, 0.3);
+    }
+    #help-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
+    }
+    #contact-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: 90%;
+      max-width: 450px;
+      background: rgba(10, 10, 10, 0.95);
+      border: 2px solid #bb86fc;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 0 30px rgba(187, 134, 252, 0.4);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      animation: slideIn 0.3s ease forwards;
+    }
+    @keyframes slideIn {
+      from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+      to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+    #contact-modal h2 {
+      font-size: 1.6rem;
+      color: #bb86fc;
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+    }
+    #contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    #contact-form input, #contact-form textarea {
+      padding: 12px;
+      border: 1px solid #bb86fc;
+      border-radius: 8px;
+      background: rgba(30, 30, 30, 0.8);
+      color: #e0e0e0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+    #contact-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    #contact-form input:focus, #contact-form textarea:focus {
+      outline: none;
+      border-color: #0288d1;
+      box-shadow: 0 0 12px rgba(2, 136, 209, 0.5);
+    }
+    #contact-form button {
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: linear-gradient(45deg, #bb86fc, #6200ea);
+      color: #fff;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+    #contact-form button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
+    }
+    #contact-form .close-button {
+      background: linear-gradient(45deg, #ff5252, #d32f2f);
+    }
+    #contact-form .close-button:hover {
+      box-shadow: 0 0 15px rgba(255, 82, 82, 0.6);
+    }
+    #modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 999;
+      backdrop-filter: blur(2px);
     }
     #chat-log {
-      height: 450px;
+      height: 400px;
       overflow-y: auto;
-      background: rgba(30, 30, 30, 0.8);
-      border: 1px solid #444;
-      border-radius: 8px;
-      padding: 15px;
+      background: rgba(20, 20, 20, 0.8);
+      border-radius: 10px;
+      padding: 20px;
       margin-bottom: 15px;
+      border: 1px solid #bb86fc;
+      box-shadow: inset 0 0 10px rgba(187, 134, 252, 0.2);
       scrollbar-width: thin;
       scrollbar-color: #bb86fc #1e1e1e;
     }
     #chat-log::-webkit-scrollbar {
-      width: 6px;
+      width: 8px;
     }
     #chat-log::-webkit-scrollbar-track {
       background: #1e1e1e;
     }
     #chat-log::-webkit-scrollbar-thumb {
       background: #bb86fc;
-      border-radius: 3px;
+      border-radius: 4px;
     }
     #chat-log p {
       margin: 10px 0;
-      padding: 10px 15px;
-      border-radius: 5px;
+      padding: 12px 18px;
+      border-radius: 10px;
       opacity: 0;
-      animation: fadeIn 0.4s ease forwards;
-      transition: transform 0.2s;
+      animation: fadeIn 0.5s ease forwards;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.95rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #chat-log p:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
     #chat-log .you {
       background: linear-gradient(45deg, #6200ea, #7b1fa2);
       color: #fff;
-      margin-left: 25%;
+      margin-left: 20%;
       margin-right: 10px;
-      box-shadow: 0 0 8px rgba(98, 0, 234, 0.5);
+      box-shadow: 0 2px 10px rgba(98, 0, 234, 0.5);
     }
     #chat-log .stranger {
       background: linear-gradient(45deg, #0288d1, #01579b);
       color: #e0e0e0;
-      margin-right: 25%;
+      margin-right: 20%;
       margin-left: 10px;
-      box-shadow: 0 0 8px rgba(2, 136, 209, 0.5);
+      box-shadow: 0 2px 10px rgba(2, 136, 209, 0.5);
     }
     #typing-indicator {
       font-size: 0.9rem;
       color: #bb86fc;
-      margin: 5px 15px;
+      margin: 10px 15px;
       display: none;
       animation: pulse 1.5s infinite;
+      font-family: 'Roboto Mono', monospace;
     }
     #countdown-timer {
       display: none;
@@ -120,56 +257,60 @@
       font-size: 1rem;
       color: #ff5252;
       margin: 10px 0;
-      text-shadow: 0 0 5px rgba(255, 82, 82, 0.5);
+      text-shadow: 0 0 8px rgba(255, 82, 82, 0.5);
+      font-family: 'Roboto Mono', monospace;
     }
     #chat-input {
       width: 100%;
       padding: 12px;
       border: 1px solid #bb86fc;
-      border-radius: 5px;
-      background: #1e1e1e;
+      border-radius: 8px;
+      background: rgba(30, 30, 30, 0.8);
       color: #e0e0e0;
+      font-family: 'Roboto Mono', monospace;
       font-size: 1rem;
       margin-bottom: 15px;
-      transition: box-shadow 0.3s;
+      transition: all 0.3s ease;
     }
     #chat-input:focus {
       outline: none;
-      box-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+      border-color: #0288d1;
+      box-shadow: 0 0 12px rgba(2, 136, 209, 0.5);
     }
     .button-group {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
+      gap: 12px;
     }
     button {
       padding: 12px;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
       background: linear-gradient(45deg, #bb86fc, #6200ea);
       color: #fff;
       font-size: 0.95rem;
       text-transform: uppercase;
       letter-spacing: 1px;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 10px rgba(187, 134, 252, 0.3);
     }
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 15px rgba(187, 134, 252, 0.5);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
     }
     button:active {
-      transform: translateY(0);
+      transform: scale(1);
     }
     #cancel-disconnect {
       background: linear-gradient(45deg, #ff5252, #d32f2f);
     }
     #cancel-disconnect:hover {
-      box-shadow: 0 0 15px rgba(255, 82, 82, 0.5);
+      box-shadow: 0 0 15px rgba(255, 82, 82, 0.6);
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to { opacity: 1; transform: translateX(0); }
+      from { opacity: 0; transform: translateY(10px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
     @keyframes pulse {
       0% { opacity: 0.6; }
@@ -178,35 +319,67 @@
     }
     @media (max-width: 600px) {
       #chat-container {
-        padding: 15px;
+        padding: 20px;
         border-width: 1px;
       }
       h1 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
       }
       #chat-log {
-        height: 350px;
+        height: 300px;
       }
       #chat-input {
         font-size: 0.95rem;
       }
       button {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
       }
-      #safe-mode-toggle {
+      .top-left-controls, .top-right-controls {
+        top: 10px;
         font-size: 0.8rem;
-        top: 15px;
-        right: 15px;
+      }
+      .top-left-controls {
+        left: 10px;
+      }
+      .top-right-controls {
+        right: 10px;
+      }
+      #help-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 1rem;
+      }
+      #contact-modal {
+        padding: 20px;
+      }
+      #contact-modal h2 {
+        font-size: 1.4rem;
       }
     }
   </style>
 </head>
 <body>
+  <div id="modal-overlay"></div>
+  <div id="contact-modal">
+    <h2>Contact Us</h2>
+    <div id="contact-form">
+      <input type="text" id="contact-name" placeholder="Name (optional)">
+      <input type="email" id="contact-email" placeholder="Email (optional)">
+      <textarea id="contact-message" placeholder="Your message (required)"></textarea>
+      <button id="submit-contact">Submit</button>
+      <button class="close-button" id="close-contact">Close</button>
+    </div>
+  </div>
   <div id="chat-container">
     <h1>Night Hub</h1>
-    <div id="safe-mode-toggle">
-      <input type="checkbox" id="safe-mode" checked>
-      <label for="safe-mode">Safe Mode</label>
+    <div class="top-left-controls">
+      <div id="help-icon" title="Contact Us">?</div>
+    </div>
+    <div class="top-right-controls">
+      <div id="safe-mode-toggle">
+        <input type="checkbox" id="safe-mode" checked>
+        <label for="safe-mode">Safe Mode</label>
+      </div>
     </div>
     <div id="chat-log"></div>
     <div id="typing-indicator">Stranger is typing...</div>
@@ -222,10 +395,13 @@
   <audio id="message-sound" src="/assets/Notification.mp3"></audio>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
   <script>
+    // Initialize Socket.IO connection
     const socket = io('https://nighthub-backend.onrender.com', {
       transports: ['websocket'],
       reconnectionAttempts: 5
     });
+
+    // DOM elements
     const chatLog = document.getElementById('chat-log');
     const chatInput = document.getElementById('chat-input');
     const startChatBtn = document.getElementById('start-chat');
@@ -237,9 +413,21 @@
     const countdownSpan = document.getElementById('countdown');
     const messageSound = document.getElementById('message-sound');
     const safeModeToggle = document.getElementById('safe-mode');
+    const helpIcon = document.getElementById('help-icon');
+    const contactModal = document.getElementById('contact-modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const contactForm = document.getElementById('contact-form');
+    const contactName = document.getElementById('contact-name');
+    const contactEmail = document.getElementById('contact-email');
+    const contactMessage = document.getElementById('contact-message');
+    const submitContact = document.getElementById('submit-contact');
+    const closeContact = document.getElementById('close-contact');
+
+    // Typing state
     let isTyping = false;
     let typingTimeout;
 
+    // Socket.IO event handlers
     socket.on('connect', () => {
       console.log('Connected to backend, Socket ID:', socket.id);
       chatLog.innerHTML += '<p>Connected to server.</p>';
@@ -248,10 +436,81 @@
 
     socket.on('connect_error', (err) => {
       console.error('Connection error:', err.message);
-      chatLog.innerHTML += `<p>Error: Failed to connect to server - ${err.message}</p>`;
+      chatLog.innerHTML += `<p style="color: #ff5252;">Error: Failed to connect to server - ${err.message}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
+    socket.on('message', (msg) => {
+      console.log('Received message:', msg, 'Socket ID:', socket.id);
+      chatLog.innerHTML += `<p class="stranger"><strong>Stranger:</strong> ${msg}</p>`;
+      messageSound.play().catch(err => console.error('Audio playback error:', err));
+      chatLog.scrollTop = chatLog.scrollHeight;
+    });
+
+    socket.on('typing', (isTyping) => {
+      console.log('Typing status:', isTyping, 'Socket ID:', socket.id);
+      typingIndicator.style.display = isTyping ? 'block' : 'none';
+      chatLog.scrollTop = chatLog.scrollHeight;
+    });
+
+    socket.on('countdown', (seconds) => {
+      console.log('Countdown:', seconds, 'Socket ID:', socket.id);
+      countdownSpan.textContent = seconds;
+      countdownTimer.style.display = 'block';
+    });
+
+    socket.on('countdown_cancelled', () => {
+      console.log('Countdown cancelled, Socket ID:', socket.id);
+      countdownTimer.style.display = 'none';
+      cancelDisconnectBtn.style.display = 'none';
+      endChatBtn.style.display = 'inline';
+      reportUserBtn.style.display = 'inline';
+      chatInput.disabled = false;
+      chatInput.focus();
+    });
+
+    socket.on('paired', () => {
+      console.log('Paired with a stranger, Socket ID:', socket.id);
+      chatLog.innerHTML += '<p>Connected to a stranger!</p>';
+      safeModeToggle.checked = true;
+      chatLog.scrollTop = chatLog.scrollHeight;
+    });
+
+    socket.on('disconnected', () => {
+      console.log('Stranger disconnected, Socket ID:', socket.id);
+      chatLog.innerHTML += '<p>Stranger disconnected.</p>';
+      startChatBtn.style.display = 'inline';
+      endChatBtn.style.display = 'none';
+      reportUserBtn.style.display = 'none';
+      cancelDisconnectBtn.style.display = 'none';
+      countdownTimer.style.display = 'none';
+      chatInput.disabled = true;
+      typingIndicator.style.display = 'none';
+      chatLog.scrollTop = chatLog.scrollHeight;
+    });
+
+    socket.on('error', (msg) => {
+      console.error('Server error:', msg, 'Socket ID:', socket.id);
+      chatLog.innerHTML += `<p style="color: #ff5252;">Error: ${msg}</p>`;
+      chatLog.scrollTop = chatLog.scrollHeight;
+      if (msg.includes('banned')) {
+        startChatBtn.style.display = 'none';
+        endChatBtn.style.display = 'none';
+        reportUserBtn.style.display = 'none';
+        cancelDisconnectBtn.style.display = 'none';
+        chatInput.disabled = true;
+      }
+    });
+
+    socket.on('request_success', (msg) => {
+      console.log('Request success:', msg, 'Socket ID:', socket.id);
+      chatLog.innerHTML += `<p style="color: #4caf50;">${msg}</p>`;
+      chatLog.scrollTop = chatLog.scrollHeight;
+      contactModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
+    });
+
+    // DOM event listeners
     startChatBtn.addEventListener('click', () => {
       console.log('Start chat clicked, Socket ID:', socket.id);
       socket.emit('join');
@@ -296,6 +555,36 @@
       socket.emit('toggle_safe_mode', safeMode);
     });
 
+    helpIcon.addEventListener('click', () => {
+      console.log('Help icon clicked, Socket ID:', socket.id);
+      contactModal.style.display = 'block';
+      modalOverlay.style.display = 'block';
+      contactName.value = '';
+      contactEmail.value = '';
+      contactMessage.value = '';
+      contactMessage.focus();
+    });
+
+    closeContact.addEventListener('click', () => {
+      contactModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
+    });
+
+    modalOverlay.addEventListener('click', () => {
+      contactModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
+    });
+
+    submitContact.addEventListener('click', () => {
+      console.log('Submit contact clicked, Socket ID:', socket.id);
+      const request = {
+        name: contactName.value.trim(),
+        email: contactEmail.value.trim(),
+        message: contactMessage.value.trim()
+      };
+      socket.emit('submit_request', request);
+    });
+
     chatInput.addEventListener('input', () => {
       if (chatInput.value.trim() && !isTyping) {
         isTyping = true;
@@ -322,68 +611,6 @@
         isTyping = false;
         socket.emit('typing', false);
         chatLog.scrollTop = chatLog.scrollHeight;
-      }
-    });
-
-    socket.on('message', (msg) => {
-      console.log('Received message:', msg, 'Socket ID:', socket.id);
-      chatLog.innerHTML += `<p class="stranger"><strong>Stranger:</strong> ${msg}</p>`;
-      messageSound.play().catch(err => console.error('Audio playback error:', err));
-      chatLog.scrollTop = chatLog.scrollHeight;
-    });
-
-    socket.on('typing', (isTyping) => {
-      console.log('Typing status:', isTyping, 'Socket ID:', socket.id);
-      typingIndicator.style.display = isTyping ? 'block' : 'none';
-      chatLog.scrollTop = chatLog.scrollHeight;
-    });
-
-    socket.on('countdown', (seconds) => {
-      console.log('Countdown:', seconds, 'Socket ID:', socket.id);
-      countdownSpan.textContent = seconds;
-      countdownTimer.style.display = 'block';
-    });
-
-    socket.on('countdown_cancelled', () => {
-      console.log('Countdown cancelled, Socket ID:', socket.id);
-      countdownTimer.style.display = 'none';
-      cancelDisconnectBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline';
-      reportUserBtn.style.display = 'inline';
-      chatInput.disabled = false;
-      chatInput.focus();
-    });
-
-    socket.on('paired', () => {
-      console.log('Paired with a stranger, Socket ID:', socket.id);
-      chatLog.innerHTML += '<p>Connected to a stranger!</p>';
-      safeModeToggle.checked = true; // Ensure Safe Mode is on by default
-      chatLog.scrollTop = chatLog.scrollHeight;
-    });
-
-    socket.on('disconnected', () => {
-      console.log('Stranger disconnected, Socket ID:', socket.id);
-      chatLog.innerHTML += '<p>Stranger disconnected.</p>';
-      startChatBtn.style.display = 'inline';
-      endChatBtn.style.display = 'none';
-      reportUserBtn.style.display = 'none';
-      cancelDisconnectBtn.style.display = 'none';
-      countdownTimer.style.display = 'none';
-      chatInput.disabled = true;
-      typingIndicator.style.display = 'none';
-      chatLog.scrollTop = chatLog.scrollHeight;
-    });
-
-    socket.on('error', (msg) => {
-      console.error('Server error:', msg, 'Socket ID:', socket.id);
-      chatLog.innerHTML += `<p style="color: #ff5252;">Error: ${msg}</p>`;
-      chatLog.scrollTop = chatLog.scrollHeight;
-      if (msg.includes('banned')) {
-        startChatBtn.style.display = 'none';
-        endChatBtn.style.display = 'none';
-        reportUserBtn.style.display = 'none';
-        cancelDisconnectBtn.style.display = 'none';
-        chatInput.disabled = true;
       }
     });
   </script>
