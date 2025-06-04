@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>NightHub - Futuristic iMessage</title>
+  <title>NightHub - Chat</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
@@ -63,6 +63,39 @@
     }
     h1:hover {
       transform: translateZ(20px);
+    }
+    #top-menu {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      transform: translateZ(5px);
+      margin-bottom: 0.5rem;
+    }
+    .menu-button {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: rgba(0, 122, 255, 0.1);
+      color: #007AFF;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
+      transform: translateZ(5px);
+    }
+    .menu-button:hover {
+      transform: translateZ(10px);
+      box-shadow: 0 0 15px rgba(0, 122, 255, 0.4);
+    }
+    .menu-button.active {
+      background: #007AFF;
+      color: #FFFFFF;
     }
     .top-controls {
       display: flex;
@@ -154,7 +187,7 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
-    #tags-modal, #contact-modal, #admin-modal, #age-modal, #video-panel, #live-panel {
+    #tags-modal, #contact-modal, #admin-modal, #age-modal, #video-panel {
       display: none;
       position: fixed;
       top: 50%;
@@ -175,7 +208,7 @@
       from { transform: translate(-50%, -50%) translateZ(0) scale(0.95); opacity: 0; }
       to { transform: translate(-50%, -50%) translateZ(20px) scale(1); opacity: 1; }
     }
-    #tags-modal h2, #contact-modal h2, #admin-modal h2, #age-modal h2, #video-panel h2, #live-panel h2 {
+    #tags-modal h2, #contact-modal h2, #admin-modal h2, #age-modal h2, #video-panel h2 {
       font-size: 1.2rem;
       color: #007AFF;
       text-align: center;
@@ -183,7 +216,7 @@
       margin-bottom: 1rem;
       transform: translateZ(10px);
     }
-    #tags-form, #contact-form, #admin-content, #age-form, #video-controls, #live-content {
+    #tags-form, #contact-form, #admin-content, #age-form, #video-controls {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -208,7 +241,7 @@
       box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
       transform: translateZ(10px);
     }
-    #tags-form button, #contact-form button, #admin-content button, #age-form button, #video-controls button, #live-content button {
+    #tags-form button, #contact-form button, #admin-content button, #age-form button, #video-controls button {
       padding: 0.75rem;
       border: none;
       border-radius: 12px;
@@ -221,15 +254,15 @@
       box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
       transform: translateZ(5px);
     }
-    #tags-form button:hover, #contact-form button:hover, #admin-content button:hover, #age-form button:hover, #video-controls button:hover, #live-content button:hover {
+    #tags-form button:hover, #contact-form button:hover, #admin-content button:hover, #age-form button:hover, #video-controls button:hover {
       transform: translateZ(10px);
       box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
     }
-    #tags-form .close-button, #contact-form .close-button, #admin-content .close-button, #age-form .close-button, #video-controls .close-button, #live-content .close-button {
+    #tags-form .close-button, #contact-form .close-button, #admin-content .close-button, #age-form .close-button, #video-controls .close-button {
       background: #FF3B30;
       box-shadow: 0 0 10px rgba(255, 59, 48, 0.3);
     }
-    #tags-form .close-button:hover, #contact-form .close-button:hover, #admin-content .close-button:hover, #age-form .close-button:hover, #video-controls .close-button:hover, #live-content .close-button:hover {
+    #tags-form .close-button:hover, #contact-form .close-button:hover, #admin-content .close-button:hover, #age-form .close-button:hover, #video-controls .close-button:hover {
       box-shadow: 0 0 15px rgba(255, 59, 48, 0.5);
     }
     #trending-tags {
@@ -395,52 +428,6 @@
       max-height: 200px;
       border-radius: 12px;
       margin-bottom: 0.5rem;
-    }
-    #live-panel #live-stream {
-      width: 100%;
-      max-height: 300px;
-      border-radius: 12px;
-      margin-bottom: 0.5rem;
-    }
-    #live-comment-log {
-      max-height: 150px;
-      overflow-y: auto;
-      padding: 0.5rem;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 12px;
-      margin-bottom: 0.5rem;
-      scrollbar-width: none;
-    }
-    #live-comment-log::-webkit-scrollbar {
-      display: none;
-    }
-    #live-comment-input {
-      padding: 0.75rem;
-      border: 1px solid #D1D1D6;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.8);
-      color: #1C2526;
-      font-size: 0.95rem;
-    }
-    #live-now-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .live-item {
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
-      background: rgba(0, 122, 255, 0.1);
-      color: #007AFF;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      transform: translateZ(5px);
-    }
-    .live-item:hover {
-      transform: translateZ(10px);
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
     }
     #input-container {
       display: flex;
@@ -657,21 +644,21 @@
         height: 1.8rem;
         font-size: 0.95rem;
       }
-      #tags-modal, #contact-modal, #admin-modal, #age-modal, #video-panel, #live-panel {
+      #tags-modal, #contact-modal, #admin-modal, #age-modal, #video-panel {
         width: 100%;
         height: 100%;
         max-height: 100%;
         border-radius: 0;
         padding: 1rem;
       }
-      #tags-modal h2, #contact-modal h2, #admin-modal h2, #age-modal h2, #video-panel h2, #live-panel h2 {
+      #tags-modal h2, #contact-modal h2, #admin-modal h2, #age-modal h2, #video-panel h2 {
         font-size: 1rem;
       }
       #tags-form input, #contact-form input, #contact-form textarea {
         font-size: 0.9rem;
         padding: 0.6rem;
       }
-      #tags-form button, #contact-form button, #admin-content button, #age-form button, #video-controls button, #live-content button {
+      #tags-form button, #contact-form button, #admin-content button, #age-form button, #video-controls button {
         font-size: 0.9rem;
         padding: 0.6rem;
       }
@@ -691,6 +678,10 @@
         padding: 0.3rem;
       }
       .tab-button {
+        width: 36px;
+        height: 36px;
+      }
+      .menu-button {
         width: 36px;
         height: 36px;
       }
@@ -724,6 +715,10 @@
         height: 28px;
       }
       .tab-button {
+        width: 32px;
+        height: 32px;
+      }
+      .menu-button {
         width: 32px;
         height: 32px;
       }
@@ -820,20 +815,36 @@
       <button class="close-button" id="close-video">Close</button>
     </div>
   </div>
-  <div id="live-panel">
-    <h2>Live Broadcast</h2>
-    <div id="live-content">
-      <div id="live-now-list"></div>
-      <video id="live-stream" autoplay muted></video>
-      <div id="live-comment-log"></div>
-      <input id="live-comment-input" type="text" placeholder="Add a comment...">
-      <button id="send-live-comment">Send</button>
-      <button id="start-live">Go Live</button>
-      <button class="close-button" id="close-live">Close</button>
-    </div>
-  </div>
   <div id="app-container">
     <h1>NightHub</h1>
+    <div id="top-menu">
+      <a href="#" class="menu-button active" id="chat-menu" title="Chat">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+      </a>
+      <a href="#" class="menu-button" id="video-menu" title="Video Call">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
+          <rect x="2" y="3" width="14" height="18" rx="2" ry="2"></rect>
+          <polygon points="22 7 16 12 22 17 22 7"></polygon>
+        </svg>
+      </a>
+      <a href="#" class="menu-button" id="browser-menu" title="Browser">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
+          <line x1="2" y1="6" x2="22" y2="6"></line>
+          <circle cx="6" cy="4" r="1"></circle>
+          <circle cx="10" cy="4" r="1"></circle>
+          <circle cx="14" cy="4" r="1"></circle>
+        </svg>
+      </a>
+      <a href="live.html" class="menu-button" id="live-menu" title="Live Stream">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="4" fill="#007AFF"></circle>
+        </svg>
+      </a>
+    </div>
     <div class="top-controls">
       <div class="control-group">
         <div id="connection-indicator"></div>
@@ -862,12 +873,6 @@
             <circle cx="6" cy="4" r="1"></circle>
             <circle cx="10" cy="4" r="1"></circle>
             <circle cx="14" cy="4" r="1"></circle>
-          </svg>
-        </div>
-        <div id="live-button" class="tab-button" title="Go Live">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
-            <circle cx="12" cy="12" r="10"></circle>
-            <circle cx="12" cy="12" r="4" fill="#007AFF"></circle>
           </svg>
         </div>
       </div>
@@ -1002,7 +1007,6 @@
     const trendingTags = document.getElementById('trending-tags');
     const videoButton = document.getElementById('video-button');
     const browserButton = document.getElementById('browser-button');
-    const liveButton = document.getElementById('live-button');
     const videoPanel = document.getElementById('video-panel');
     const localVideo = document.getElementById('local-video');
     const remoteVideo = document.getElementById('remote-video');
@@ -1011,14 +1015,10 @@
     const closeVideo = document.getElementById('close-video');
     const browserContainer = document.getElementById('browser-container');
     const browserIframe = document.getElementById('browser-iframe');
-    const livePanel = document.getElementById('live-panel');
-    const liveStream = document.getElementById('live-stream');
-    const liveCommentLog = document.getElementById('live-comment-log');
-    const liveCommentInput = document.getElementById('live-comment-input');
-    const sendLiveComment = document.getElementById('send-live-comment');
-    const startLive = document.getElementById('start-live');
-    const closeLive = document.getElementById('close-live');
-    const liveNowList = document.getElementById('live-now-list');
+    const chatMenu = document.getElementById('chat-menu');
+    const videoMenu = document.getElementById('video-menu');
+    const browserMenu = document.getElementById('browser-menu');
+    const liveMenu = document.getElementById('live-menu');
 
     // State
     let isTyping = false;
@@ -1030,8 +1030,6 @@
     let localStream = null;
     let isMuted = false;
     let isCameraOn = true;
-    let isLive = false;
-    let currentLiveId = null;
 
     // Update Safe Mode label
     function updateSafeModeLabel() {
@@ -1196,6 +1194,59 @@
       modalOverlay.style.display = 'none';
     }
 
+    // Browser setup
+    function toggleBrowser() {
+      if (browserContainer.style.display === 'block') {
+        browserContainer.style.display = 'none';
+        chatLog.classList.remove('floating');
+        chatLog.style.height = 'auto';
+      } else {
+        browserContainer.style.display = 'block';
+        chatLog.classList.add('floating');
+        chatLog.style.height = 'auto';
+        browserIframe.src = 'https://example.com';
+      }
+    }
+
+    // Menu navigation
+    function setActiveMenu(activeButton) {
+      [chatMenu, videoMenu, browserMenu].forEach(btn => btn.classList.remove('active'));
+      activeButton.classList.add('active');
+    }
+
+    chatMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      setActiveMenu(chatMenu);
+      videoPanel.style.display = 'none';
+      browserContainer.style.display = 'none';
+      chatLog.classList.remove('floating');
+      chatLog.style.height = 'auto';
+      modalOverlay.style.display = 'none';
+      cleanupVideoCall();
+    });
+
+    videoMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isPaired) {
+        setActiveMenu(videoMenu);
+        startVideoCall();
+        browserContainer.style.display = 'none';
+        chatLog.classList.remove('floating');
+        chatLog.style.height = 'auto';
+      }
+    });
+
+    browserMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (isPaired) {
+        setActiveMenu(browserMenu);
+        toggleBrowser();
+        videoPanel.style.display = 'none';
+        modalOverlay.style.display = 'none';
+        cleanupVideoCall();
+      }
+    });
+
     toggleMute.addEventListener('click', () => {
       if (localStream) {
         isMuted = !isMuted;
@@ -1214,132 +1265,8 @@
 
     closeVideo.addEventListener('click', () => {
       cleanupVideoCall();
+      setActiveMenu(chatMenu);
     });
-
-    // Browser setup
-    function toggleBrowser() {
-      if (browserContainer.style.display === 'block') {
-        browserContainer.style.display = 'none';
-        chatLog.classList.remove('floating');
-        chatLog.style.height = 'auto';
-      } else {
-        browserContainer.style.display = 'block';
-        chatLog.classList.add('floating');
-        chatLog.style.height = 'auto';
-        browserIframe.src = 'https://example.com';
-      }
-    }
-
-    // Live broadcast setup
-    async function startLiveBroadcast() {
-      try {
-        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        liveStream.srcObject = localStream;
-
-        peer = new SimplePeer({
-          initiator: true,
-          stream: localStream,
-          trickle: false
-        });
-
-        peer.on('signal', data => {
-          socket.emit('webrtc_signal', { liveId: socket.id, signal: data });
-        });
-
-        peer.on('error', err => {
-          console.error('WebRTC error:', err);
-          chatLog.innerHTML += `<p style="color: #FF3B30;">Error: Live broadcast failed - ${err.message}</p>`;
-          cleanupLiveBroadcast();
-        });
-
-        socket.emit('start_live', { userId: socket.id });
-        isLive = true;
-        startLive.style.display = 'none';
-      } catch (err) {
-        console.error('Media error:', err);
-        chatLog.innerHTML += `<p style="color: #FF3B30;">Error: Unable to access camera/mic</p>`;
-      }
-    }
-
-    function cleanupLiveBroadcast() {
-      if (localStream) {
-        localStream.getTracks().forEach(track => track.stop());
-        localStream = null;
-      }
-      if (peer) {
-        peer.destroy();
-        peer = null;
-      }
-      liveStream.srcObject = null;
-      liveCommentLog.innerHTML = '';
-      liveCommentInput.value = '';
-      isLive = false;
-      currentLiveId = null;
-      startLive.style.display = 'block';
-      livePanel.style.display = 'none';
-      modalOverlay.style.display = 'none';
-    }
-
-    function joinLive(liveId) {
-      currentLiveId = liveId;
-      peer = new SimplePeer({
-        initiator: false,
-        trickle: false
-      });
-
-      peer.on('signal', data => {
-        socket.emit('webrtc_signal', { liveId, signal: data });
-      });
-
-      peer.on('stream', stream => {
-        liveStream.srcObject = stream;
-      });
-
-      socket.emit('join_live', { liveId });
-      livePanel.style.display = 'block';
-      modalOverlay.style.display = 'block';
-      startLive.style.display = 'none';
-    }
-
-    socket.on('live_list', (liveUsers) => {
-      liveNowList.innerHTML = '';
-      liveUsers.forEach(user => {
-        const liveItem = document.createElement('div');
-        liveItem.className = 'live-item';
-        liveItem.textContent = `User ${user.slice(0, 8)}`;
-        liveItem.addEventListener('click', () => joinLive(user));
-        liveNowList.appendChild(liveItem);
-      });
-    });
-
-    socket.on('live_comment', ({ userId, comment }) => {
-      if (currentLiveId) {
-        const commentElement = document.createElement('p');
-        commentElement.innerHTML = `<strong>User ${sanitizeInput(userId.slice(0, 8))}:</strong> ${sanitizeInput(comment)}`;
-        liveCommentLog.appendChild(commentElement);
-        liveCommentLog.scrollTop = liveCommentLog.scrollHeight;
-      }
-    });
-
-    startLive.addEventListener('click', startLiveBroadcast);
-
-    sendLiveComment.addEventListener('click', () => {
-      if (liveCommentInput.value.trim() && currentLiveId) {
-        const comment = sanitizeInput(liveCommentInput.value);
-        socket.emit('live_comment', { liveId: currentLiveId, comment });
-        liveCommentInput.value = '';
-      }
-    });
-
-    liveCommentInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && liveCommentInput.value.trim() && currentLiveId) {
-        const comment = sanitizeInput(liveCommentInput.value);
-        socket.emit('live_comment', { liveId: currentLiveId, comment });
-        liveCommentInput.value = '';
-      }
-    });
-
-    closeLive.addEventListener('click', cleanupLiveBroadcast);
 
     // Socket.IO event handlers
     socket.on('connect', () => {
@@ -1429,6 +1356,7 @@
       browserContainer.style.display = 'none';
       chatLog.classList.remove('floating');
       chatLog.style.height = 'auto';
+      setActiveMenu(chatMenu);
     });
 
     socket.on('error', (msg) => {
@@ -1469,20 +1397,16 @@
     // Tab button handlers
     videoButton.addEventListener('click', () => {
       if (!videoButton.classList.contains('disabled')) {
+        setActiveMenu(videoMenu);
         startVideoCall();
       }
     });
 
     browserButton.addEventListener('click', () => {
       if (!browserButton.classList.contains('disabled')) {
+        setActiveMenu(browserMenu);
         toggleBrowser();
       }
-    });
-
-    liveButton.addEventListener('click', () => {
-      livePanel.style.display = 'block';
-      modalOverlay.style.display = 'block';
-      socket.emit('get_live_list');
     });
 
     // DOM event listeners
@@ -1594,14 +1518,13 @@
       adminModal.style.display = 'none';
       ageModal.style.display = 'none';
       videoPanel.style.display = 'none';
-      livePanel.style.display = 'none';
       if (currentObservedPairId) {
         socket.emit('admin_leave_chat', { pairId: currentObservedPairId });
         currentObservedPairId = null;
       }
       cleanupVideoCall();
-      cleanupLiveBroadcast();
       modalOverlay.style.display = 'none';
+      setActiveMenu(chatMenu);
     });
 
     submitContact.addEventListener('click', () => {
