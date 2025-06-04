@@ -32,37 +32,19 @@
       height: 100%;
       z-index: -1;
       pointer-events: none;
+      opacity: 0.2;
     }
     #app-container {
       flex: 1;
       display: flex;
       flex-direction: column;
       width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
       height: 100dvh;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 20px;
-      padding: 1rem;
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.1);
-      transform: translateZ(10px);
-      transition: transform 0.3s ease;
+      background: transparent;
+      padding: 0;
       position: relative;
       z-index: 1;
       overflow: hidden;
-    }
-    h1 {
-      font-size: 1.5rem;
-      color: #007AFF;
-      text-align: center;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 0 5px rgba(0, 122, 255, 0.2);
-      transform: translateZ(15px);
-      transition: transform 0.3s ease;
-    }
-    h1:hover {
-      transform: translateZ(20px);
     }
     #top-menu {
       display: flex;
@@ -73,7 +55,8 @@
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       transform: translateZ(5px);
-      margin-bottom: 0.5rem;
+      margin: 0.5rem auto;
+      max-width: 600px;
     }
     .menu-button {
       width: 40px;
@@ -102,9 +85,8 @@
       justify-content: space-between;
       align-items: center;
       padding: 0.5rem;
-      position: sticky;
-      top: 0;
-      z-index: 10;
+      max-width: 600px;
+      margin: 0 auto;
       background: rgba(255, 255, 255, 0.95);
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
@@ -152,7 +134,7 @@
       background: #FF5252;
       box-shadow: 0 0 10px rgba(255, 82, 82, 0.3);
     }
-    #help-icon {
+    #help-icon, #admin-icon, #disconnect-button {
       width: 2rem;
       height: 2rem;
       display: flex;
@@ -168,9 +150,16 @@
       box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
       transform: translateZ(10px);
     }
-    #help-icon:hover {
+    #disconnect-button {
+      background: rgba(255, 59, 48, 0.1);
+      color: #FF3B30;
+    }
+    #help-icon:hover, #admin-icon:hover, #disconnect-button:hover {
       transform: translateZ(15px);
       box-shadow: 0 0 15px rgba(0, 122, 255, 0.4);
+    }
+    #disconnect-button:hover {
+      box-shadow: 0 0 15px rgba(255, 59, 48, 0.4);
     }
     #modal-overlay {
       display: none;
@@ -187,7 +176,7 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
-    #tags-modal, #contact-modal, #admin-modal, #age-modal, #video-panel {
+    #tags-modal, #contact-modal, #admin-modal, #age-modal {
       display: none;
       position: fixed;
       top: 50%;
@@ -208,7 +197,7 @@
       from { transform: translate(-50%, -50%) translateZ(0) scale(0.95); opacity: 0; }
       to { transform: translate(-50%, -50%) translateZ(20px) scale(1); opacity: 1; }
     }
-    #tags-modal h2, #contact-modal h2, #admin-modal h2, #age-modal h2, #video-panel h2 {
+    #tags-modal h2, #contact-modal h2, #admin-modal h2, #age-modal h2 {
       font-size: 1.2rem;
       color: #007AFF;
       text-align: center;
@@ -216,7 +205,7 @@
       margin-bottom: 1rem;
       transform: translateZ(10px);
     }
-    #tags-form, #contact-form, #admin-content, #age-form, #video-controls {
+    #tags-form, #contact-form, #admin-content, #age-form {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -241,7 +230,7 @@
       box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
       transform: translateZ(10px);
     }
-    #tags-form button, #contact-form button, #admin-content button, #age-form button, #video-controls button {
+    #tags-form button, #contact-form button, #admin-content button, #age-form button {
       padding: 0.75rem;
       border: none;
       border-radius: 12px;
@@ -254,15 +243,15 @@
       box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
       transform: translateZ(5px);
     }
-    #tags-form button:hover, #contact-form button:hover, #admin-content button:hover, #age-form button:hover, #video-controls button:hover {
+    #tags-form button:hover, #contact-form button:hover, #admin-content button:hover, #age-form button:hover {
       transform: translateZ(10px);
       box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
     }
-    #tags-form .close-button, #contact-form .close-button, #admin-content .close-button, #age-form .close-button, #video-controls .close-button {
+    #tags-form .close-button, #contact-form .close-button, #admin-content .close-button, #age-form .close-button {
       background: #FF3B30;
       box-shadow: 0 0 10px rgba(255, 59, 48, 0.3);
     }
-    #tags-form .close-button:hover, #contact-form .close-button:hover, #admin-content .close-button:hover, #age-form .close-button:hover, #video-controls .close-button:hover {
+    #tags-form .close-button:hover, #contact-form .close-button:hover, #admin-content .close-button:hover, #age-form .close-button:hover {
       box-shadow: 0 0 15px rgba(255, 59, 48, 0.5);
     }
     #trending-tags {
@@ -288,48 +277,41 @@
     #chat-container {
       flex: 1;
       display: flex;
+      flex-direction: column;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
       position: relative;
       overflow: hidden;
     }
     #chat-log {
       flex: 1;
-      overflow-y: auto;
-      padding: 0.5rem;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-      transform: translateZ(5px);
-      transition: height 0.3s ease;
-    }
-    #chat-log.floating {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 50%;
-      max-height: 30%;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      z-index: 10;
+      gap: 0.3rem;
       overflow-y: auto;
+      padding: 0.5rem;
+      background: transparent;
+      scrollbar-width: thin;
+      transform: translateZ(10px);
     }
     #chat-log::-webkit-scrollbar {
-      display: none;
+      width: 6px;
+    }
+    #chat-log::-webkit-scrollbar-thumb {
+      background: rgba(0, 122, 255, 0.3);
+      border-radius: 3px;
     }
     #chat-log p {
       margin: 0;
-      padding: 0.75rem 1rem;
-      border-radius: 16px;
-      animation: fadeInBubble 0.5s ease;
-      font-size: 0.95rem;
-      position: relative;
-      max-width: 75%;
-      display: inline-block;
+      padding: 0.5rem 0.8rem;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      max-width: 80%;
       word-wrap: break-word;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease;
       transform: translateZ(5px);
+      animation: fadeInBubble 0.3s ease;
     }
     #chat-log p:hover {
       transform: translateZ(10px);
@@ -342,114 +324,34 @@
       background: #34C759;
       color: #FFFFFF;
       margin-left: auto;
-      box-shadow: 0 0 10px rgba(52, 199, 89, 0.3);
+      box-shadow: 0 0 5px rgba(52, 199, 89, 0.3);
     }
     #chat-log .stranger {
       background: #007AFF;
       color: #FFFFFF;
       margin-right: auto;
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
+      box-shadow: 0 0 5px rgba(0, 122, 255, 0.3);
     }
-    #typing-indicator {
-      font-size: 0.85rem;
-      color: #007AFF;
-      margin: 0.5rem 1rem;
-      display: none;
-      animation: pulse 1.5s infinite;
-      transform: translateZ(5px);
-    }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
-    #countdown-timer {
-      display: none;
-      text-align: center;
-      font-size: 0.9rem;
-      color: #FF3B30;
-      margin: 0.5rem 0;
-      box-shadow: 0 0 10px rgba(255, 59, 48, 0.3);
-      transform: translateZ(5px);
-    }
-    #vertical-tab {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%) translateZ(10px);
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      padding: 0.5rem;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 12px 0 0 12px;
-      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.05);
-      z-index: 5;
-    }
-    .tab-button {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      background: rgba(0, 122, 255, 0.1);
-      color: #007AFF;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
-      transform: translateZ(5px);
-    }
-    .tab-button:hover {
-      transform: translateZ(10px);
-      box-shadow: 0 0 15px rgba(0, 122, 255, 0.4);
-    }
-    .tab-button.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    #browser-container {
-      display: none;
-      height: 50%;
-      width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-      transform: translateZ(5px);
-      margin-top: auto;
-    }
-    #browser-iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
-    #video-panel video {
-      width: 100%;
-      max-height: 200px;
-      border-radius: 12px;
-      margin-bottom: 0.5rem;
-    }
-    #input-container {
+    #chat-input-container {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
       padding: 0.5rem;
       background: rgba(255, 255, 255, 0.95);
       border-radius: 12px;
-      position: fixed;
-      bottom: 64px;
-      width: 100%;
-      max-width: 600px;
-      z-index: 5;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      transform: translateZ(10px);
+      transform: translateZ(5px);
+      max-width: 600px;
+      margin: 0 auto 0.5rem;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
     }
     #chat-input {
       flex: 1;
-      padding: 0.75rem 1rem;
-      background: rgba(229, 229, 234, 0.8);
+      padding: 0.75rem;
       border: 1px solid #D1D1D6;
       border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
       color: #1C2526;
       font-size: 0.95rem;
       transition: all 0.3s ease;
@@ -462,14 +364,15 @@
       transform: translateZ(10px);
     }
     #send-icon {
-      width: 32px;
-      height: 32px;
+      width: 40px;
+      height: 40px;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 50%;
       background: #007AFF;
       cursor: pointer;
+      margin-left: 0.5rem;
       transition: all 0.3s ease;
       box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
       transform: translateZ(5px);
@@ -478,249 +381,87 @@
       transform: translateZ(10px);
       box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
     }
-    #button-container {
-      display: flex;
-      gap: 8px;
+    #typing-indicator {
+      font-size: 0.85rem;
+      color: #8E8E93;
       padding: 0.5rem;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 12px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      max-width: 600px;
-      z-index: 5;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      justify-content: center;
-      transform: translateZ(10px);
+      text-align: center;
+      transform: translateZ(5px);
     }
-    button {
-      padding: 0.7rem 1rem;
+    #browser-tab {
+      display: none;
+      flex: 1;
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    #browser-frame {
+      width: 100%;
+      height: 100%;
       border: none;
       border-radius: 12px;
-      background: #007AFF;
-      color: #FFFFFF;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
-      flex: 1;
-      max-width: 150px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       transform: translateZ(5px);
     }
-    button:hover {
-      transform: translateZ(10px);
-      box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
-    }
-    button:active {
-      transform: translateZ(2px);
-    }
-    #cancel-disconnect, #report-user {
-      background: #FF3B30;
-      box-shadow: 0 0 10px rgba(255, 59, 48, 0.3);
-    }
-    #cancel-disconnect:hover, #report-user:hover {
-      box-shadow: 0 0 15px rgba(255, 59, 48, 0.5);
-    }
-    #admin-content table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9rem;
-      transform: translateZ(5px);
-    }
-    #admin-content th, #admin-content td {
-      padding: 0.6rem;
-      border: 1px solid #D1D1D6;
-      background: rgba(255, 255, 255, 0.8);
-    }
-    #admin-content th {
-      background: rgba(0, 122, 255, 0.1);
-      color: #1C2526;
-    }
-    #admin-content .ban-button {
-      background: #FF3B30;
-    }
-    #admin-content .unban-button {
-      background: #34C759;
-    }
-    #admin-content .observe-button {
-      background: #007AFF;
-    }
-    #admin-content .flagged {
-      background: rgba(255, 59, 48, 0.2);
-    }
-    #admin-chat-log {
-      height: 200px;
-      overflow-y: auto;
-      background: rgba(255, 255, 255, 0.8);
-      border: 1px solid #D1D1D6;
-      border-radius: 12px;
-      padding: 1rem;
-      margin: 1rem 0;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      scrollbar-width: none;
-      transform: translateZ(5px);
-    }
-    #admin-chat-log::-webkit-scrollbar {
-      display: none;
-    }
-    #admin-chat-log p {
-      margin: 0.5rem 0;
-      font-size: 0.9rem;
-      color: #1C2526;
-    }
-    #stats-section {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 1rem;
-    }
-    .stat-card {
-      flex: 1;
-      min-width: 120px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 1rem;
-      border-radius: 12px;
-      text-align: center;
-      font-size: 0.9rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      transform: translateZ(5px);
-    }
-    .stat-card h3 {
-      color: #007AFF;
-      margin-bottom: 0.6rem;
+    #admin-content h3 {
       font-size: 1rem;
+      color: #1C2526;
+      margin: 1rem 0 0.5rem;
+    }
+    #admin-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 1rem;
+    }
+    #admin-content li {
+      padding: 0.5rem;
+      border-bottom: 1px solid #D1D1D6;
+      font-size: 0.9rem;
+      color: #1C2526;
+    }
+    #admin-content button {
+      margin: 0.5rem 0;
     }
     @media (max-width: 768px) {
       #app-container {
-        max-width: 100%;
-        padding: 0;
         border-radius: 0;
       }
-      h1 {
-        font-size: 1.25rem;
-        margin-bottom: 0.3rem;
-      }
-      #chat-log {
-        padding: 0.5rem;
-      }
-      #chat-log.floating {
-        width: 100%;
-        max-height: 20%;
+      #top-menu, .top-controls, #chat-input-container {
+        margin: 0.5rem;
       }
       #chat-log p {
-        font-size: 0.9rem;
-        padding: 0.6rem 0.9rem;
-        max-width: 80%;
+        font-size: 0.85rem;
+        padding: 0.4rem 0.7rem;
       }
       #chat-input {
         font-size: 0.9rem;
-        padding: 0.7rem;
-      }
-      #input-container {
-        bottom: 56px;
-        padding: 0.3rem;
-      }
-      #button-container {
-        padding: 0.3rem;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      button {
-        font-size: 0.9rem;
         padding: 0.6rem;
-        max-width: 100%;
       }
-      .top-controls {
-        padding: 0.4rem;
-        border-radius: 10px;
+      #send-icon, #help-icon, #admin-icon, #disconnect-button {
+        width: 36px;
+        height: 36px;
       }
-      #safe-mode-toggle label {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
-      }
-      #help-icon {
-        width: 1.8rem;
-        height: 1.8rem;
-        font-size: 0.95rem;
-      }
-      #tags-modal, #contact-modal, #admin-modal, #age-modal, #video-panel {
-        width: 100%;
-        height: 100%;
-        max-height: 100%;
-        border-radius: 0;
+      #tags-modal, #contact-modal, #admin-modal, #age-modal {
+        width: 95%;
         padding: 1rem;
-      }
-      #tags-modal h2, #contact-modal h2, #admin-modal h2, #age-modal h2, #video-panel h2 {
-        font-size: 1rem;
-      }
-      #tags-form input, #contact-form input, #contact-form textarea {
-        font-size: 0.9rem;
-        padding: 0.6rem;
-      }
-      #tags-form button, #contact-form button, #admin-content button, #age-form button, #video-controls button {
-        font-size: 0.9rem;
-        padding: 0.6rem;
-      }
-      .trending-tag {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.8rem;
-      }
-      #admin-content table {
-        font-size: 0.8rem;
-      }
-      .stat-card {
-        min-width: 100px;
-        font-size: 0.8rem;
-      }
-      #vertical-tab {
-        right: -8px;
-        padding: 0.3rem;
-      }
-      .tab-button {
-        width: 36px;
-        height: 36px;
-      }
-      .menu-button {
-        width: 36px;
-        height: 36px;
-      }
-      #browser-container {
-        height: 40%;
       }
     }
     @media (max-width: 480px) {
-      h1 {
-        font-size: 1rem;
+      #chat-log p {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.6rem;
       }
       #chat-input {
         font-size: 0.85rem;
-        padding: 0.6rem;
-      }
-      #safe-mode-toggle label {
-        font-size: 0.75rem;
-        padding: 0.3rem 0.7rem;
-      }
-      #help-icon {
-        width: 1.6rem;
-        height: 1.6rem;
-        font-size: 0.85rem;
-      }
-      button {
-        font-size: 0.8rem;
         padding: 0.5rem;
       }
-      #send-icon {
-        width: 28px;
-        height: 28px;
-      }
-      .tab-button {
+      #send-icon, #help-icon, #admin-icon, #disconnect-button {
         width: 32px;
         height: 32px;
       }
-      .menu-button {
-        width: 32px;
-        height: 32px;
+      #tags-modal, #contact-modal, #admin-modal, #age-modal {
+        width: 100%;
+        border-radius: 0;
       }
     }
   </style>
@@ -728,179 +469,101 @@
 <body>
   <canvas id="particle-canvas"></canvas>
   <div id="modal-overlay"></div>
+  <div id="age-modal">
+    <h2>Age Verification</h2>
+    <div id="age-form">
+      <p>By proceeding, you confirm you are 13 or older.</p>
+      <button id="confirm-age">Confirm</button>
+      <button class="close-button" id="close-age">Cancel</button>
+    </div>
+  </div>
   <div id="tags-modal">
-    <h2>Select Interests</h2>
+    <h2>Enter Tags</h2>
+    <div id="trending-tags"></div>
     <div id="tags-form">
-      <div id="trending-tags"></div>
-      <input id="tags-input" type="text" placeholder="Enter tags (e.g., gaming, tech)">
+      <input id="tags-input" type="text" placeholder="Enter tags (comma-separated)">
       <button id="submit-tags">Join Chat</button>
-      <button class="close-button" id="close-tags">Close</button>
+      <button class="close-button" id="close-tags">Cancel</button>
     </div>
   </div>
   <div id="contact-modal">
     <h2>Contact Us</h2>
     <div id="contact-form">
-      <input type="text" id="contact-name" placeholder="Name (optional)">
-      <input type="email" id="contact-email" placeholder="Email (optional)">
-      <textarea id="contact-message" placeholder="Your message"></textarea>
+      <input id="contact-name" type="text" placeholder="Your Name (optional)">
+      <input id="contact-email" type="email" placeholder="Your Email (optional)">
+      <textarea id="contact-message" placeholder="Your Message"></textarea>
       <button id="submit-contact">Submit</button>
-      <button class="close-button" id="close-contact">Close</button>
+      <button class="close-button" id="close-contact">Cancel</button>
     </div>
   </div>
   <div id="admin-modal">
     <h2>Admin Console</h2>
     <div id="admin-content">
-      <div id="stats-section">
-        <div class="stat-card">
-          <h3>Online Users</h3>
-          <p id="online-users">0</p>
-        </div>
-        <div class="stat-card">
-          <h3>Active Chats</h3>
-          <p id="active-chats">0</p>
-        </div>
-        <div class="stat-card">
-          <h3>Messages Sent</h3>
-          <p id="messages-sent">0</p>
-        </div>
-        <div class="stat-card">
-          <h3>Reports Filed</h3>
-          <p id="reports-filed">0</p>
-        </div>
-      </div>
-      <h3>User Management</h3>
-      <table id="user-table">
-        <thead>
-          <tr>
-            <th>User ID</th>
-            <th>Socket ID</th>
-            <th>Reports</th>
-            <th>Ban Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="user-table-body"></tbody>
-      </table>
-      <h3>Live Chats</h3>
-      <table id="chat-table">
-        <thead>
-          <tr>
-            <th>Pair ID</th>
-            <th>User IDs</th>
-            <th>Reports</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody id="chat-table-body"></tbody>
-      </table>
-      <div id="admin-chat-log"></div>
+      <input id="admin-key" type="password" placeholder="Enter Admin Key">
+      <button id="admin-login">Login</button>
       <button class="close-button" id="close-admin">Close</button>
     </div>
   </div>
-  <div id="age-modal">
-    <h2>Age Verification</h2>
-    <div id="age-form">
-      <p>Please confirm you are 18+ to enable NSFW Mode.</p>
-      <button id="confirm-age">Confirm</button>
-      <button class="close-button" id="cancel-age">Cancel</button>
-    </div>
-  </div>
-  <div id="video-panel">
-    <h2>Video Call</h2>
-    <div id="video-controls">
-      <video id="local-video" autoplay muted></video>
-      <video id="remote-video" autoplay></video>
-      <button id="toggle-mute">Toggle Mute</button>
-      <button id="toggle-camera">Toggle Camera</button>
-      <button class="close-button" id="close-video">Close</button>
-    </div>
-  </div>
   <div id="app-container">
-    <h1>NightHub</h1>
     <div id="top-menu">
       <a href="#" class="menu-button active" id="chat-menu" title="Chat">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
       </a>
-      <a href="#" class="menu-button" id="video-menu" title="Video Call">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
-          <rect x="2" y="3" width="14" height="18" rx="2" ry="2"></rect>
-          <polygon points="22 7 16 12 22 17 22 7"></polygon>
+      <a href="#" class="menu-button" id="video-menu" title="Video">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+          <polygon points="10 8 16 12 10 16 10 8"></polygon>
         </svg>
       </a>
       <a href="#" class="menu-button" id="browser-menu" title="Browser">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
-          <line x1="2" y1="6" x2="22" y2="6"></line>
-          <circle cx="6" cy="4" r="1"></circle>
-          <circle cx="10" cy="4" r="1"></circle>
-          <circle cx="14" cy="4" r="1"></circle>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <circle cx="12" cy="12" r="4"></circle>
+          <line x1="21.17" y1="8" x2="12" y2="8"></line>
+          <line x1="3.95" y1="6.06" x2="8.54" y2="14"></line>
+          <line x1="10.88" y1="21.94" x2="15.46" y2="14"></line>
         </svg>
       </a>
-      <a href="live.html" class="menu-button" id="live-menu" title="Live Stream">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <circle cx="12" cy="12" r="4" fill="#007AFF"></circle>
+      <a href="live.html" class="menu-button" id="live-menu" title="Live">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
         </svg>
       </a>
     </div>
     <div class="top-controls">
       <div class="control-group">
-        <div id="connection-indicator"></div>
-        <div id="help-icon" title="Contact Us">?</div>
-      </div>
-      <div class="control-group">
+        <span id="connection-indicator"></span>
         <div id="safe-mode-toggle">
           <input type="checkbox" id="safe-mode" checked>
           <label for="safe-mode">Safe Mode</label>
         </div>
       </div>
+      <div class="control-group">
+        <div id="help-icon" title="Contact Us">?</div>
+        <div id="admin-icon" title="Admin">A</div>
+        <div id="disconnect-button" title="Disconnect">X</div>
+      </div>
     </div>
     <div id="chat-container">
       <div id="chat-log"></div>
-      <div id="vertical-tab">
-        <div id="video-button" class="tab-button disabled" title="Start Video Call">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
-            <rect x="2" y="3" width="14" height="18" rx="2" ry="2"></rect>
-            <polygon points="22 7 16 12 22 17 22 7"></polygon>
-          </svg>
-        </div>
-        <div id="browser-button" class="tab-button disabled" title="Open Browser">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2">
-            <rect x="2" y="2" width="20" height="20" rx="2" ry="2"></rect>
-            <line x1="2" y1="6" x2="22" y2="6"></line>
-            <circle cx="6" cy="4" r="1"></circle>
-            <circle cx="10" cy="4" r="1"></circle>
-            <circle cx="14" cy="4" r="1"></circle>
+      <div id="typing-indicator"></div>
+      <div id="chat-input-container">
+        <input id="chat-input" type="text" placeholder="Type a message...">
+        <div id="send-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
         </div>
       </div>
     </div>
-    <div id="browser-container">
-      <iframe id="browser-iframe" src="https://example.com"></iframe>
-    </div>
-    <div id="typing-indicator">Stranger is typing...</div>
-    <div id="countdown-timer">Disconnecting in <span id="countdown">5</span> seconds...</div>
-    <div id="input-container">
-      <input id="chat-input" type="text" placeholder="Type your message..." disabled>
-      <div id="send-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"></line>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-        </svg>
-      </div>
-    </div>
-    <div id="button-container">
-      <button id="start-chat">Start Chat</button>
-      <button id="end-chat" style="display:none;">End Chat</button>
-      <button id="report-user" style="display:none;">Report User</button>
-      <button id="cancel-disconnect" style="display:none;">Cancel Disconnect</button>
+    <div id="browser-tab">
+      <iframe id="browser-frame" src="https://www.example.com"></iframe>
     </div>
   </div>
-  <audio id="message-sound" src="/assets/Notification.mp3"></audio>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
-  <script src="https://unpkg.com/simple-peer@9.11.0/simple-peer.min.js"></script>
   <script>
     // Particle background
     const canvas = document.getElementById('particle-canvas');
@@ -964,617 +627,354 @@
     });
 
     // DOM elements
-    const chatLog = document.getElementById('chat-log');
-    const chatInput = document.getElementById('chat-input');
-    const sendIcon = document.getElementById('send-icon');
-    const startChatBtn = document.getElementById('start-chat');
-    const endChatBtn = document.getElementById('end-chat');
-    const reportUserBtn = document.getElementById('report-user');
-    const cancelDisconnectBtn = document.getElementById('cancel-disconnect');
-    const typingIndicator = document.getElementById('typing-indicator');
-    const countdownSpan = document.getElementById('countdown');
-    const countdownTimer = document.getElementById('countdown-timer');
-    const messageSound = document.getElementById('message-sound');
-    const safeModeToggle = document.getElementById('safe-mode');
-    const safeModeLabel = document.querySelector('#safe-mode-toggle label');
-    const helpIcon = document.getElementById('help-icon');
-    const connectionIndicator = document.getElementById('connection-indicator');
-    const tagsModal = document.getElementById('tags-modal');
-    const contactModal = document.getElementById('contact-modal');
-    const adminModal = document.getElementById('admin-modal');
-    const ageModal = document.getElementById('age-modal');
     const modalOverlay = document.getElementById('modal-overlay');
-    const tagsForm = document.getElementById('tags-form');
-    const contactForm = document.getElementById('contact-form');
+    const ageModal = document.getElementById('age-modal');
+    const confirmAge = document.getElementById('confirm-age');
+    const closeAge = document.getElementById('close-age');
+    const tagsModal = document.getElementById('tags-modal');
     const tagsInput = document.getElementById('tags-input');
     const submitTags = document.getElementById('submit-tags');
     const closeTags = document.getElementById('close-tags');
+    const trendingTags = document.getElementById('trending-tags');
+    const contactModal = document.getElementById('contact-modal');
     const contactName = document.getElementById('contact-name');
     const contactEmail = document.getElementById('contact-email');
     const contactMessage = document.getElementById('contact-message');
     const submitContact = document.getElementById('submit-contact');
     const closeContact = document.getElementById('close-contact');
+    const adminModal = document.getElementById('admin-modal');
+    const adminKey = document.getElementById('admin-key');
+    const adminLogin = document.getElementById('admin-login');
     const closeAdmin = document.getElementById('close-admin');
-    const confirmAge = document.getElementById('confirm-age');
-    const cancelAge = document.getElementById('cancel-age');
-    const userTableBody = document.getElementById('user-table-body');
-    const chatTableBody = document.getElementById('chat-table-body');
-    const adminChatLog = document.getElementById('admin-chat-log');
-    const onlineUsers = document.getElementById('online-users');
-    const activeChats = document.getElementById('active-chats');
-    const messagesSent = document.getElementById('messages-sent');
-    const reportsFiled = document.getElementById('reports-filed');
-    const trendingTags = document.getElementById('trending-tags');
-    const videoButton = document.getElementById('video-button');
-    const browserButton = document.getElementById('browser-button');
-    const videoPanel = document.getElementById('video-panel');
-    const localVideo = document.getElementById('local-video');
-    const remoteVideo = document.getElementById('remote-video');
-    const toggleMute = document.getElementById('toggle-mute');
-    const toggleCamera = document.getElementById('toggle-camera');
-    const closeVideo = document.getElementById('close-video');
-    const browserContainer = document.getElementById('browser-container');
-    const browserIframe = document.getElementById('browser-iframe');
+    const adminContent = document.getElementById('admin-content');
     const chatMenu = document.getElementById('chat-menu');
     const videoMenu = document.getElementById('video-menu');
     const browserMenu = document.getElementById('browser-menu');
-    const liveMenu = document.getElementById('live-menu');
+    const connectionIndicator = document.getElementById('connection-indicator');
+    const safeModeToggle = document.getElementById('safe-mode');
+    const helpIcon = document.getElementById('help-icon');
+    const adminIcon = document.getElementById('admin-icon');
+    const disconnectButton = document.getElementById('disconnect-button');
+    const chatContainer = document.getElementById('chat-container');
+    const chatLog = document.getElementById('chat-log');
+    const chatInput = document.getElementById('chat-input');
+    const sendIcon = document.getElementById('send-icon');
+    const typingIndicator = document.getElementById('typing-indicator');
+    const browserTab = document.getElementById('browser-tab');
+    const browserFrame = document.getElementById('browser-frame');
 
     // State
-    let isTyping = false;
-    let typingTimeout;
-    let currentObservedPairId = null;
-    let ageConfirmed = false;
-    let isPaired = false;
-    let peer = null;
-    let localStream = null;
-    let isMuted = false;
-    let isCameraOn = true;
+    let pairId = null;
+    let messageHistory = [];
+    let userId = null;
 
-    // Update Safe Mode label
-    function updateSafeModeLabel() {
-      safeModeLabel.textContent = safeModeToggle.checked ? 'Safe Mode' : 'NSFW Mode';
+    // Chat log management
+    function updateChatLog() {
+      chatLog.innerHTML = '';
+      messageHistory.forEach(msg => {
+        const p = document.createElement('p');
+        p.className = msg.sender === 'you' ? 'you' : 'stranger';
+        p.textContent = msg.text;
+        chatLog.appendChild(p);
+      });
+      chatLog.scrollTop = chatLog.scrollHeight;
     }
-    safeModeToggle.addEventListener('change', () => {
-      if (!safeModeToggle.checked && !ageConfirmed) {
-        ageModal.style.display = 'block';
-        modalOverlay.style.display = 'block';
-        safeModeToggle.checked = true;
-        updateSafeModeLabel();
-        return;
-      }
-      socket.emit('toggle_safe_mode', { safeMode: safeModeToggle.checked, ageConfirmed });
-      updateSafeModeLabel();
+
+    // Socket.IO event handlers
+    socket.on('connect', () => {
+      console.log('Connected to backend');
+      userId = socket.id;
+      connectionIndicator.classList.add('connected');
+      ageModal.style.display = 'block';
+      modalOverlay.style.display = 'block';
     });
-    updateSafeModeLabel();
 
-    // Sanitize input
-    function sanitizeInput(input) {
-      const div = document.createElement('div');
-      div.textContent = input;
-      return div.innerHTML;
-    }
+    socket.on('paired', (newPairId) => {
+      pairId = newPairId;
+      connectionIndicator.classList.add('connected');
+      chatInput.disabled = false;
+      messageHistory = [];
+      updateChatLog();
+      new Audio('/assets/Notification.mp3').play();
+    });
 
-    // Fetch trending tags
-    function fetchTrendingTags() {
-      socket.emit('get_trending_tags');
-    }
+    socket.on('rejoin', () => {
+      socket.emit('join', tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag));
+    });
 
-    // Render trending tags
+    socket.on('message', (msg) => {
+      messageHistory.push({ sender: 'stranger', text: msg });
+      updateChatLog();
+      new Audio('/assets/Notification.mp3').play();
+    });
+
+    socket.on('typing', (isTyping) => {
+      typingIndicator.textContent = isTyping ? 'Stranger is typing...' : '';
+    });
+
+    socket.on('disconnected', () => {
+      connectionIndicator.classList.remove('connected');
+      chatInput.disabled = true;
+      messageHistory = [];
+      updateChatLog();
+      pairId = null;
+      socket.emit('join', tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag));
+    });
+
+    socket.on('request_success', (msg) => {
+      alert(msg);
+      contactModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
+      contactName.value = '';
+      contactEmail.value = '';
+      contactMessage.value = '';
+    });
+
     socket.on('trending_tags', (tags) => {
       trendingTags.innerHTML = '';
       tags.forEach(tag => {
-        const tagBtn = document.createElement('div');
-        tagBtn.className = 'trending-tag';
-        tagBtn.textContent = tag;
-        tagBtn.addEventListener('click', () => {
+        const span = document.createElement('span');
+        span.className = 'trending-tag';
+        span.textContent = tag;
+        span.addEventListener('click', () => {
           const currentTags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
           if (!currentTags.includes(tag)) {
             tagsInput.value = [...currentTags, tag].join(', ');
           }
         });
-        trendingTags.appendChild(tagBtn);
+        trendingTags.appendChild(span);
       });
-    });
-
-    // Render admin dashboard
-    function renderAdminDashboard(data) {
-      onlineUsers.textContent = data.onlineUsers;
-      activeChats.textContent = data.activeChats;
-      messagesSent.textContent = data.messagesSent;
-      reportsFiled.textContent = data.reportsFiled;
-
-      userTableBody.innerHTML = '';
-      data.users.forEach(user => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${sanitizeInput(user.userId)}</td>
-          <td>${sanitizeInput(user.socketId)}</td>
-          <td>${user.reports}</td>
-          <td>${user.isBanned ? `Banned (${user.banDuration === Infinity ? 'Permanent' : `${Math.ceil((user.banEnd - Date.now()) / 60000)} min`})` : 'Not Banned'}</td>
-          <td>
-            <button class="ban-button" data-userid="${sanitizeInput(user.userId)}" ${user.isBanned ? 'disabled' : ''}>Ban</button>
-            <button class="unban-button" data-userid="${sanitizeInput(user.userId)}" ${!user.isBanned ? 'disabled' : ''}>Unban</button>
-          </td>
-        `;
-        userTableBody.appendChild(row);
-      });
-
-      chatTableBody.innerHTML = '';
-      data.chats.forEach(chat => {
-        const row = document.createElement('tr');
-        row.className = chat.reports >= 5 ? 'flagged' : '';
-        row.innerHTML = `
-          <td>${sanitizeInput(chat.pairId)}</td>
-          <td>${sanitizeInput(chat.userIds.join(', '))}</td>
-          <td>${chat.reports}</td>
-          <td>
-            <button class="observe-button" data-pairid="${sanitizeInput(chat.pairId)}">Observe</button>
-          </td>
-        `;
-        chatTableBody.appendChild(row);
-      });
-
-      document.querySelectorAll('.ban-button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const userId = btn.dataset.userid;
-          socket.emit('admin_ban', { userId, duration: 30 * 60 * 1000 });
-        });
-      });
-      document.querySelectorAll('.unban-button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const userId = btn.dataset.userid;
-          socket.emit('admin_unban', { userId });
-        });
-      });
-      document.querySelectorAll('.observe-button').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const pairId = btn.dataset.pairid;
-          if (currentObservedPairId) {
-            socket.emit('admin_leave_chat', { pairId: currentObservedPairId });
-          }
-          socket.emit('admin_observe_chat', { pairId });
-          currentObservedPairId = pairId;
-          adminChatLog.innerHTML = `<p>Observing chat ${sanitizeInput(pairId)}...</p>`;
-        });
-      });
-    }
-
-    // Video call setup
-    async function startVideoCall() {
-      try {
-        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-        localVideo.srcObject = localStream;
-
-        peer = new SimplePeer({
-          initiator: true,
-          stream: localStream,
-          trickle: false
-        });
-
-        peer.on('signal', data => {
-          socket.emit('webrtc_signal', data);
-        });
-
-        peer.on('stream', stream => {
-          remoteVideo.srcObject = stream;
-        });
-
-        peer.on('error', err => {
-          console.error('WebRTC error:', err);
-          chatLog.innerHTML += `<p style="color: #FF3B30;">Error: Video call failed - ${err.message}</p>`;
-          cleanupVideoCall();
-        });
-
-        socket.on('webrtc_signal', data => {
-          peer.signal(data);
-        });
-
-        videoPanel.style.display = 'block';
-        modalOverlay.style.display = 'block';
-        socket.emit('start_video_call');
-      } catch (err) {
-        console.error('Media error:', err);
-        chatLog.innerHTML += `<p style="color: #FF3B30;">Error: Unable to access camera/mic</p>`;
-      }
-    }
-
-    function cleanupVideoCall() {
-      if (localStream) {
-        localStream.getTracks().forEach(track => track.stop());
-        localStream = null;
-      }
-      if (peer) {
-        peer.destroy();
-        peer = null;
-      }
-      localVideo.srcObject = null;
-      remoteVideo.srcObject = null;
-      videoPanel.style.display = 'none';
-      modalOverlay.style.display = 'none';
-    }
-
-    // Browser setup
-    function toggleBrowser() {
-      if (browserContainer.style.display === 'block') {
-        browserContainer.style.display = 'none';
-        chatLog.classList.remove('floating');
-        chatLog.style.height = 'auto';
-      } else {
-        browserContainer.style.display = 'block';
-        chatLog.classList.add('floating');
-        chatLog.style.height = 'auto';
-        browserIframe.src = 'https://example.com';
-      }
-    }
-
-    // Menu navigation
-    function setActiveMenu(activeButton) {
-      [chatMenu, videoMenu, browserMenu].forEach(btn => btn.classList.remove('active'));
-      activeButton.classList.add('active');
-    }
-
-    chatMenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      setActiveMenu(chatMenu);
-      videoPanel.style.display = 'none';
-      browserContainer.style.display = 'none';
-      chatLog.classList.remove('floating');
-      chatLog.style.height = 'auto';
-      modalOverlay.style.display = 'none';
-      cleanupVideoCall();
-    });
-
-    videoMenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (isPaired) {
-        setActiveMenu(videoMenu);
-        startVideoCall();
-        browserContainer.style.display = 'none';
-        chatLog.classList.remove('floating');
-        chatLog.style.height = 'auto';
-      }
-    });
-
-    browserMenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (isPaired) {
-        setActiveMenu(browserMenu);
-        toggleBrowser();
-        videoPanel.style.display = 'none';
-        modalOverlay.style.display = 'none';
-        cleanupVideoCall();
-      }
-    });
-
-    toggleMute.addEventListener('click', () => {
-      if (localStream) {
-        isMuted = !isMuted;
-        localStream.getAudioTracks()[0].enabled = !isMuted;
-        toggleMute.textContent = isMuted ? 'Unmute' : 'Mute';
-      }
-    });
-
-    toggleCamera.addEventListener('click', () => {
-      if (localStream) {
-        isCameraOn = !isCameraOn;
-        localStream.getVideoTracks()[0].enabled = isCameraOn;
-        toggleCamera.textContent = isCameraOn ? 'Turn Camera Off' : 'Turn Camera On';
-      }
-    });
-
-    closeVideo.addEventListener('click', () => {
-      cleanupVideoCall();
-      setActiveMenu(chatMenu);
-    });
-
-    // Socket.IO event handlers
-    socket.on('connect', () => {
-      console.log('Connected to backend, Socket ID:', socket.id);
-      connectionIndicator.classList.add('connected');
-      fetchTrendingTags();
-    });
-
-    socket.on('connect_error', (err) => {
-      console.error('Connection error:', err.message);
-      connectionIndicator.classList.remove('connected');
-      chatLog.innerHTML += `<p style="color: #FF3B30;">Error: Failed to connect - ${err.message}</p>`;
-      chatLog.scrollTop = chatLog.scrollHeight;
-    });
-
-    socket.on('message', (msg) => {
-      console.log('Received message:', msg, 'Socket ID:', socket.id);
-      const msgElement = document.createElement('p');
-      msgElement.className = 'stranger';
-      msgElement.innerHTML = `<strong>Stranger:</strong> ${sanitizeInput(msg)}`;
-      chatLog.appendChild(msgElement);
-      messageSound.play().catch(err => console.error('Audio playback error:', err));
-      chatLog.scrollTop = chatLog.scrollHeight;
-    });
-
-    socket.on('typing', (isTyping) => {
-      typingIndicator.style.display = isTyping ? 'block' : 'none';
-      chatLog.scrollTop = chatLog.scrollHeight;
-    });
-
-    socket.on('countdown', (seconds) => {
-      countdownSpan.textContent = seconds;
-      countdownTimer.style.display = 'block';
-    });
-
-    socket.on('countdown_cancelled', () => {
-      countdownTimer.style.display = 'none';
-      cancelDisconnectBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline-block';
-      reportUserBtn.style.display = 'inline-block';
-      chatInput.disabled = false;
-      chatInput.focus();
-    });
-
-    socket.on('rejoin', () => {
-      chatLog.innerHTML = '<p>Connecting to a new stranger...</p>';
-      startChatBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline-block';
-      reportUserBtn.style.display = 'inline-block';
-      chatInput.disabled = true;
-      chatLog.scrollTop = chatLog.scrollHeight;
-      videoButton.classList.add('disabled');
-      browserButton.classList.add('disabled');
-      isPaired = false;
-    });
-
-    socket.on('paired', () => {
-      chatLog.innerHTML += '<p>Connected to a stranger!</p>';
-      safeModeToggle.checked = true;
-      ageConfirmed = false;
-      updateSafeModeLabel();
-      startChatBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline-block';
-      reportUserBtn.style.display = 'inline-block';
-      chatInput.disabled = false;
-      chatInput.focus();
-      chatLog.scrollTop = chatLog.scrollHeight;
-      videoButton.classList.remove('disabled');
-      browserButton.classList.remove('disabled');
-      isPaired = true;
-    });
-
-    socket.on('disconnected', () => {
-      chatLog.innerHTML += '<p>Stranger disconnected.</p>';
-      startChatBtn.style.display = 'none';
-      endChatBtn.style.display = 'none';
-      reportUserBtn.style.display = 'none';
-      cancelDisconnectBtn.style.display = 'none';
-      countdownTimer.style.display = 'none';
-      chatInput.disabled = true;
-      typingIndicator.style.display = 'none';
-      chatLog.scrollTop = chatLog.scrollHeight;
-      videoButton.classList.add('disabled');
-      browserButton.classList.add('disabled');
-      isPaired = false;
-      cleanupVideoCall();
-      browserContainer.style.display = 'none';
-      chatLog.classList.remove('floating');
-      chatLog.style.height = 'auto';
-      setActiveMenu(chatMenu);
-    });
-
-    socket.on('error', (msg) => {
-      chatLog.innerHTML += `<p style="color: #FF3B30;">Error: ${msg}</p>`;
-      chatLog.scrollTop = chatLog.scrollHeight;
-      if (msg.includes('banned')) {
-        startChatBtn.style.display = 'none';
-        endChatBtn.style.display = 'none';
-        reportUserBtn.style.display = 'none';
-        cancelDisconnectBtn.style.display = 'none';
-        chatInput.disabled = true;
-        videoButton.classList.add('disabled');
-        browserButton.classList.add('disabled');
-        isPaired = false;
-      }
-    });
-
-    socket.on('request_success', (msg) => {
-      chatLog.innerHTML += `<p style="color: #34C759;">${msg}</p>`;
-      chatLog.scrollTop = chatLog.scrollHeight;
-      contactModal.style.display = 'none';
-      modalOverlay.style.display = 'none';
     });
 
     socket.on('admin_data', (data) => {
-      renderAdminDashboard(data);
+      adminContent.innerHTML = `
+        <h3>Stats</h3>
+        <ul>
+          <li>Online Users: ${data.onlineUsers}</li>
+          <li>Active Chats: ${data.activeChats}</li>
+          <li>Messages Sent: ${data.messagesSent}</li>
+          <li>Reports Filed: ${data.reportsFiled}</li>
+        </ul>
+        <h3>Users</h3>
+        <ul>
+          ${data.users.map(user => `
+            <li>
+              User ID: ${user.userId.slice(0, 8)}...
+              Reports: ${user.reports}
+              ${user.isBanned ? `Banned until ${new Date(user.banEnd).toLocaleString()}` : ''}
+              <button onclick="banUser('${user.userId}', 30 * 60 * 1000)">Ban 30m</button>
+              <button onclick="banUser('${user.userId}', Infinity)">Ban Permanent</button>
+              ${user.isBanned ? `<button onclick="unbanUser('${user.userId}')">Unban</button>` : ''}
+            </li>
+          `).join('')}
+        </ul>
+        <h3>Chats</h3>
+        <ul>
+          ${data.chats.map(chat => `
+            <li>
+              Pair ID: ${chat.pairId.slice(0, 8)}...
+              Users: ${chat.userIds.map(id => id.slice(0, 8)).join(', ')}
+              Reports: ${chat.reports}
+              <button onclick="observeChat('${chat.pairId}')">Observe</button>
+              <button onclick="leaveChat('${chat.pairId}')">Stop Observing</button>
+            </li>
+          `).join('')}
+        </ul>
+        <h3>Live Streams</h3>
+        <ul>
+          ${data.liveStreams.map(stream => `
+            <li>
+              User ID: ${stream.userId.slice(0, 8)}...
+              Title: ${stream.title}
+              Viewers: ${stream.viewers}
+              ${stream.isBanned ? `Banned` : ''}
+              <button onclick="banLive('${stream.userId}', 30 * 60 * 1000)">Ban 30m</button>
+              <button onclick="banLive('${stream.userId}', Infinity)">Ban Permanent</button>
+              ${stream.isBanned ? `<button onclick="unbanLive('${stream.userId}')">Unban</button>` : ''}
+            </li>
+          `).join('')}
+        </ul>
+        <button class="close-button" id="close-admin">Close</button>
+      `;
+      document.getElementById('close-admin').addEventListener('click', () => {
+        adminModal.style.display = 'none';
+        modalOverlay.style.display = 'none';
+      });
     });
 
-    socket.on('admin_message', ({ pairId, userId, message }) => {
-      if (pairId === currentObservedPairId) {
-        const msgElement = document.createElement('p');
-        msgElement.innerHTML = `<strong>User ${sanitizeInput(userId.slice(0, 8))}:</strong> ${sanitizeInput(message)}`;
-        adminChatLog.appendChild(msgElement);
-        adminChatLog.scrollTop = adminChatLog.scrollHeight;
-      }
+    socket.on('admin_message', ({ pairId, userId: senderId, message }) => {
+      alert(`Chat ${pairId.slice(0, 8)}...: ${senderId.slice(0, 8)} said: ${message}`);
     });
 
-    // Tab button handlers
-    videoButton.addEventListener('click', () => {
-      if (!videoButton.classList.contains('disabled')) {
-        setActiveMenu(videoMenu);
-        startVideoCall();
-      }
-    });
-
-    browserButton.addEventListener('click', () => {
-      if (!browserButton.classList.contains('disabled')) {
-        setActiveMenu(browserMenu);
-        toggleBrowser();
-      }
+    socket.on('error', (msg) => {
+      alert(`Error: ${msg}`);
     });
 
     // DOM event listeners
-    startChatBtn.addEventListener('click', () => {
+    confirmAge.addEventListener('click', () => {
+      ageModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
       tagsModal.style.display = 'block';
-      modalOverlay.style.display = 'block';
-      tagsInput.focus();
+      socket.emit('get_trending_tags');
+    });
+
+    closeAge.addEventListener('click', () => {
+      window.location.href = 'https://www.example.com';
     });
 
     submitTags.addEventListener('click', () => {
-      const tags = tagsInput.value.split(',').map(t => sanitizeInput(t.trim())).filter(t => t);
-      if (tags.includes('ekandmc')) {
-        socket.emit('admin_login', { key: 'ekandmc' });
+      const tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+      if (tags.length > 0) {
+        socket.emit('join', tags);
         tagsModal.style.display = 'none';
-        modalOverlay.style.display = 'block';
-        adminModal.style.display = 'block';
-        tagsInput.value = '';
-        return;
+        modalOverlay.style.display = 'none';
+      } else {
+        alert('Please enter at least one tag');
       }
-      if (tags.length === 0) {
-        chatLog.innerHTML += `<p style="color: #FF3B30;">Error: At least one tag is required.</p>`;
-        chatLog.scrollTop = chatLog.scrollHeight;
-        return;
-      }
-      socket.emit('join', tags);
-      tagsModal.style.display = 'none';
-      modalOverlay.style.display = 'none';
-      startChatBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline-block';
-      reportUserBtn.style.display = 'inline-block';
-      chatInput.disabled = false;
-      chatInput.focus();
-      chatLog.innerHTML = '<p>Connecting...</p>';
-      chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     closeTags.addEventListener('click', () => {
       tagsModal.style.display = 'none';
       modalOverlay.style.display = 'none';
+      window.location.href = 'https://www.example.com';
     });
 
-    endChatBtn.addEventListener('click', () => {
-      socket.emit('leave');
-      endChatBtn.style.display = 'none';
-      reportUserBtn.style.display = 'none';
-      cancelDisconnectBtn.style.display = 'inline-block';
-      countdownTimer.style.display = 'block';
-      chatInput.disabled = true;
-    });
-
-    cancelDisconnectBtn.addEventListener('click', () => {
-      socket.emit('cancel_disconnect');
-      cancelDisconnectBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline-block';
-      reportUserBtn.style.display = 'inline-block';
-      countdownTimer.style.display = 'none';
-      chatInput.disabled = false;
-      chatInput.focus();
-    });
-
-    reportUserBtn.addEventListener('click', () => {
-      socket.emit('report', { timestamp: new Date().toISOString() });
-      chatLog.innerHTML += '<p>User reported to moderators.</p>';
-      chatLog.scrollTop = chatLog.scrollHeight;
-    });
-
-    helpIcon.addEventListener('click', () => {
-      contactModal.style.display = 'block';
-      modalOverlay.style.display = 'block';
-      contactName.value = '';
-      contactEmail.value = '';
-      contactMessage.value = '';
-      contactMessage.focus();
+    submitContact.addEventListener('click', () => {
+      socket.emit('submit_request', {
+        name: contactName.value,
+        email: contactEmail.value,
+        message: contactMessage.value
+      });
     });
 
     closeContact.addEventListener('click', () => {
       contactModal.style.display = 'none';
       modalOverlay.style.display = 'none';
+      contactName.value = '';
+      contactEmail.value = '';
+      contactMessage.value = '';
+    });
+
+    adminLogin.addEventListener('click', () => {
+      socket.emit('admin_login', { key: adminKey.value });
+      adminKey.value = '';
     });
 
     closeAdmin.addEventListener('click', () => {
-      if (currentObservedPairId) {
-        socket.emit('admin_leave_chat', { pairId: currentObservedPairId });
-        currentObservedPairId = null;
-      }
       adminModal.style.display = 'none';
-      modalOverlay.style.display = 'none';
-    });
-
-    confirmAge.addEventListener('click', () => {
-      ageConfirmed = true;
-      safeModeToggle.checked = false;
-      socket.emit('toggle_safe_mode', { safeMode: false, ageConfirmed });
-      updateSafeModeLabel();
-      ageModal.style.display = 'none';
-      modalOverlay.style.display = 'none';
-    });
-
-    cancelAge.addEventListener('click', () => {
-      safeModeToggle.checked = true;
-      updateSafeModeLabel();
-      ageModal.style.display = 'none';
       modalOverlay.style.display = 'none';
     });
 
     modalOverlay.addEventListener('click', () => {
+      ageModal.style.display = 'none';
       tagsModal.style.display = 'none';
       contactModal.style.display = 'none';
       adminModal.style.display = 'none';
-      ageModal.style.display = 'none';
-      videoPanel.style.display = 'none';
-      if (currentObservedPairId) {
-        socket.emit('admin_leave_chat', { pairId: currentObservedPairId });
-        currentObservedPairId = null;
-      }
-      cleanupVideoCall();
       modalOverlay.style.display = 'none';
-      setActiveMenu(chatMenu);
+      contactName.value = '';
+      contactEmail.value = '';
+      contactMessage.value = '';
     });
 
-    submitContact.addEventListener('click', () => {
-      const request = {
-        name: sanitizeInput(contactName.value.trim()),
-        email: sanitizeInput(contactEmail.value.trim()),
-        message: sanitizeInput(contactMessage.value.trim())
-      };
-      socket.emit('submit_request', request);
+    chatMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      chatMenu.classList.add('active');
+      videoMenu.classList.remove('active');
+      browserMenu.classList.remove('active');
+      chatContainer.style.display = 'flex';
+      browserTab.style.display = 'none';
+    });
+
+    videoMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (pairId) {
+        window.location.href = `video.html?pairId=${pairId}`;
+      } else {
+        alert('You must be paired with a user to start a video call');
+      }
+    });
+
+    browserMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      chatMenu.classList.remove('active');
+      videoMenu.classList.remove('active');
+      browserMenu.classList.add('active');
+      chatContainer.style.display = 'none';
+      browserTab.style.display = 'flex';
+    });
+
+    safeModeToggle.addEventListener('change', () => {
+      socket.emit('safe_mode', safeModeToggle.checked);
+    });
+
+    helpIcon.addEventListener('click', () => {
+      contactModal.style.display = 'block';
+      modalOverlay.style.display = 'block';
+    });
+
+    adminIcon.addEventListener('click', () => {
+      adminModal.style.display = 'block';
+      modalOverlay.style.display = 'block';
+    });
+
+    disconnectButton.addEventListener('click', () => {
+      if (pairId) {
+        socket.emit('leave');
+      }
     });
 
     chatInput.addEventListener('input', () => {
-      if (chatInput.value.trim() && !isTyping) {
-        isTyping = true;
-        socket.emit('typing', true);
-      } else if (!chatInput.value.trim() && isTyping) {
-        isTyping = false;
+      socket.emit('typing', true);
+      clearTimeout(chatInput.typingTimeout);
+      chatInput.typingTimeout = setTimeout(() => {
         socket.emit('typing', false);
-      }
-      clearTimeout(typingTimeout);
-      typingTimeout = setTimeout(() => {
-        if (isTyping) {
-          isTyping = false;
-          socket.emit('typing', false);
-        }
-      }, 2000);
+      }, 1000);
     });
 
-    function sendMessage() {
+    sendIcon.addEventListener('click', () => {
       if (chatInput.value.trim()) {
-        const msg = sanitizeInput(chatInput.value);
-        socket.emit('message', msg);
-        const msgElement = document.createElement('p');
-        msgElement.className = 'you';
-        msgElement.innerHTML = `<strong>You:</strong> ${msg}`;
-        chatLog.appendChild(msgElement);
+        socket.emit('message', chatInput.value);
+        messageHistory.push({ sender: 'you', text: chatInput.value });
+        updateChatLog();
         chatInput.value = '';
-        isTyping = false;
         socket.emit('typing', false);
-        chatLog.scrollTop = chatLog.scrollHeight;
       }
-    }
+    });
 
     chatInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        sendMessage();
+      if (e.key === 'Enter' && chatInput.value.trim()) {
+        socket.emit('message', chatInput.value);
+        messageHistory.push({ sender: 'you', text: chatInput.value });
+        updateChatLog();
+        chatInput.value = '';
+        socket.emit('typing', false);
       }
     });
 
-    sendIcon.addEventListener('click', sendMessage);
+    // Admin functions
+    function banUser(userId, duration) {
+      socket.emit('admin_ban', { userId, duration });
+    }
+
+    function unbanUser(userId) {
+      socket.emit('admin_unban', { userId });
+    }
+
+    function banLive(userId, duration) {
+      socket.emit('admin_ban_live', { userId, duration });
+    }
+
+    function unbanLive(userId) {
+      socket.emit('admin_unban_live', { userId });
+    }
+
+    function observeChat(pairId) {
+      socket.emit('admin_observe_chat', { pairId });
+    }
+
+    function leaveChat(pairId) {
+      socket.emit('admin_leave_chat', { pairId });
+    }
   </script>
 </body>
 </html>
