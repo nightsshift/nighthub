@@ -18,8 +18,6 @@
       color: #1C2526;
       min-height: 100dvh;
       display: flex;
-      flex-direction: column;
-      padding: 0;
       overflow: hidden;
       position: relative;
       perspective: 500px;
@@ -34,255 +32,121 @@
       pointer-events: none;
       opacity: 0.2;
     }
-    #app-container {
-      flex: 1;
+    #sidebar {
+      width: 250px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(5px);
+      height: 100dvh;
+      position: fixed;
+      left: 0;
+      top: 0;
       display: flex;
       flex-direction: column;
-      width: 100%;
-      height: 100dvh;
-      background: transparent;
-      padding: 0;
-      position: relative;
-      z-index: 1;
-      overflow: hidden;
+      padding: 1rem;
+      z-index: 100;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      transform: translateZ(20px);
     }
-    #top-menu {
-      display: flex;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.5rem;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      transform: translateZ(5px);
-      margin: 0.5rem auto;
-      max-width: 600px;
-    }
-    .menu-button {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      background: rgba(0, 122, 255, 0.1);
-      color: #007AFF;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
-      transform: translateZ(5px);
-    }
-    .menu-button:hover {
-      transform: translateZ(10px);
-      box-shadow: 0 0 15px rgba(0, 122, 255, 0.4);
-    }
-    .menu-button.active {
-      background: #007AFF;
-      color: #FFFFFF;
-    }
-    .top-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.5rem;
-      max-width: 600px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      transform: translateZ(5px);
-    }
-    .control-group {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-    #connection-indicator {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #FF3B30;
-      box-shadow: 0 0 8px rgba(255, 59, 48, 0.5);
-      transition: background 0.3s ease, box-shadow 0.3s ease;
-      transform: translateZ(10px);
-    }
-    #connection-indicator.connected {
-      background: #34C759;
-      box-shadow: 0 0 8px rgba(52, 199, 89, 0.5);
-    }
-    #safe-mode-toggle {
-      display: flex;
-      align-items: center;
-      font-size: 0.9rem;
-      color: #1C2526;
-    }
-    #safe-mode-toggle input {
+    #mobile-menu {
       display: none;
     }
-    #safe-mode-toggle label {
-      cursor: pointer;
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
-      background: #8D8DFF;
-      color: #FFFFFF;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(141, 141, 255, 0.3);
-      transform: translateZ(5px);
+    #hamburger {
+      display: none;
     }
-    #safe-mode-toggle input:not(:checked) + label {
-      background: #FF5252;
-      box-shadow: 0 0 10px rgba(255, 82, 82, 0.3);
-    }
-    #help-icon, #admin-icon, #disconnect-button {
-      width: 2rem;
-      height: 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      background: rgba(0, 122, 255, 0.1);
-      color: #007AFF;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.2);
-      transform: translateZ(10px);
-    }
-    #disconnect-button {
-      background: rgba(255, 59, 48, 0.1);
-      color: #FF3B30;
-    }
-    #help-icon:hover, #admin-icon:hover, #disconnect-button:hover {
-      transform: translateZ(15px);
-      box-shadow: 0 0 15px rgba(0, 122, 255, 0.4);
-    }
-    #disconnect-button:hover {
-      box-shadow: 0 0 15px rgba(255, 59, 48, 0.4);
-    }
-    #modal-overlay {
+    #mobile-menu-content {
       display: none;
       position: fixed;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 999;
-      animation: fadeInOverlay 0.3s ease;
-    }
-    @keyframes fadeInOverlay {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    #tags-modal, #contact-modal, #admin-modal, #age-modal {
-      display: none;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) translateZ(20px);
-      width: 90%;
-      max-width: 500px;
+      right: 0;
+      width: 50%;
+      height: 100dvh;
       background: rgba(255, 255, 255, 0.95);
-      border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
-      z-index: 1000;
-      animation: popIn 0.4s ease-out;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    @keyframes popIn {
-      from { transform: translate(-50%, -50%) translateZ(0) scale(0.95); opacity: 0; }
-      to { transform: translate(-50%, -50%) translateZ(20px) scale(1); opacity: 1; }
-    }
-    #tags-modal h2, #contact-modal h2, #admin-modal h2, #age-modal h2 {
-      font-size: 1.2rem;
-      color: #007AFF;
-      text-align: center;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      transform: translateZ(10px);
-    }
-    #tags-form, #contact-form, #admin-content, #age-form {
-      display: flex;
+      backdrop-filter: blur(5px);
+      z-index: 101;
       flex-direction: column;
-      gap: 0.75rem;
+      padding: 1rem;
+      transform: translateZ(20px);
+      transition: transform 0.3s ease;
     }
-    #tags-form input, #contact-form input, #contact-form textarea, #age-form p {
-      padding: 0.75rem;
-      border: 1px solid #D1D1D6;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.8);
-      color: #1C2526;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      transform: translateZ(5px);
+    #mobile-menu-content.active {
+      transform: translateX(0);
     }
-    #tags-form textarea, #contact-form textarea {
-      resize: vertical;
-      min-height: 100px;
-    }
-    #tags-form input:focus, #contact-form input:focus, #contact-form textarea:focus {
-      outline: none;
-      border-color: #007AFF;
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
+    #logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #007AFF;
+      margin-bottom: 2rem;
       transform: translateZ(10px);
     }
-    #tags-form button, #contact-form button, #admin-content button, #age-form button {
-      padding: 0.75rem;
-      border: none;
-      border-radius: 12px;
-      background: #007AFF;
-      color: #FFFFFF;
-      font-size: 0.95rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
-      transform: translateZ(5px);
-    }
-    #tags-form button:hover, #contact-form button:hover, #admin-content button:hover, #age-form button:hover {
-      transform: translateZ(10px);
-      box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
-    }
-    #tags-form .close-button, #contact-form .close-button, #admin-content .close-button, #age-form .close-button {
-      background: #FF3B30;
-      box-shadow: 0 0 10px rgba(255, 59, 48, 0.3);
-    }
-    #tags-form .close-button:hover, #contact-form .close-button:hover, #admin-content .close-button:hover, #age-form .close-button:hover {
-      box-shadow: 0 0 15px rgba(255, 59, 48, 0.5);
-    }
-    #trending-tags {
+    .menu-item {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       gap: 0.5rem;
-      margin-bottom: 1rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #1C2526;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      transition: all 0.3s ease;
+      transform: translateZ(10px);
     }
-    .trending-tag {
-      padding: 0.5rem 1rem;
-      border-radius: 12px;
+    .menu-item:hover {
       background: rgba(0, 122, 255, 0.1);
       color: #007AFF;
-      font-size: 0.85rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      transform: translateZ(5px);
+      transform: translateZ(15px);
     }
-    .trending-tag:hover {
-      transform: translateZ(10px);
-      box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
+    .menu-item.active {
+      background: #007AFF;
+      color: #FFFFFF;
+    }
+    .menu-item.bottom {
+      margin-top: auto;
+    }
+    #content {
+      flex: 1;
+      margin-left: 250px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      transform: translateZ(5px);
     }
     #chat-container {
       flex: 1;
-      display: flex;
+      display: none;
       flex-direction: column;
       max-width: 600px;
       margin: 0 auto;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
+      transform: translateZ(5px);
+    }
+    #loading-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transform: translateZ(5px);
+    }
+    #loading-circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #007AFF;
+      animation: pulse 1.5s infinite;
+      box-shadow: 0 0 20px rgba(0, 122, 255, 0.5);
+      transform: translateZ(10px);
+    }
+    @keyframes pulse {
+      0% { transform: scale(1) translateZ(10px); opacity: 1; }
+      100% { transform: scale(1.5) translateZ(10px); opacity: 0.3; }
+    }
+    #loading-text {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #007AFF;
+      font-weight: 500;
+      transform: translateZ(5px);
     }
     #chat-log {
       flex: 1;
@@ -291,9 +155,12 @@
       gap: 0.3rem;
       overflow-y: auto;
       padding: 0.5rem;
-      background: transparent;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       scrollbar-width: thin;
-      transform: translateZ(10px);
+      transform: translateZ(5px);
     }
     #chat-log::-webkit-scrollbar {
       width: 6px;
@@ -340,11 +207,6 @@
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
       transform: translateZ(5px);
-      max-width: 600px;
-      margin: 0 auto 0.5rem;
-      position: sticky;
-      bottom: 0;
-      z-index: 10;
     }
     #chat-input {
       flex: 1;
@@ -381,53 +243,179 @@
       transform: translateZ(10px);
       box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
     }
-    #typing-indicator {
-      font-size: 0.85rem;
-      color: #8E8E93;
-      padding: 0.5rem;
-      text-align: center;
+    #control-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      justify-content: center;
       transform: translateZ(5px);
     }
-    #browser-tab {
-      display: none;
-      flex: 1;
-      max-width: 600px;
-      margin: 0 auto;
-      width: 100%;
-    }
-    #browser-frame {
-      width: 100%;
-      height: 100%;
+    .control-button {
+      padding: 0.75rem 1.5rem;
       border: none;
       border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
       transform: translateZ(5px);
     }
-    #admin-content h3 {
-      font-size: 1rem;
+    #end-chat {
+      background: #FF3B30;
+      color: #FFFFFF;
+    }
+    #start-video {
+      background: #007AFF;
+      color: #FFFFFF;
+    }
+    .control-button:hover {
+      transform: translateZ(10px);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+    #modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: 999;
+      animation: fadeInOverlay 0.3s ease;
+    }
+    @keyframes fadeInOverlay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #age-modal, #tags-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) translateZ(20px);
+      width: 90%;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      animation: popIn 0.4s ease-out;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    @keyframes popIn {
+      from { transform: translate(-50%, -50%) translateZ(0) scale(0.95); opacity: 0; }
+      to { transform: translate(-50%, -50%) translateZ(20px) scale(1); opacity: 1; }
+    }
+    #age-modal h2, #tags-modal h2 {
+      font-size: 1.2rem;
+      color: #007AFF;
+      text-align: center;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      transform: translateZ(10px);
+    }
+    #age-form, #tags-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    #tags-form input, #age-form p {
+      padding: 0.75rem;
+      border: 1px solid #D1D1D6;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
       color: #1C2526;
-      margin: 1rem 0 0.5rem;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      transform: translateZ(5px);
     }
-    #admin-content ul {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1rem;
+    #tags-form input:focus {
+      outline: none;
+      border-color: #007AFF;
+      box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
+      transform: translateZ(10px);
     }
-    #admin-content li {
-      padding: 0.5rem;
-      border-bottom: 1px solid #D1D1D6;
-      font-size: 0.9rem;
-      color: #1C2526;
+    #tags-form button, #age-form button {
+      padding: 0.75rem;
+      border: none;
+      border-radius: 12px;
+      background: #007AFF;
+      color: #FFFFFF;
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      transform: translateZ(5px);
     }
-    #admin-content button {
-      margin: 0.5rem 0;
+    #tags-form button:hover, #age-form button:hover {
+      transform: translateZ(10px);
+      box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
+    }
+    #tags-form .close-button, #age-form .close-button {
+      background: #FF3B30;
+      box-shadow: 0 0 10px rgba(255, 59, 48, 0.3);
+    }
+    #tags-form .close-button:hover, #age-form .close-button:hover {
+      box-shadow: 0 0 15px rgba(255, 59, 48, 0.5);
+    }
+    #trending-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .trending-tag {
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      background: rgba(0, 122, 255, 0.1);
+      color: #007AFF;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      transform: translateZ(5px);
+    }
+    .trending-tag:hover {
+      transform: translateZ(10px);
+      box-shadow: 0 0 10px rgba(0, 122, 255, 0.3);
     }
     @media (max-width: 768px) {
-      #app-container {
-        border-radius: 0;
+      #sidebar {
+        display: none;
       }
-      #top-menu, .top-controls, #chat-input-container {
-        margin: 0.5rem;
+      #mobile-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(5px);
+        padding: 0.5rem 1rem;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transform: translateZ(20px);
+      }
+      #hamburger {
+        display: block;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        transform: translateZ(10px);
+      }
+      #mobile-menu-content {
+        display: flex;
+        transform: translateX(100%);
+      }
+      #content {
+        margin-left: 0;
+        padding: 1rem;
+      }
+      #chat-log {
+        max-height: 70vh;
       }
       #chat-log p {
         font-size: 0.85rem;
@@ -437,16 +425,23 @@
         font-size: 0.9rem;
         padding: 0.6rem;
       }
-      #send-icon, #help-icon, #admin-icon, #disconnect-button {
+      #send-icon {
         width: 36px;
         height: 36px;
       }
-      #tags-modal, #contact-modal, #admin-modal, #age-modal {
+      .control-button {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.2rem;
+      }
+      #age-modal, #tags-modal {
         width: 95%;
         padding: 1rem;
       }
     }
     @media (max-width: 480px) {
+      #chat-log {
+        max-height: 60vh;
+      }
       #chat-log p {
         font-size: 0.8rem;
         padding: 0.3rem 0.6rem;
@@ -455,11 +450,15 @@
         font-size: 0.85rem;
         padding: 0.5rem;
       }
-      #send-icon, #help-icon, #admin-icon, #disconnect-button {
+      #send-icon {
         width: 32px;
         height: 32px;
       }
-      #tags-modal, #contact-modal, #admin-modal, #age-modal {
+      .control-button {
+        font-size: 0.85rem;
+        padding: 0.5rem 1rem;
+      }
+      #age-modal, #tags-modal {
         width: 100%;
         border-radius: 0;
       }
@@ -486,69 +485,119 @@
       <button class="close-button" id="close-tags">Cancel</button>
     </div>
   </div>
-  <div id="contact-modal">
-    <h2>Contact Us</h2>
-    <div id="contact-form">
-      <input id="contact-name" type="text" placeholder="Your Name (optional)">
-      <input id="contact-email" type="email" placeholder="Your Email (optional)">
-      <textarea id="contact-message" placeholder="Your Message"></textarea>
-      <button id="submit-contact">Submit</button>
-      <button class="close-button" id="close-contact">Cancel</button>
+  <nav id="sidebar">
+    <div id="logo">NightHub</div>
+    <a href="video.html" class="menu-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+      Video
+    </a>
+    <a href="chat.html" class="menu-item active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      Chat
+    </a>
+    <a href="social.html" class="menu-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#007AFF" stroke="#1C2526" stroke-width="2">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      </svg>
+      Social
+    </a>
+    <a href="live.html" class="menu-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polygon points="10 8 16 12 10 16 10 8"></polygon>
+      </svg>
+      Live
+    </a>
+    <a href="admin.html" class="menu-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z"></path>
+      </svg>
+      Admin
+    </a>
+    <a href="mailto:support@nighthub.io" class="menu-item bottom">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+      </svg>
+      Contact
+    </a>
+    <a href="#" class="menu-item bottom">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+      Settings
+    </a>
+  </nav>
+  <div id="mobile-menu">
+    <div id="logo">NightHub</div>
+    <div id="hamburger">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
     </div>
   </div>
-  <div id="admin-modal">
-    <h2>Admin Console</h2>
-    <div id="admin-content">
-      <input id="admin-key" type="password" placeholder="Enter Admin Key">
-      <button id="admin-login">Login</button>
-      <button class="close-button" id="close-admin">Close</button>
-    </div>
+  <div id="mobile-menu-content">
+    <div id="logo">NightHub</div>
+    <a href="video.html" class="menu-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+      Video
+    </a>
+    <a href="chat.html" class="menu-item active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+      Chat
+    </a>
+    <a href="social.html" class="menu-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#007AFF" stroke="#1C2526" stroke-width="2">
+        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+      </svg>
+      Social
+    </a>
+    <a href="live.html" class="menu-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polygon points="10 8 16 12 10 16 10 8"></polygon>
+      </svg>
+      Live
+    </a>
+    <a href="admin.html" class="menu-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm4.59-12.42L10 14.17l-2.59-2.58L6 13l4 4 8-8z"></path>
+      </svg>
+      Admin
+    </a>
+    <a href="mailto:support@nighthub.io" class="menu-item bottom">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+        <polyline points="22,6 12,13 2,6"></polyline>
+      </svg>
+      Contact
+    </a>
+    <a href="#" class="menu-item bottom">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1C2526" stroke-width="2">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l-.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+      Settings
+    </a>
   </div>
-  <div id="app-container">
-    <div id="top-menu">
-      <a href="#" class="menu-button active" id="chat-menu" title="Chat">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-      </a>
-      <a href="#" class="menu-button" id="video-menu" title="Video">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
-          <polygon points="10 8 16 12 10 16 10 8"></polygon>
-        </svg>
-      </a>
-      <a href="#" class="menu-button" id="browser-menu" title="Browser">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10"></circle>
-          <circle cx="12" cy="12" r="4"></circle>
-          <line x1="21.17" y1="8" x2="12" y2="8"></line>
-          <line x1="3.95" y1="6.06" x2="8.54" y2="14"></line>
-          <line x1="10.88" y1="21.94" x2="15.46" y2="14"></line>
-        </svg>
-      </a>
-      <a href="live.html" class="menu-button" id="live-menu" title="Live">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="4" fill="currentColor"></circle>
-        </svg>
-      </a>
-    </div>
-    <div class="top-controls">
-      <div class="control-group">
-        <span id="connection-indicator"></span>
-        <div id="safe-mode-toggle">
-          <input type="checkbox" id="safe-mode" checked>
-          <label for="safe-mode">Safe Mode</label>
-        </div>
-      </div>
-      <div class="control-group">
-        <div id="help-icon" title="Contact Us">?</div>
-        <div id="admin-icon" title="Admin">A</div>
-        <div id="disconnect-button" title="Disconnect">X</div>
-      </div>
+  <div id="content">
+    <div id="loading-container">
+      <div id="loading-circle"></div>
+      <div id="loading-text">Finding a partner...</div>
     </div>
     <div id="chat-container">
       <div id="chat-log"></div>
-      <div id="typing-indicator"></div>
       <div id="chat-input-container">
         <input id="chat-input" type="text" placeholder="Type a message...">
         <div id="send-icon">
@@ -558,9 +607,10 @@
           </svg>
         </div>
       </div>
-    </div>
-    <div id="browser-tab">
-      <iframe id="browser-frame" src="https://www.example.com"></iframe>
+      <div id="control-buttons">
+        <button id="end-chat" class="control-button">End Chat</button>
+        <button id="start-video" class="control-button">Start Video</button>
+      </div>
     </div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
@@ -636,41 +686,24 @@
     const submitTags = document.getElementById('submit-tags');
     const closeTags = document.getElementById('close-tags');
     const trendingTags = document.getElementById('trending-tags');
-    const contactModal = document.getElementById('contact-modal');
-    const contactName = document.getElementById('contact-name');
-    const contactEmail = document.getElementById('contact-email');
-    const contactMessage = document.getElementById('contact-message');
-    const submitContact = document.getElementById('submit-contact');
-    const closeContact = document.getElementById('close-contact');
-    const adminModal = document.getElementById('admin-modal');
-    const adminKey = document.getElementById('admin-key');
-    const adminLogin = document.getElementById('admin-login');
-    const closeAdmin = document.getElementById('close-admin');
-    const adminContent = document.getElementById('admin-content');
-    const chatMenu = document.getElementById('chat-menu');
-    const videoMenu = document.getElementById('video-menu');
-    const browserMenu = document.getElementById('browser-menu');
-    const connectionIndicator = document.getElementById('connection-indicator');
-    const safeModeToggle = document.getElementById('safe-mode');
-    const helpIcon = document.getElementById('help-icon');
-    const adminIcon = document.getElementById('admin-icon');
-    const disconnectButton = document.getElementById('disconnect-button');
     const chatContainer = document.getElementById('chat-container');
+    const loadingContainer = document.getElementById('loading-container');
     const chatLog = document.getElementById('chat-log');
     const chatInput = document.getElementById('chat-input');
     const sendIcon = document.getElementById('send-icon');
-    const typingIndicator = document.getElementById('typing-indicator');
-    const browserTab = document.getElementById('browser-tab');
-    const browserFrame = document.getElementById('browser-frame');
+    const endChat = document.getElementById('end-chat');
+    const startVideo = document.getElementById('start-video');
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenuContent = document.getElementById('mobile-menu-content');
 
     // State
     let pairId = null;
     let messageHistory = [];
-    let userId = null;
 
     // Chat log management
     function updateChatLog() {
       chatLog.innerHTML = '';
+      if (messageHistory.length === 0) return;
       messageHistory.forEach(msg => {
         const p = document.createElement('p');
         p.className = msg.sender === 'you' ? 'you' : 'stranger';
@@ -680,26 +713,38 @@
       chatLog.scrollTop = chatLog.scrollHeight;
     }
 
+    // End chat handler
+    function endChatHandler() {
+      messageHistory = [];
+      updateChatLog();
+      chatContainer.style.display = 'none';
+      loadingContainer.style.display = 'flex';
+      socket.emit('leave');
+      socket.emit('start_random_chat');
+    }
+
     // Socket.IO event handlers
     socket.on('connect', () => {
       console.log('Connected to backend');
-      userId = socket.id;
-      connectionIndicator.classList.add('connected');
       ageModal.style.display = 'block';
       modalOverlay.style.display = 'block';
     });
 
     socket.on('paired', (newPairId) => {
       pairId = newPairId;
-      connectionIndicator.classList.add('connected');
-      chatInput.disabled = false;
-      messageHistory = [];
-      updateChatLog();
+      chatContainer.style.display = 'flex';
+      loadingContainer.style.display = 'none';
       new Audio('/assets/Notification.mp3').play();
     });
 
-    socket.on('rejoin', () => {
-      socket.emit('join', tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag));
+    socket.on('waiting_for_pair', () => {
+      loadingContainer.style.display = 'flex';
+    });
+
+    socket.on('start_chat', (newPairId) => {
+      pairId = newPairId;
+      chatContainer.style.display = 'flex';
+      loadingContainer.style.display = 'none';
     });
 
     socket.on('message', (msg) => {
@@ -708,26 +753,8 @@
       new Audio('/assets/Notification.mp3').play();
     });
 
-    socket.on('typing', (isTyping) => {
-      typingIndicator.textContent = isTyping ? 'Stranger is typing...' : '';
-    });
-
     socket.on('disconnected', () => {
-      connectionIndicator.classList.remove('connected');
-      chatInput.disabled = true;
-      messageHistory = [];
-      updateChatLog();
-      pairId = null;
-      socket.emit('join', tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag));
-    });
-
-    socket.on('request_success', (msg) => {
-      alert(msg);
-      contactModal.style.display = 'none';
-      modalOverlay.style.display = 'none';
-      contactName.value = '';
-      contactEmail.value = '';
-      contactMessage.value = '';
+      endChatHandler();
     });
 
     socket.on('trending_tags', (tags) => {
@@ -746,76 +773,29 @@
       });
     });
 
-    socket.on('admin_data', (data) => {
-      adminContent.innerHTML = `
-        <h3>Stats</h3>
-        <ul>
-          <li>Online Users: ${data.onlineUsers}</li>
-          <li>Active Chats: ${data.activeChats}</li>
-          <li>Messages Sent: ${data.messagesSent}</li>
-          <li>Reports Filed: ${data.reportsFiled}</li>
-        </ul>
-        <h3>Users</h3>
-        <ul>
-          ${data.users.map(user => `
-            <li>
-              User ID: ${user.userId.slice(0, 8)}...
-              Reports: ${user.reports}
-              ${user.isBanned ? `Banned until ${new Date(user.banEnd).toLocaleString()}` : ''}
-              <button onclick="banUser('${user.userId}', 30 * 60 * 1000)">Ban 30m</button>
-              <button onclick="banUser('${user.userId}', Infinity)">Ban Permanent</button>
-              ${user.isBanned ? `<button onclick="unbanUser('${user.userId}')">Unban</button>` : ''}
-            </li>
-          `).join('')}
-        </ul>
-        <h3>Chats</h3>
-        <ul>
-          ${data.chats.map(chat => `
-            <li>
-              Pair ID: ${chat.pairId.slice(0, 8)}...
-              Users: ${chat.userIds.map(id => id.slice(0, 8)).join(', ')}
-              Reports: ${chat.reports}
-              <button onclick="observeChat('${chat.pairId}')">Observe</button>
-              <button onclick="leaveChat('${chat.pairId}')">Stop Observing</button>
-            </li>
-          `).join('')}
-        </ul>
-        <h3>Live Streams</h3>
-        <ul>
-          ${data.liveStreams.map(stream => `
-            <li>
-              User ID: ${stream.userId.slice(0, 8)}...
-              Title: ${stream.title}
-              Viewers: ${stream.viewers}
-              ${stream.isBanned ? `Banned` : ''}
-              <button onclick="banLive('${stream.userId}', 30 * 60 * 1000)">Ban 30m</button>
-              <button onclick="banLive('${stream.userId}', Infinity)">Ban Permanent</button>
-              ${stream.isBanned ? `<button onclick="unbanLive('${stream.userId}')">Unban</button>` : ''}
-            </li>
-          `).join('')}
-        </ul>
-        <button class="close-button" id="close-admin">Close</button>
-      `;
-      document.getElementById('close-admin').addEventListener('click', () => {
-        adminModal.style.display = 'none';
-        modalOverlay.style.display = 'none';
-      });
-    });
-
-    socket.on('admin_message', ({ pairId, userId: senderId, message }) => {
-      alert(`Chat ${pairId.slice(0, 8)}...: ${senderId.slice(0, 8)} said: ${message}`);
-    });
-
     socket.on('error', (msg) => {
       alert(`Error: ${msg}`);
+      endChatHandler();
+    });
+
+    socket.on('announcement', (text) => {
+      alert(`Announcement: ${text}`);
     });
 
     // DOM event listeners
     confirmAge.addEventListener('click', () => {
       ageModal.style.display = 'none';
       modalOverlay.style.display = 'none';
-      tagsModal.style.display = 'block';
-      socket.emit('get_trending_tags');
+      const urlParams = new URLSearchParams(window.location.search);
+      const pairIdFromUrl = urlParams.get('pairId');
+      if (pairIdFromUrl) {
+        pairId = pairIdFromUrl;
+        socket.emit('start_chat', { pairId });
+      } else {
+        tagsModal.style.display = 'block';
+        modalOverlay.style.display = 'block';
+        socket.emit('get_trending_tags');
+      }
     });
 
     closeAge.addEventListener('click', () => {
@@ -826,6 +806,7 @@
       const tags = tagsInput.value.split(',').map(tag => tag.trim()).filter(tag => tag);
       if (tags.length > 0) {
         socket.emit('join', tags);
+        socket.emit('start_random_chat');
         tagsModal.style.display = 'none';
         modalOverlay.style.display = 'none';
       } else {
@@ -839,96 +820,11 @@
       window.location.href = 'https://www.example.com';
     });
 
-    submitContact.addEventListener('click', () => {
-      socket.emit('submit_request', {
-        name: contactName.value,
-        email: contactEmail.value,
-        message: contactMessage.value
-      });
-    });
-
-    closeContact.addEventListener('click', () => {
-      contactModal.style.display = 'none';
-      modalOverlay.style.display = 'none';
-      contactName.value = '';
-      contactEmail.value = '';
-      contactMessage.value = '';
-    });
-
-    adminLogin.addEventListener('click', () => {
-      socket.emit('admin_login', { key: adminKey.value });
-      adminKey.value = '';
-    });
-
-    closeAdmin.addEventListener('click', () => {
-      adminModal.style.display = 'none';
-      modalOverlay.style.display = 'none';
-    });
-
     modalOverlay.addEventListener('click', () => {
       ageModal.style.display = 'none';
       tagsModal.style.display = 'none';
-      contactModal.style.display = 'none';
-      adminModal.style.display = 'none';
       modalOverlay.style.display = 'none';
-      contactName.value = '';
-      contactEmail.value = '';
-      contactMessage.value = '';
-    });
-
-    chatMenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      chatMenu.classList.add('active');
-      videoMenu.classList.remove('active');
-      browserMenu.classList.remove('active');
-      chatContainer.style.display = 'flex';
-      browserTab.style.display = 'none';
-    });
-
-    videoMenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (pairId) {
-        window.location.href = `video.html?pairId=${pairId}`;
-      } else {
-        alert('You must be paired with a user to start a video call');
-      }
-    });
-
-    browserMenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      chatMenu.classList.remove('active');
-      videoMenu.classList.remove('active');
-      browserMenu.classList.add('active');
-      chatContainer.style.display = 'none';
-      browserTab.style.display = 'flex';
-    });
-
-    safeModeToggle.addEventListener('change', () => {
-      socket.emit('safe_mode', safeModeToggle.checked);
-    });
-
-    helpIcon.addEventListener('click', () => {
-      contactModal.style.display = 'block';
-      modalOverlay.style.display = 'block';
-    });
-
-    adminIcon.addEventListener('click', () => {
-      adminModal.style.display = 'block';
-      modalOverlay.style.display = 'block';
-    });
-
-    disconnectButton.addEventListener('click', () => {
-      if (pairId) {
-        socket.emit('leave');
-      }
-    });
-
-    chatInput.addEventListener('input', () => {
-      socket.emit('typing', true);
-      clearTimeout(chatInput.typingTimeout);
-      chatInput.typingTimeout = setTimeout(() => {
-        socket.emit('typing', false);
-      }, 1000);
+      mobileMenuContent.classList.remove('active');
     });
 
     sendIcon.addEventListener('click', () => {
@@ -937,7 +833,6 @@
         messageHistory.push({ sender: 'you', text: chatInput.value });
         updateChatLog();
         chatInput.value = '';
-        socket.emit('typing', false);
       }
     });
 
@@ -947,34 +842,18 @@
         messageHistory.push({ sender: 'you', text: chatInput.value });
         updateChatLog();
         chatInput.value = '';
-        socket.emit('typing', false);
       }
     });
 
-    // Admin functions
-    function banUser(userId, duration) {
-      socket.emit('admin_ban', { userId, duration });
-    }
+    endChat.addEventListener('click', endChatHandler);
 
-    function unbanUser(userId) {
-      socket.emit('admin_unban', { userId });
-    }
+    startVideo.addEventListener('click', () => {
+      window.location.href = `video.html?pairId=${pairId}`;
+    });
 
-    function banLive(userId, duration) {
-      socket.emit('admin_ban_live', { userId, duration });
-    }
-
-    function unbanLive(userId) {
-      socket.emit('admin_unban_live', { userId });
-    }
-
-    function observeChat(pairId) {
-      socket.emit('admin_observe_chat', { pairId });
-    }
-
-    function leaveChat(pairId) {
-      socket.emit('admin_leave_chat', { pairId });
-    }
+    hamburger.addEventListener('click', () => {
+      mobileMenuContent.classList.toggle('active');
+    });
   </script>
 </body>
 </html>
