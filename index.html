@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Night Hub - Anonymous Chat</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <title>NightHub - Anonymous Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
@@ -13,9 +13,9 @@
       -webkit-tap-highlight-color: transparent;
     }
     body {
-      font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1f26 50%, #0a0a0a 100%);
-      color: #e0e0e0;
+      font-family: 'Inter', sans-serif;
+      background: #0A0A0A;
+      color: #E0E0E0;
       min-height: 100dvh;
       display: flex;
       justify-content: center;
@@ -23,10 +23,8 @@
       padding: 1rem;
       overflow: hidden;
       position: relative;
-      animation: gradientShift 20s ease infinite;
-      background-size: 200% 200%;
     }
-    #particles {
+    #stars-canvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -35,40 +33,27 @@
       z-index: -1;
       pointer-events: none;
     }
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
     #chat-container {
       width: 100%;
-      max-width: 650px;
-      background: rgba(10, 10, 10, 0.85);
-      border-radius: 16px;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
       padding: 1.5rem;
-      box-shadow: 0 0 40px rgba(187, 134, 252, 0.5), 0 0 15px rgba(2, 136, 209, 0.3);
       backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
       position: relative;
       z-index: 1;
-      animation: fadeInContainer 1s ease-out;
-    }
-    @keyframes fadeInContainer {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
     h1 {
-      font-size: 2rem;
-      color: #bb86fc;
+      font-size: 1.5rem;
+      color: #8D8DFF;
       text-align: center;
-      text-transform: uppercase;
-      letter-spacing: 4px;
-      margin-bottom: 1.5rem;
-      text-shadow: 0 0 20px rgba(187, 134, 252, 0.8);
-      animation: neonFlicker 3s infinite alternate;
-    }
-    @keyframes neonFlicker {
-      0%, 100% { text-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc; }
-      50% { text-shadow: 0 0 15px #bb86fc, 0 0 30px #bb86fc; }
+      letter-spacing: 1px;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 8px rgba(141, 141, 255, 0.3);
     }
     .top-controls {
       display: flex;
@@ -87,7 +72,7 @@
       display: flex;
       align-items: center;
       font-size: 0.9rem;
-      color: #e0e0e0;
+      color: #E0E0E0;
     }
     #safe-mode-toggle input {
       display: none;
@@ -96,33 +81,33 @@
       cursor: pointer;
       padding: 0.5rem 1rem;
       border-radius: 20px;
-      background: linear-gradient(45deg, #6200ea, #7b1fa2);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
       transition: all 0.3s ease;
-      box-shadow: 0 0 10px rgba(98, 0, 234, 0.4);
-      font-family: 'Roboto Mono', monospace;
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.2);
+      font-weight: 500;
     }
     #safe-mode-toggle input:checked + label {
-      background: linear-gradient(45deg, #0288d1, #01579b);
-      box-shadow: 0 0 10px rgba(2, 136, 209, 0.6);
+      background: rgba(141, 141, 255, 0.2);
+      box-shadow: 0 0 12px rgba(141, 141, 255, 0.4);
     }
     #help-icon {
-      width: 2.5rem;
-      height: 2.5rem;
+      width: 2rem;
+      height: 2rem;
       display: flex;
       justify-content: center;
       align-items: center;
       border-radius: 50%;
-      background: linear-gradient(45deg, #bb86fc, #6200ea);
-      color: #fff;
-      font-size: 1.2rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: #8D8DFF;
+      font-size: 1rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 0 12px rgba(187, 134, 252, 0.5);
-      will-change: transform;
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.2);
     }
     #help-icon:hover {
-      transform: scale(1.15) rotate(5deg);
-      box-shadow: 0 0 20px rgba(187, 134, 252, 0.8);
+      transform: scale(1.1);
+      box-shadow: 0 0 12px rgba(141, 141, 255, 0.4);
     }
     #modal-overlay {
       display: none;
@@ -131,7 +116,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(10, 10, 10, 0.8);
       z-index: 999;
       backdrop-filter: blur(5px);
       animation: fadeInOverlay 0.3s ease;
@@ -145,17 +130,16 @@
       position: fixed;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%) scale(0.9);
+      transform: translate(-50%, -50%);
       width: 90%;
-      max-width: 800px;
-      background: rgba(15, 15, 15, 0.9);
-      border: 2px solid #bb86fc;
-      border-radius: 16px;
+      max-width: 500px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
       padding: 1.5rem;
-      box-shadow: 0 0 50px rgba(187, 134, 252, 0.6);
-      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
       z-index: 1000;
-      animation: popIn 0.4s ease-out forwards;
+      animation: popIn 0.4s ease-out;
       max-height: 90vh;
       overflow-y: auto;
     }
@@ -164,11 +148,11 @@
       to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     }
     #tags-modal h2, #contact-modal h2, #admin-modal h2 {
-      font-size: 1.5rem;
-      color: #bb86fc;
+      font-size: 1.2rem;
+      color: #8D8DFF;
       text-align: center;
-      text-shadow: 0 0 15px rgba(187, 134, 252, 0.7);
       margin-bottom: 1rem;
+      text-shadow: 0 0 8px rgba(141, 141, 255, 0.3);
     }
     #tags-form, #contact-form, #admin-content {
       display: flex;
@@ -177,11 +161,10 @@
     }
     #tags-form input, #contact-form input, #contact-form textarea {
       padding: 0.75rem;
-      border: 1px solid #bb86fc;
-      border-radius: 8px;
-      background: rgba(30, 30, 30, 0.9);
-      color: #e0e0e0;
-      font-family: 'Roboto Mono', monospace;
+      border: 1px solid #8D8DFF;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #E0E0E0;
       font-size: 0.95rem;
       transition: all 0.3s ease;
     }
@@ -191,37 +174,30 @@
     }
     #tags-form input:focus, #contact-form input:focus, #contact-form textarea:focus {
       outline: none;
-      border-color: #0288d1;
-      box-shadow: 0 0 15px rgba(2, 136, 209, 0.6);
+      border-color: #4B0082;
+      box-shadow: 0 0 12px rgba(75, 0, 130, 0.4);
     }
     #tags-form button, #contact-form button, #admin-content button {
       padding: 0.75rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       cursor: pointer;
-      background: linear-gradient(45deg, #bb86fc, #6200ea);
-      color: #fff;
+      background: rgba(141, 141, 255, 0.2);
+      color: #E0E0E0;
       font-size: 0.95rem;
-      text-transform: uppercase;
-      font-family: 'Orbitron', sans-serif;
+      font-weight: 500;
       transition: all 0.3s ease;
-      box-shadow: 0 0 12px rgba(187, 134, 252, 0.5);
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.2);
     }
     #tags-form button:hover, #contact-form button:hover, #admin-content button:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(187, 134, 252, 0.8);
-      animation: pulseButton 1.5s infinite;
-    }
-    @keyframes pulseButton {
-      0% { box-shadow: 0 0 12px rgba(187, 134, 252, 0.5); }
-      50% { box-shadow: 0 0 20px rgba(187, 134, 252, 0.8); }
-      100% { box-shadow: 0 0 12px rgba(187, 134, 252, 0.5); }
+      box-shadow: 0 0 12px rgba(141, 141, 255, 0.4);
     }
     #tags-form .close-button, #contact-form .close-button, #admin-content .close-button {
-      background: linear-gradient(45deg, #ff5252, #d32f2f);
+      background: rgba(255, 82, 82, 0.2);
     }
     #tags-form .close-button:hover, #contact-form .close-button:hover, #admin-content .close-button:hover {
-      box-shadow: 0 0 20px rgba(255, 82, 82, 0.8);
+      box-shadow: 0 0 12px rgba(255, 82, 82, 0.4);
     }
     #trending-tags {
       display: flex;
@@ -231,199 +207,224 @@
     }
     .trending-tag {
       padding: 0.5rem 1rem;
-      border-radius: 20px;
-      background: linear-gradient(45deg, #0288d1, #01579b);
-      color: #e0e0e0;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #E0E0E0;
       font-size: 0.85rem;
       cursor: pointer;
       transition: all 0.3s ease;
-      font-family: 'Roboto Mono', monospace;
     }
     .trending-tag:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 12px rgba(2, 136, 209, 0.7);
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.3);
     }
     #chat-log {
-      height: 50vh;
-      max-height: 450px;
+      flex: 1;
+      max-height: 50vh;
       overflow-y: auto;
-      background: rgba(20, 20, 20, 0.9);
-      border-radius: 12px;
       padding: 1rem;
-      margin-bottom: 1rem;
-      border: 1px solid #bb86fc;
-      box-shadow: inset 0 0 15px rgba(187, 134, 252, 0.3);
-      scrollbar-width: thin;
-      scrollbar-color: #bb86fc #1e1e1e;
+      scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
     }
     #chat-log::-webkit-scrollbar {
-      width: 6px;
-    }
-    #chat-log::-webkit-scrollbar-track {
-      background: #1e1e1e;
-    }
-    #chat-log::-webkit-scrollbar-thumb {
-      background: #bb86fc;
-      border-radius: 3px;
+      display: none;
     }
     #chat-log p {
       margin: 0.5rem 0;
       padding: 0.75rem 1rem;
-      border-radius: 10px;
-      opacity: 0;
-      animation: fadeInMessage 0.5s ease forwards;
-      font-family: 'Roboto Mono', monospace;
+      border-radius: 16px;
+      animation: fadeInBubble 0.3s ease forwards;
       font-size: 0.95rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
       position: relative;
-      user-select: text;
+      max-width: 80%;
+      transition: transform 0.2s ease;
     }
-    @keyframes fadeInMessage {
+    @keyframes fadeInBubble {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    #chat-log p:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
-    }
     #chat-log .you {
-      background: linear-gradient(45deg, #6200ea, #7b1fa2);
-      color: #fff;
-      margin-left: 15%;
-      margin-right: 1rem;
-      box-shadow: 0 3px 12px rgba(98, 0, 234, 0.6);
+      background: #D3D3D3;
+      color: #0A0A0A;
+      margin-left: auto;
+      box-shadow: 0 0 8px rgba(211, 211, 211, 0.3);
     }
     #chat-log .stranger {
-      background: linear-gradient(45deg, #0288d1, #01579b);
-      color: #e0e0e0;
-      margin-right: 15%;
-      margin-left: 1rem;
-      box-shadow: 0 3px 12px rgba(2, 136, 209, 0.6);
+      background: #8D8DFF;
+      color: #FFFFFF;
+      margin-right: auto;
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.4);
+    }
+    .reaction-bubble {
+      display: none;
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(5px);
+      border-radius: 12px;
+      padding: 0.5rem;
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.2);
+      z-index: 10;
+    }
+    #chat-log p:hover .reaction-bubble {
+      display: flex;
+      gap: 0.5rem;
+    }
+    .reaction-emoji {
+      cursor: pointer;
+      font-size: 1rem;
+      transition: transform 0.2s ease;
+    }
+    .reaction-emoji:hover {
+      transform: scale(1.2);
+    }
+    .reactions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+      font-size: 0.85rem;
+      color: #E0E0E0;
     }
     #typing-indicator {
-      font-size: 0.9rem;
-      color: #bb86fc;
+      font-size: 0.85rem;
+      color: #8D8DFF;
       margin: 0.5rem 1rem;
       display: none;
       animation: pulse 1.5s infinite;
-      font-family: 'Roboto Mono', monospace;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
     }
     #countdown-timer {
       display: none;
       text-align: center;
-      font-size: 1rem;
-      color: #ff5252;
+      font-size: 0.9rem;
+      color: #FF5252;
       margin: 0.5rem 0;
-      text-shadow: 0 0 10px rgba(255, 82, 82, 0.6);
-      font-family: 'Roboto Mono', monospace;
+      text-shadow: 0 0 8px rgba(255, 82, 82, 0.3);
+    }
+    #input-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
     #chat-input {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #bb86fc;
-      border-radius: 8px;
-      background: rgba(30, 30, 30, 0.9);
-      color: #e0e0e0;
-      font-family: 'Roboto Mono', monospace;
-      font-size: 1rem;
-      margin-bottom: 1rem;
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid #8D8DFF;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #E0E0E0;
+      font-size: 0.95rem;
       transition: all 0.3s ease;
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.2);
     }
     #chat-input:focus {
       outline: none;
-      border-color: #0288d1;
-      box-shadow: 0 0 15px rgba(2, 136, 209, 0.6);
+      border-color: #4B0082;
+      box-shadow: 0 0 12px rgba(75, 0, 130, 0.4);
+      animation: pulseInput 1s infinite;
+    }
+    @keyframes pulseInput {
+      0% { box-shadow: 0 0 8px rgba(75, 0, 130, 0.4); }
+      50% { box-shadow: 0 0 12px rgba(75, 0, 130, 0.6); }
+      100% { box-shadow: 0 0 8px rgba(75, 0, 130, 0.4); }
+    }
+    #send-icon {
+      width: 2rem;
+      height: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: rgba(141, 141, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.2);
+    }
+    #send-icon:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 12px rgba(141, 141, 255, 0.4);
     }
     .button-group {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.75rem;
+      display: flex;
+      gap: 0.5rem;
     }
     button {
-      padding: 0.75rem;
+      padding: 0.75rem 1rem;
       border: none;
-      border-radius: 8px;
+      border-radius: 20px;
       cursor: pointer;
-      background: linear-gradient(45deg, #bb86fc, #6200ea);
-      color: #fff;
+      background: rgba(141, 141, 255, 0.2);
+      color: #E0E0E0;
       font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-family: 'Orbitron', sans-serif;
+      font-weight: 500;
       transition: all 0.3s ease;
-      box-shadow: 0 3px 12px rgba(187, 134, 252, 0.5);
+      box-shadow: 0 0 8px rgba(141, 141, 255, 0.2);
     }
     button:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(187, 134, 252, 0.8);
-      animation: pulseButton 1.5s infinite;
+      box-shadow: 0 0 12px rgba(141, 141, 255, 0.4);
     }
     button:active {
       transform: scale(0.95);
     }
     #cancel-disconnect {
-      background: linear-gradient(45deg, #ff5252, #d32f2f);
+      background: rgba(255, 82, 82, 0.2);
     }
     #cancel-disconnect:hover {
-      box-shadow: 0 0 20px rgba(255, 82, 82, 0.8);
+      box-shadow: 0 0 12px rgba(255, 82, 82, 0.4);
     }
     #admin-content table {
       width: 100%;
       border-collapse: collapse;
-      font-family: 'Roboto Mono', monospace;
       font-size: 0.9rem;
     }
     #admin-content th, #admin-content td {
       padding: 0.5rem;
-      border: 1px solid #bb86fc;
+      border: 1px solid #8D8DFF;
       text-align: left;
     }
     #admin-content th {
-      background: linear-gradient(45deg, #6200ea, #7b1fa2);
-      color: #fff;
+      background: rgba(141, 141, 255, 0.2);
+      color: #E0E0E0;
     }
     #admin-content td {
-      background: rgba(30, 30, 30, 0.9);
+      background: rgba(255, 255, 255, 0.05);
     }
     #admin-content .ban-button {
-      background: linear-gradient(45deg, #ff5252, #d32f2f);
+      background: rgba(255, 82, 82, 0.2);
     }
     #admin-content .unban-button {
-      background: linear-gradient(45deg, #4caf50, #2e7d32);
+      background: rgba(76, 175, 80, 0.2);
     }
     #admin-content .observe-button {
-      background: linear-gradient(45deg, #0288d1, #01579b);
+      background: rgba(141, 141, 255, 0.2);
     }
     #admin-content .flagged {
-      background: rgba(255, 82, 82, 0.3);
+      background: rgba(255, 82, 82, 0.2);
     }
     #admin-chat-log {
       height: 200px;
       overflow-y: auto;
-      background: rgba(20, 20, 20, 0.9);
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
       padding: 1rem;
       margin: 1rem 0;
-      border: 1px solid #bb86fc;
-      scrollbar-width: thin;
-      scrollbar-color: #bb86fc #1e1e1e;
+      border: 1px solid #8D8DFF;
+      scrollbar-width: none;
     }
     #admin-chat-log::-webkit-scrollbar {
-      width: 6px;
-    }
-    #admin-chat-log::-webkit-scrollbar-track {
-      background: #1e1e1e;
-    }
-    #admin-chat-log::-webkit-scrollbar-thumb {
-      background: #bb86fc;
-      border-radius: 3px;
+      display: none;
     }
     #admin-chat-log p {
       margin: 0.5rem 0;
-      font-family: 'Roboto Mono', monospace;
       font-size: 0.9rem;
-      color: #e0e0e0;
+      color: #E0E0E0;
     }
     #stats-section {
       display: flex;
@@ -433,36 +434,34 @@
     }
     .stat-card {
       flex: 1;
-      min-width: 150px;
-      background: rgba(30, 30, 30, 0.9);
+      min-width: 120px;
+      background: rgba(255, 255, 255, 0.05);
       padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid #bb86fc;
+      border-radius: 16px;
+      border: 1px solid #8D8DFF;
       text-align: center;
-      font-family: 'Roboto Mono', monospace;
       font-size: 0.9rem;
     }
     .stat-card h3 {
-      color: #bb86fc;
+      color: #8D8DFF;
       margin-bottom: 0.5rem;
+      font-size: 1rem;
     }
     @media (max-width: 768px) {
       body {
         padding: 0.5rem;
       }
-      #chat-container, #admin-modal {
+      #chat-container {
         padding: 1rem;
-        border-radius: 12px;
+        border-radius: 16px;
       }
       h1 {
-        font-size: 1.5rem;
-        letter-spacing: 2px;
+        font-size: 1.2rem;
       }
-      #chat-log, #admin-chat-log {
-        height: 40vh;
-        max-height: 350px;
+      #chat-log {
+        max-height: 40vh;
       }
-      #chat-log p, #admin-chat-log p {
+      #chat-log p {
         font-size: 0.85rem;
         padding: 0.5rem 0.75rem;
       }
@@ -471,7 +470,7 @@
         padding: 0.6rem;
       }
       .button-group {
-        grid-template-columns: 1fr;
+        flex-direction: column;
       }
       button {
         font-size: 0.9rem;
@@ -487,18 +486,16 @@
         padding: 0.4rem 0.8rem;
       }
       #help-icon {
-        width: 2rem;
-        height: 2rem;
-        font-size: 1rem;
+        width: 1.8rem;
+        height: 1.8rem;
+        font-size: 0.9rem;
       }
       #tags-modal, #contact-modal, #admin-modal {
         width: 95%;
         padding: 1rem;
-        max-height: 90vh;
-        overflow-y: auto;
       }
       #tags-modal h2, #contact-modal h2, #admin-modal h2 {
-        font-size: 1.2rem;
+        font-size: 1rem;
       }
       #tags-form input, #contact-form input, #contact-form textarea {
         font-size: 0.85rem;
@@ -516,17 +513,16 @@
         font-size: 0.8rem;
       }
       .stat-card {
-        min-width: 120px;
+        min-width: 100px;
         font-size: 0.8rem;
       }
     }
     @media (max-width: 480px) {
       h1 {
-        font-size: 1.2rem;
+        font-size: 1rem;
       }
-      #chat-log, #admin-chat-log {
-        height: 35vh;
-        max-height: 300px;
+      #chat-log {
+        max-height: 35vh;
       }
       #chat-input {
         font-size: 0.85rem;
@@ -538,27 +534,21 @@
         font-size: 0.75rem;
       }
       #help-icon {
-        width: 1.8rem;
-        height: 1.8rem;
-        font-size: 0.9rem;
-      }
-      #tags-modal, #contact-modal, #admin-modal {
-        padding: 0.75rem;
-      }
-      #tags-modal h2, #contact-modal h2, #admin-modal h2 {
-        font-size: 1rem;
+        width: 1.6rem;
+        height: 1.6rem;
+        font-size: 0.8rem;
       }
     }
   </style>
 </head>
 <body>
-  <canvas id="particles"></canvas>
+  <canvas id="stars-canvas"></canvas>
   <div id="modal-overlay"></div>
   <div id="tags-modal">
     <h2>Select Your Interests</h2>
     <div id="tags-form">
       <div id="trending-tags"></div>
-      <input id="tags-input" type="text" placeholder="Enter tags (e.g., coding, movies, separated by commas)">
+      <input id="tags-input" type="text" placeholder="Enter tags (e.g., coding, movies)">
       <button id="submit-tags">Join Chat</button>
       <button class="close-button" id="close-tags">Close</button>
     </div>
@@ -568,7 +558,7 @@
     <div id="contact-form">
       <input type="text" id="contact-name" placeholder="Name (optional)">
       <input type="email" id="contact-email" placeholder="Email (optional)">
-      <textarea id="contact-message" placeholder="Your message (required)"></textarea>
+      <textarea id="contact-message" placeholder="Your message"></textarea>
       <button id="submit-contact">Submit</button>
       <button class="close-button" id="close-contact">Close</button>
     </div>
@@ -624,7 +614,7 @@
     </div>
   </div>
   <div id="chat-container">
-    <h1>Night Hub</h1>
+    <h1>NightHub</h1>
     <div class="top-controls">
       <div class="control-group">
         <div id="help-icon" title="Contact Us">?</div>
@@ -639,65 +629,114 @@
     <div id="chat-log"></div>
     <div id="typing-indicator">Stranger is typing...</div>
     <div id="countdown-timer">Disconnecting in <span id="countdown">5</span> seconds...</div>
-    <input id="chat-input" type="text" placeholder="Type your message..." disabled>
     <div class="button-group">
       <button id="start-chat">Start Chat</button>
       <button id="end-chat" style="display:none;">End Chat</button>
       <button id="report-user" style="display:none;">Report User</button>
       <button id="cancel-disconnect" style="display:none;">Cancel Disconnect</button>
     </div>
+    <div id="input-container">
+      <input id="chat-input" type="text" placeholder="Type your message..." disabled>
+      <div id="send-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8D8DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </div>
+    </div>
   </div>
   <audio id="message-sound" src="/assets/Notification.mp3"></audio>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
   <script>
-    // Particle background effect
-    const canvas = document.getElementById('particles');
+    // Stars and shooting stars background
+    const canvas = document.getElementById('stars-canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particles = [];
-    const particleCount = 100;
+    const stars = [];
+    const starCount = 100;
+    const shootingStars = [];
 
-    class Particle {
+    class Star {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 0.5;
-        this.speedX = Math.random() * 0.2 - 0.1;
-        this.speedY = Math.random() * 0.2 - 0.1;
-        this.opacity = Math.random() * 0.5 + 0.2;
+        this.size = Math.random() * 1.5 + 0.5;
+        this.speedX = Math.random() * 0.05 - 0.025;
+        this.speedY = Math.random() * 0.05 - 0.025;
+        this.opacity = Math.random() * 0.5 + 0.3;
       }
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
         if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
         if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-        this.opacity += Math.random() * 0.02 - 0.01;
-        if (this.opacity < 0.2) this.opacity = 0.2;
-        if (this.opacity > 0.7) this.opacity = 0.7;
       }
       draw() {
-        ctx.fillStyle = `rgba(187, 134, 252, ${this.opacity})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    function initParticles() {
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
+    class ShootingStar {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height / 2;
+        this.length = Math.random() * 20 + 10;
+        this.speed = Math.random() * 5 + 2;
+        this.opacity = 1;
+      }
+      update() {
+        this.x += this.speed;
+        this.y += this.speed;
+        this.opacity -= 0.02;
+        if (this.opacity <= 0) {
+          shootingStars.splice(shootingStars.indexOf(this), 1);
+        }
+      }
+      draw() {
+        ctx.strokeStyle = `rgba(141, 141, 255, ${this.opacity})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y);
+        ctx.lineTo(this.x - this.length, this.y - this.length);
+        ctx.stroke();
       }
     }
 
-    function animateParticles() {
+    function initStars() {
+      for (let i = 0; i < starCount; i++) {
+        stars.push(new Star());
+      }
+    }
+
+    function animateStars() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
+      // Draw gradient
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#4B0082');
+      gradient.addColorStop(0.5, '#2F0047');
+      gradient.addColorStop(1, '#008B8B');
+      ctx.fillStyle = gradient;
+      ctx.globalAlpha = 0.1;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalAlpha = 1;
+
+      stars.forEach(star => {
+        star.update();
+        star.draw();
       });
-      requestAnimationFrame(animateParticles);
+      shootingStars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+      if (Math.random() < 0.01) {
+        shootingStars.push(new ShootingStar());
+      }
+      requestAnimationFrame(animateStars);
     }
 
     window.addEventListener('resize', () => {
@@ -705,8 +744,8 @@
       canvas.height = window.innerHeight;
     });
 
-    initParticles();
-    animateParticles();
+    initStars();
+    animateStars();
 
     // Socket.IO connection
     const socket = io('https://nighthub-backend.onrender.com', {
@@ -717,6 +756,7 @@
     // DOM elements
     const chatLog = document.getElementById('chat-log');
     const chatInput = document.getElementById('chat-input');
+    const sendIcon = document.getElementById('send-icon');
     const startChatBtn = document.getElementById('start-chat');
     const endChatBtn = document.getElementById('end-chat');
     const reportUserBtn = document.getElementById('report-user');
@@ -726,6 +766,7 @@
     const countdownTimer = document.getElementById('countdown-timer');
     const messageSound = document.getElementById('message-sound');
     const safeModeToggle = document.getElementById('safe-mode');
+    const safeModeLabel = document.querySelector('#safe-mode-toggle label');
     const helpIcon = document.getElementById('help-icon');
     const tagsModal = document.getElementById('tags-modal');
     const contactModal = document.getElementById('contact-modal');
@@ -755,6 +796,13 @@
     let isTyping = false;
     let typingTimeout;
     let currentObservedPairId = null;
+
+    // Update Safe Mode label
+    function updateSafeModeLabel() {
+      safeModeLabel.textContent = safeModeToggle.checked ? 'Safe Mode' : 'NSFW Mode';
+    }
+    safeModeToggle.addEventListener('change', updateSafeModeLabel);
+    updateSafeModeLabel();
 
     // Sanitize input
     function sanitizeInput(input) {
@@ -787,13 +835,11 @@
 
     // Render admin dashboard
     function renderAdminDashboard(data) {
-      // Update stats
       onlineUsers.textContent = data.onlineUsers;
       activeChats.textContent = data.activeChats;
       messagesSent.textContent = data.messagesSent;
       reportsFiled.textContent = data.reportsFiled;
 
-      // Update user table
       userTableBody.innerHTML = '';
       data.users.forEach(user => {
         const row = document.createElement('tr');
@@ -810,7 +856,6 @@
         userTableBody.appendChild(row);
       });
 
-      // Update chat table
       chatTableBody.innerHTML = '';
       data.chats.forEach(chat => {
         const row = document.createElement('tr');
@@ -826,11 +871,10 @@
         chatTableBody.appendChild(row);
       });
 
-      // Add event listeners for ban/unban
       document.querySelectorAll('.ban-button').forEach(btn => {
         btn.addEventListener('click', () => {
           const userId = btn.dataset.userid;
-          socket.emit('admin_ban', { userId, duration: 30 * 60 * 1000 }); // 30 min ban
+          socket.emit('admin_ban', { userId, duration: 30 * 60 * 1000 });
         });
       });
       document.querySelectorAll('.unban-button').forEach(btn => {
@@ -839,8 +883,6 @@
           socket.emit('admin_unban', { userId });
         });
       });
-
-      // Add event listeners for observe
       document.querySelectorAll('.observe-button').forEach(btn => {
         btn.addEventListener('click', () => {
           const pairId = btn.dataset.pairid;
@@ -864,7 +906,7 @@
 
     socket.on('connect_error', (err) => {
       console.error('Connection error:', err.message);
-      chatLog.innerHTML += `<p style="color: #ff5252;">Error: Failed to connect to server - ${err.message}</p>`;
+      chatLog.innerHTML += `<p style="color: #FF5252;">Error: Failed to connect to server - ${err.message}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
@@ -872,26 +914,32 @@
       console.log('Received message:', msg, 'Socket ID:', socket.id);
       const msgElement = document.createElement('p');
       msgElement.className = 'stranger';
-      msgElement.innerHTML = `<strong>Stranger:</strong> ${sanitizeInput(msg)}`;
+      msgElement.innerHTML = `<strong>Stranger:</strong> ${sanitizeInput(msg)}<div class="reaction-bubble">😊😢😭😣😂❤️❗</div><div class="reactions"></div>`;
       chatLog.appendChild(msgElement);
       messageSound.play().catch(err => console.error('Audio playback error:', err));
       chatLog.scrollTop = chatLog.scrollHeight;
+      addReactionListeners(msgElement);
+    });
+
+    socket.on('reaction', ({ messageId, emoji }) => {
+      const msgElement = document.querySelector(`p[data-message-id="${messageId}"]`);
+      if (msgElement) {
+        const reactionsDiv = msgElement.querySelector('.reactions');
+        reactionsDiv.textContent += emoji;
+      }
     });
 
     socket.on('typing', (isTyping) => {
-      console.log('Typing status:', isTyping, 'Socket ID:', socket.id);
       typingIndicator.style.display = isTyping ? 'block' : 'none';
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     socket.on('countdown', (seconds) => {
-      console.log('Countdown:', seconds, 'Socket ID:', socket.id);
       countdownSpan.textContent = seconds;
       countdownTimer.style.display = 'block';
     });
 
     socket.on('countdown_cancelled', () => {
-      console.log('Countdown cancelled, Socket ID:', socket.id);
       countdownTimer.style.display = 'none';
       cancelDisconnectBtn.style.display = 'none';
       endChatBtn.style.display = 'inline';
@@ -901,14 +949,13 @@
     });
 
     socket.on('paired', () => {
-      console.log('Paired with a stranger, Socket ID:', socket.id);
       chatLog.innerHTML += '<p>Connected to a stranger!</p>';
       safeModeToggle.checked = true;
+      updateSafeModeLabel();
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     socket.on('disconnected', () => {
-      console.log('Stranger disconnected, Socket ID:', socket.id);
       chatLog.innerHTML += '<p>Stranger disconnected.</p>';
       startChatBtn.style.display = 'inline';
       endChatBtn.style.display = 'none';
@@ -921,8 +968,7 @@
     });
 
     socket.on('error', (msg) => {
-      console.error('Server error:', msg, 'Socket ID:', socket.id);
-      chatLog.innerHTML += `<p style="color: #ff5252;">Error: ${msg}</p>`;
+      chatLog.innerHTML += `<p style="color: #FF5252;">Error: ${msg}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
       if (msg.includes('banned')) {
         startChatBtn.style.display = 'none';
@@ -934,15 +980,13 @@
     });
 
     socket.on('request_success', (msg) => {
-      console.log('Request success:', msg, 'Socket ID:', socket.id);
-      chatLog.innerHTML += `<p style="color: #4caf50;">${msg}</p>`;
+      chatLog.innerHTML += `<p style="color: #4CAF50;">${msg}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
       contactModal.style.display = 'none';
       modalOverlay.style.display = 'none';
     });
 
     socket.on('admin_data', (data) => {
-      console.log('Received admin data:', data);
       renderAdminDashboard(data);
     });
 
@@ -955,9 +999,20 @@
       }
     });
 
+    // Add reaction listeners
+    function addReactionListeners(msgElement) {
+      const reactionBubble = msgElement.querySelector('.reaction-bubble');
+      reactionBubble.querySelectorAll('.reaction-emoji').forEach(emoji => {
+        emoji.addEventListener('click', () => {
+          const messageId = msgElement.dataset.messageId || crypto.randomUUID();
+          msgElement.dataset.messageId = messageId;
+          socket.emit('reaction', { messageId, emoji: emoji.textContent });
+        });
+      });
+    }
+
     // DOM event listeners
     startChatBtn.addEventListener('click', () => {
-      console.log('Start Chat clicked, Socket ID:', socket.id);
       tagsModal.style.display = 'block';
       modalOverlay.style.display = 'block';
       tagsInput.focus();
@@ -966,7 +1021,6 @@
     submitTags.addEventListener('click', () => {
       const tags = tagsInput.value.split(',').map(t => sanitizeInput(t.trim())).filter(t => t);
       if (tags.includes('ekandmc')) {
-        console.log('Admin access requested, Socket ID:', socket.id);
         socket.emit('admin_login', { key: 'ekandmc' });
         tagsModal.style.display = 'none';
         modalOverlay.style.display = 'block';
@@ -975,11 +1029,10 @@
         return;
       }
       if (tags.length === 0) {
-        chatLog.innerHTML += `<p style="color: #ff5252;">Error: At least one tag is required.</p>`;
+        chatLog.innerHTML += `<p style="color: #FF5252;">Error: At least one tag is required.</p>`;
         chatLog.scrollTop = chatLog.scrollHeight;
         return;
       }
-      console.log('Submitting tags:', tags, 'Socket ID:', socket.id);
       socket.emit('join', tags);
       tagsModal.style.display = 'none';
       modalOverlay.style.display = 'none';
@@ -998,7 +1051,6 @@
     });
 
     endChatBtn.addEventListener('click', () => {
-      console.log('End Chat clicked, Socket ID:', socket.id);
       socket.emit('leave');
       endChatBtn.style.display = 'none';
       cancelDisconnectBtn.style.display = 'inline';
@@ -1007,7 +1059,6 @@
     });
 
     cancelDisconnectBtn.addEventListener('click', () => {
-      console.log('Cancel Disconnect clicked, Socket ID:', socket.id);
       socket.emit('cancel_disconnect');
       cancelDisconnectBtn.style.display = 'none';
       endChatBtn.style.display = 'inline';
@@ -1017,7 +1068,6 @@
     });
 
     reportUserBtn.addEventListener('click', () => {
-      console.log('Report User clicked, Socket ID:', socket.id);
       socket.emit('report', { timestamp: new Date().toISOString() });
       chatLog.innerHTML += '<p>User reported to moderators.</p>';
       chatLog.scrollTop = chatLog.scrollHeight;
@@ -1025,12 +1075,10 @@
 
     safeModeToggle.addEventListener('change', () => {
       const safeMode = safeModeToggle.checked;
-      console.log('Safe Mode toggled:', safeMode, 'Socket ID:', socket.id);
       socket.emit('toggle_safe_mode', safeMode);
     });
 
     helpIcon.addEventListener('click', () => {
-      console.log('Help Icon clicked, Socket ID:', socket.id);
       contactModal.style.display = 'block';
       modalOverlay.style.display = 'block';
       contactName.value = '';
@@ -1065,7 +1113,6 @@
     });
 
     submitContact.addEventListener('click', () => {
-      console.log('Submit Contact clicked, Socket ID:', socket.id);
       const request = {
         name: sanitizeInput(contactName.value.trim()),
         email: sanitizeInput(contactEmail.value.trim()),
@@ -1091,21 +1138,29 @@
       }, 2000);
     });
 
-    chatInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && chatInput.value.trim()) {
-        console.log('Sending message:', chatInput.value, 'Socket ID:', socket.id);
+    function sendMessage() {
+      if (chatInput.value.trim()) {
         const msg = sanitizeInput(chatInput.value);
         socket.emit('message', msg);
         const msgElement = document.createElement('p');
         msgElement.className = 'you';
-        msgElement.innerHTML = `<strong>You:</strong> ${msg}`;
+        msgElement.innerHTML = `<strong>You:</strong> ${msg}<div class="reaction-bubble">😊😢😭😣😂❤️❗</div><div class="reactions"></div>`;
         chatLog.appendChild(msgElement);
         chatInput.value = '';
         isTyping = false;
         socket.emit('typing', false);
         chatLog.scrollTop = chatLog.scrollHeight;
+        addReactionListeners(msgElement);
+      }
+    }
+
+    chatInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
       }
     });
+
+    sendIcon.addEventListener('click', sendMessage);
   </script>
 </body>
 </html>
