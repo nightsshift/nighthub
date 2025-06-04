@@ -1,5 +1,6 @@
 const socket = io('https://nighthub-backend.onrender.com', {
   transports: ['websocket'],
+  // Corrected to 'websocket'
   reconnectionAttempts: 5
 });
 
@@ -7,6 +8,7 @@ const socket = io('https://nighthub-backend.onrender.com', {
 const chatLog = document.getElementById('chat-log');
 const chatInput = document.getElementById('chat-input');
 const sendIcon = document.getElementById('send-icon');
+const gifIcon = document.getElementById('gif-icon');
 const startChatBtn = document.getElementById('start-chat');
 const endChatBtn = document.getElementById('end-chat');
 const reportUserBtn = document.getElementById('report-user');
@@ -23,6 +25,7 @@ const tagsModal = document.getElementById('tags-modal');
 const contactModal = document.getElementById('contact-modal');
 const adminModal = document.getElementById('admin-modal');
 const ageModal = document.getElementById('age-modal');
+const giphyModal = document.getElementById('giphy-modal');
 const modalOverlay = document.getElementById('modal-overlay');
 const tagsForm = document.getElementById('tags-form');
 const contactForm = document.getElementById('contact-form');
@@ -37,20 +40,26 @@ const closeContact = document.getElementById('close-contact');
 const closeAdmin = document.getElementById('close-admin');
 const confirmAge = document.getElementById('confirm-age');
 const cancelAge = document.getElementById('cancel-age');
+const giphySearch = document.getElementById('giphy-search');
+const giphyResults = document.getElementById('giphy-results');
+const closeGiphy = document.getElementById('close-giphy');
 const userTableBody = document.getElementById('user-table-body');
 const chatTableBody = document.getElementById('chat-table-body');
 const adminChatLog = document.getElementById('admin-chat-log');
-const onlineUsers = document.getElementById('online-users');
-const activeChats = document.getElementById('active-chats');
-const messagesSent = document.getElementById('messages-sent');
-const reportsFiled = document.getElementById('reports-filed');
-const trendingTags = document.getElementById('trending-tags');
+const onlineUsers = document.querySelector('#online-users');
+const activeChats = document.querySelector('#active-chats');
+const messagesSent = document.querySelector('#messages-sent');
+const reportsFiled = document.querySelector('#reports-filed');
+const trendingTags = document.querySelector('#trending-tags');
 
 // State
 let isTyping = false;
-let typingTimeout;
+let typingTimeout = null;
 let currentObservedPairId = null;
 let ageConfirmed = false;
+
+// Giphy SDK
+const giphy = new window.Giphy('QSNw09um5JwDRXN38T1kSqwrz1DNV1hh');
 
 // FingerprintJS
 Fingerprint2.get(components => {
@@ -90,10 +99,10 @@ socket.on('trending_tags', (tags) => {
 
 // Render admin dashboard
 function renderAdminDashboard(data) {
-  onlineUsers.textContent = data.onlineUsers;
+  onlineUsers.innerHTML = data.onlineUsers;
   activeChats.textContent = data.activeChats;
-  messagesSent.textContent = data.messagesSent;
-  reportsFiled.textContent = data.reportsFiled;
+  messagesSent.innerHTML = data.messagesSent;
+  reportsFiled.innerText = data.reportsFiled;
 
   userTableBody.innerHTML = '';
   data.users.forEach(user => {
@@ -175,6 +184,56 @@ safeModeToggle.addEventListener('change', () => {
 });
 updateSafeModeLabel();
 
+// Giphy search
+let giphyTimeout;
+giphySearch.addEventListener('input', () => {
+  clearTimeout(giphyTimeout);
+  giphyTimeout = setTimeout(() => {
+    const query = giphySearch.value.trim();
+    if (query) {
+      giphy.search(query, {
+        limit: 12,
+        rating: safeModeToggle.checked ? 'g' : 'r'
+      }).then(response => {
+        giphyResults.innerHTML = '';
+        response.data.forEach(gif => {
+          const div = document.createElement('div');
+          div.className = 'giphy-result';
+          const img = document.createElement('img');
+          img.src = gif.images.fixed_height_small.url;
+          img.alt = gif.title;
+          img.addEventListener('click', () => {
+            socket.emit('message', img.src);
+            const msgElement = document.createElement('div');
+            msgElement.className = 'gif-message you';
+            msgElement.innerHTML = `<img src="${img.src}" alt="${sanitizeInput(gif.title)}">`;
+            chatLog.appendChild(msgElement);
+            chatLog.scrollTop = chatLog.scrollHeight;
+            giphyModal.style.display = 'none';
+            modalOverlay.style.display = 'none';
+            giphySearch.value = '';
+          });
+          div.appendChild(img);
+          giphyResults.appendChild(div);
+        });
+      }).catch(err => console.error('Giphy error:', err));
+    }
+  }, 500);
+});
+
+gifIcon.addEventListener('click', () => {
+  giphyModal.style.display = 'block';
+  modalOverlay.style.display = 'block';
+  giphySearch.focus();
+});
+
+closeGiphy.addEventListener('click', () => {
+  giphyModal.style.display = 'none';
+  modalOverlay.style.display = 'none';
+  giphySearch.value = '';
+  giphyResults.innerHTML = '';
+});
+
 // Socket.IO event handlers
 socket.on('connect', () => {
   console.log('Connected to backend, Socket ID:', socket.id);
@@ -185,15 +244,16 @@ socket.on('connect', () => {
 socket.on('connect_error', (err) => {
   console.error('Connection error:', err.message);
   connectionIndicator.classList.remove('connected');
-  chatLog.innerHTML += `<p style="color: #FF5252;">Error: Failed to connect to server - ${err.message}</p>`;
+  chatLog.innerHTML += `<p style="color: #EF4444;">Error: Failed to connect to server - ${err.message}</p>`;
   chatLog.scrollTop = chatLog.scrollHeight;
 });
 
 socket.on('message', (msg) => {
   console.log('Received message:', msg, 'Socket ID:', socket.id);
-  const msgElement = document.createElement('p');
-  msgElement.className = 'stranger';
-  msgElement.innerHTML = `<strong>Stranger:</strong> ${sanitizeInput(msg)}`;
+  const isGif = msg.startsWith('https://media') && msg.includes('giphy.com');
+  const msgElement = document.createElement(isGif ? 'div' : 'p');
+  msgElement.className = isGif ? 'gif-message stranger' : 'stranger';
+  msgElement.innerHTML = isGif ? `<img src="${msg}" alt="GIF">` : `<strong>Stranger:</strong> ${sanitizeInput(msg)}`;
   chatLog.appendChild(msgElement);
   messageSound.play().catch(err => console.error('Audio playback error:', err));
   chatLog.scrollTop = chatLog.scrollHeight;
@@ -252,7 +312,7 @@ socket.on('disconnected', () => {
 });
 
 socket.on('error', (msg) => {
-  chatLog.innerHTML += `<p style="color: #FF5252;">Error: ${msg}</p>`;
+  chatLog.innerHTML += `<p style="color: #EF4444;">Error: ${msg}</p>`;
   chatLog.scrollTop = chatLog.scrollHeight;
   if (msg.includes('banned')) {
     startChatBtn.style.display = 'none';
@@ -264,7 +324,7 @@ socket.on('error', (msg) => {
 });
 
 socket.on('request_success', (msg) => {
-  chatLog.innerHTML += `<p style="color: #4CAF50;">${msg}</p>`;
+  chatLog.innerHTML += `<p style="color: #22C55E;">${msg}</p>`;
   chatLog.scrollTop = chatLog.scrollHeight;
   contactModal.style.display = 'none';
   modalOverlay.style.display = 'none';
@@ -301,7 +361,7 @@ submitTags.addEventListener('click', () => {
     return;
   }
   if (tags.length === 0) {
-    chatLog.innerHTML += `<p style="color: #FF5252;">Error: At least one tag is required.</p>`;
+    chatLog.innerHTML += `<p style="color: #EF4444;">Error: At least one tag is required.</p>`;
     chatLog.scrollTop = chatLog.scrollHeight;
     return;
   }
@@ -333,12 +393,6 @@ endChatBtn.addEventListener('click', () => {
 
 cancelDisconnectBtn.addEventListener('click', () => {
   socket.emit('cancel_disconnect');
-  cancelDisconnectBtn.style.display = 'none';
-  endChatBtn.style.display = 'inline-block';
-  reportUserBtn.style.display = 'inline-block';
-  countdownTimer.style.display = 'none';
-  chatInput.disabled = false;
-  chatInput.focus();
 });
 
 reportUserBtn.addEventListener('click', () => {
@@ -395,11 +449,14 @@ modalOverlay.addEventListener('click', () => {
   contactModal.style.display = 'none';
   adminModal.style.display = 'none';
   ageModal.style.display = 'none';
+  giphyModal.style.display = 'none';
   if (currentObservedPairId) {
     socket.emit('admin_leave_chat', { pairId: currentObservedPairId });
     currentObservedPairId = null;
   }
   modalOverlay.style.display = 'none';
+  giphySearch.value = '';
+  giphyResults.innerHTML = '';
 });
 
 submitContact.addEventListener('click', () => {
