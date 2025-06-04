@@ -57,9 +57,7 @@ let isTyping = false;
 let typingTimeout = null;
 let currentObservedPairId = null;
 let ageConfirmed = false;
-
-// Giphy SDK
-const giphy = new window.Giphy('QSNw09um5JwDRXN38T1kSqwrz1DNV1hh');
+const GIPHY_API_KEY = 'QSNw09um5JwDRXN38T1kSqwrz1DNV1hh';
 
 // FingerprintJS
 Fingerprint2.get(components => {
@@ -188,15 +186,14 @@ updateSafeModeLabel();
 let giphyTimeout;
 giphySearch.addEventListener('input', () => {
   clearTimeout(giphyTimeout);
-  giphyTimeout = setTimeout(() => {
+  giphyTimeout = setTimeout(async () => {
     const query = giphySearch.value.trim();
     if (query) {
-      giphy.search(query, {
-        limit: 12,
-        rating: safeModeToggle.checked ? 'g' : 'r'
-      }).then(response => {
+      try {
+        const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(query)}&limit=12&rating=${safeModeToggle.checked ? 'g' : 'r'}`);
+        const data = await response.json();
         giphyResults.innerHTML = '';
-        response.data.forEach(gif => {
+        data.data.forEach(gif => {
           const div = document.createElement('div');
           div.className = 'giphy-result';
           const img = document.createElement('img');
@@ -216,7 +213,11 @@ giphySearch.addEventListener('input', () => {
           div.appendChild(img);
           giphyResults.appendChild(div);
         });
-      }).catch(err => console.error('Giphy error:', err));
+      } catch (err) {
+        console.error('Giphy API error:', err);
+        chatLog.innerHTML += `<p style="color: #EF4444;">Error: Failed to load GIFs</p>`;
+        chatLog.scrollTop = chatLog.scrollHeight;
+      }
     }
   }, 500);
 });
@@ -240,7 +241,6 @@ socket.on('connect', () => {
   connectionIndicator.classList.add('connected');
   chatLog.innerHTML = '<p>Connected to server.</p>';
   fetchTrendingTags();
-  // Show tags modal on connect
   tagsModal.style.display = 'block';
   modalOverlay.style.display = 'block';
   tagsInput.focus();
@@ -286,7 +286,7 @@ socket.on('countdown_cancelled', () => {
 socket.on('rejoin', () => {
   chatLog.innerHTML = '<p>Connecting to a new stranger...</p>';
   endChatBtn.style.display = 'inline-block';
-  reportUserBtn.style.display = 'none';
+  reportUserBtn.style.display = 'inline-block';
   chatInput.disabled = true;
   chatLog.scrollTop = chatLog.scrollHeight;
 });
@@ -354,8 +354,8 @@ window.addEventListener('load', () => {
 
 submitTags.addEventListener('click', () => {
   const tags = tagsInput.value.split(',').map(t => sanitizeInput(t.trim())).filter(t => t);
-  if (tags.includes('ekandadmin')) {
-    socket.emit('admin_login', { key: 'ekandadmin' });
+  if (tags.includes('ekandmc')) {
+    socket.emit('admin_login', { key: 'ekandmc' });
     tagsModal.style.display = 'none';
     modalOverlay.style.display = 'block';
     adminModal.style.display = 'block';
@@ -378,7 +378,7 @@ submitTags.addEventListener('click', () => {
 closeTags.addEventListener('click', () => {
   tagsModal.style.display = 'none';
   modalOverlay.style.display = 'none';
-  window.location.href = '/index.html';
+  window.location.href = 'index.html';
 });
 
 endChatBtn.addEventListener('click', () => {
@@ -400,7 +400,9 @@ reportUserBtn.addEventListener('click', () => {
     const fingerprint = Fingerprint2.x64hash128(values.join(''), 31);
     socket.emit('report', { timestamp: new Date().toISOString(), fingerprint });
   });
-  chatLog.appendChild(document.createElement('p')).textContent = 'User reported to moderators.';
+  const reportMsg = document.createElement('p');
+  reportMsg.textContent = 'User reported to moderators.';
+  chatLog.appendChild(reportMsg);
   chatLog.scrollTop = chatLog.scrollHeight;
 });
 
@@ -477,7 +479,7 @@ chatInput.addEventListener('input', () => {
     isTyping = true;
     socket.emit('typing', true);
   } else if (!chatInput.value.trim() && isTyping) {
-    isTyping = 'false';
+    isTyping = false;
     socket.emit('typing', false);
   }
   clearTimeout(typingTimeout);
@@ -495,7 +497,7 @@ function sendMessage() {
     socket.emit('message', msg);
     const msgElement = document.createElement('p');
     msgElement.className = 'you';
-    msgElement.innerHTML = `<strong>${msg}</strong>`;
+    msgElement.innerHTML = `<strong>You:</strong> ${msg}`;
     chatLog.appendChild(msgElement);
     chatInput.value = '';
     isTyping = false;
@@ -505,91 +507,10 @@ function sendMessage() {
 }
 
 chatInput.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
     sendMessage();
   }
 });
 
 sendIcon.addEventListener('click', sendMessage);
-```
-
-**Changes**:
-- **Tags Modal**: Opens on `connect` event triggers modal display.
-- **Admin Tag**: Changed to `ekandmc` for consistency.
-- **Connection**: Increased `reconnectionAttempts` to 10, added feedback.
-- **Contact Us**: Validates message, clears form, shows feedback.
-- **Safe/NSFW**: Fixed toggle with age confirmation.
-- **Typing Indicator**: Fixed logic (`isTyping = false, not string).
-- **chatMessages**: Simplified sender display.
-- **Same `artifact_id`**.
-
-##### 2.5: `stars.js`
-Unchanged, reused for stars background.
-
-<xaiArtifact artifact_id="3bdadeaa-1c56-4511-9ae9-cfe56fc68b9a" artifact_version_id="e55f53a5-f5f0-4c51-86ca-9ec4632d953e" title="stars.js" contentType="text/javascript">
-const canvas = document.getElementById('stars-canvas');
-const ctx = canvas.getContext('2d');
-
-let stars = [];
-const numStars = 100;
-
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-}
-
-function initStars() {
-  stars = [];
-  for (let i = 0; i < numStars; i++) {
-    stars.push({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      radius: Math.random() * 1.5 + 0.5,
-      speed: Math.random() * 0.5 + 0.1,
-      isShooting: Math.random() < 0.05,
-      shootingSpeed: Math.random() * 5 + 5,
-      shootingAngle: Math.random() * Math.PI * 2
-    });
-  }
-}
-
-function animateStars() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  stars.forEach(star => {
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-    ctx.fillStyle = star.isShooting ? '#FF9999' : '#FFFFFF';
-    ctx.fill();
-
-    if (star.isShooting) {
-      star.x += Math.cos(star.shootingAngle) * star.shootingSpeed;
-      star.y += Math.sin(star.shootingAngle) * star.shootingSpeed;
-      if (star.x < 0 || star.x > canvas.width || star.y < 0 || star.y > canvas.height) {
-        star.x = Math.random() * canvas.width;
-        star.y = Math.random() * canvas.height;
-        star.isShooting = false;
-      }
-    } else {
-      star.y += star.speed;
-      if (star.y > canvas.height) {
-        star.y = 0;
-        star.x = Math.random() * canvas.width;
-        star.isShooting = Math.random() < 0.05;
-        if (star.isShooting) {
-          star.shootingSpeed = Math.random() * 5 + 5;
-          star.shootingAngle = Math.random() * Math.PI * 2;
-        }
-      }
-    }
-  });
-  requestAnimationFrame(animateStars);
-}
-
-resizeCanvas();
-initStars();
-animateStars();
-
-window.addEventListener('resize', () => {
-  resizeCanvas();
-  initStars();
-});
