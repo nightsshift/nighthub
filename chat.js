@@ -1,7 +1,8 @@
 const socket = io('https://nighthub-backend.onrender.com', {
   transports: ['websocket'],
-  // Corrected to 'websocket'
-  reconnectionAttempts: 5
+  reconnection: true,
+  reconnectionAttempts: 5,
+  reconnectionDelay: 1000
 });
 
 // DOM elements
@@ -46,11 +47,11 @@ const closeGiphy = document.getElementById('close-giphy');
 const userTableBody = document.getElementById('user-table-body');
 const chatTableBody = document.getElementById('chat-table-body');
 const adminChatLog = document.getElementById('admin-chat-log');
-const onlineUsers = document.querySelector('#online-users');
-const activeChats = document.querySelector('#active-chats');
-const messagesSent = document.querySelector('#messages-sent');
-const reportsFiled = document.querySelector('#reports-filed');
-const trendingTags = document.querySelector('#trending-tags');
+const onlineUsers = document.getElementById('online-users');
+const activeChats = document.getElementById('active-chats');
+const messagesSent = document.getElementById('messages-sent');
+const reportsFiled = document.getElementById('reports-filed');
+const trendingTags = document.getElementById('trending-tags');
 
 // State
 let isTyping = false;
@@ -99,10 +100,10 @@ socket.on('trending_tags', (tags) => {
 
 // Render admin dashboard
 function renderAdminDashboard(data) {
-  onlineUsers.innerHTML = data.onlineUsers;
+  onlineUsers.textContent = data.onlineUsers;
   activeChats.textContent = data.activeChats;
-  messagesSent.innerHTML = data.messagesSent;
-  reportsFiled.innerText = data.reportsFiled;
+  messagesSent.textContent = data.messagesSent;
+  reportsFiled.textContent = data.reportsFiled;
 
   userTableBody.innerHTML = '';
   data.users.forEach(user => {
@@ -238,6 +239,7 @@ closeGiphy.addEventListener('click', () => {
 socket.on('connect', () => {
   console.log('Connected to backend, Socket ID:', socket.id);
   connectionIndicator.classList.add('connected');
+  chatLog.innerHTML += '<p>Connected to server.</p>';
   fetchTrendingTags();
 });
 
@@ -345,6 +347,11 @@ socket.on('admin_message', ({ pairId, userId, message }) => {
 
 // DOM event listeners
 startChatBtn.addEventListener('click', () => {
+  if (!socket.connected) {
+    chatLog.innerHTML += `<p style="color: #EF4444;">Error: Not connected to server.</p>`;
+    chatLog.scrollTop = chatLog.scrollHeight;
+    return;
+  }
   tagsModal.style.display = 'block';
   modalOverlay.style.display = 'block';
   tagsInput.focus();
