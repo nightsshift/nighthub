@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NightHub - Chat</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="stars-canvas"></canvas>
+  <div id="modal-overlay"></div>
+  <div id="tags-modal">
+    <h2>Select Your Interests</h2>
+    <div id="tags-form">
+      <div id="trending-tags"></div>
+      <input id="tags-input" type="text" placeholder="Enter tags (e.g., coding, movies)">
+      <button id="submit-tags">Join Chat</button>
+      <button class="close-button" id="close-tags">Close</button>
+    </div>
+  </div>
+  <div id="contact-modal">
+    <h2>Contact Us</h2>
+    <div id="contact-form">
+      <input type="text" id="contact-name" placeholder="Name (optional)">
+      <input type="email" id="contact-email" placeholder="Email (optional)">
+      <textarea id="contact-message" placeholder="Your message"></textarea>
+      <button id="submit-contact">Submit</button>
+      <button class="close-button" id="close-contact">Close</button>
+    </div>
+  </div>
+  <div id="admin-modal">
+    <h2>Admin Dashboard</h2>
+    <div id="admin-content">
+      <div id="stats-section">
+        <div class="stat-card">
+          <h3>Online Users</h3>
+          <p id="online-users">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Active Chats</h3>
+          <p id="active-chats">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Messages Sent</h3>
+          <p id="messages-sent">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Reports Filed</h3>
+          <p id="reports-filed">0</p>
+        </div>
+      </div>
+      <h3>User Management</h3>
+      <table id="user-table">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Socket ID</th>
+            <th>Reports</th>
+            <th>Ban Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="user-table-body"></tbody>
+      </table>
+      <h3>Live Chats</h3>
+      <table id="chat-table">
+        <thead>
+          <tr>
+            <th>Pair ID</th>
+            <th>User IDs</th>
+            <th>Reports</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="chat-table-body"></tbody>
+      </table>
+      <div id="admin-chat-log"></div>
+      <button class="close-button" id="close-admin">Close</button>
+    </div>
+  </div>
+  <div id="age-modal">
+    <h2>Age Confirmation</h2>
+    <div id="age-form">
+      <p>Please confirm you are 18 or older to enable NSFW Mode.</p>
+      <button id="confirm-age">Confirm</button>
+      <button class="close-button" id="cancel-age">Cancel</button>
+    </div>
+  </div>
+  <div id="app-container">
+    <h1>NightHub Chat</h1>
+    <div class="top-controls">
+      <div class="control-group">
+        <div id="connection-indicator"></div>
+        <div id="help-icon" title="Contact Us">?</div>
+      </div>
+      <div class="control-group">
+        <div id="safe-mode-toggle">
+          <input type="checkbox" id="safe-mode" checked>
+          <label for="safe-mode">Safe Mode</label>
+        </div>
+      </div>
+    </div>
+    <div id="chat-log"></div>
+    <div id="typing-indicator">Stranger is typing...</div>
+    <div id="countdown-timer">Disconnecting in <span id="countdown">5</span> seconds...</div>
+    <div id="input-container">
+      <input id="chat-input" type="text" placeholder="Type your message..." disabled>
+      <div id="send-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8D8DFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </div>
+    </div>
+    <div id="button-container">
+      <button id="start-chat">Start Chat</button>
+      <button id="end-chat" style="display:none;">End Chat</button>
+      <button id="report-user" style="display:none;">Report User</button>
+      <button id="cancel-disconnect" style="display:none;">Cancel Disconnect</button>
+    </div>
+  </div>
+  <audio id="message-sound" src="assets/Notification.mp3"></audio>
+  <script src="stars.js"></script>
+  <script src="chat.js"></script>
+</body>
+</html>
