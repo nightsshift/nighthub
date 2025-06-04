@@ -22,7 +22,7 @@
       padding: 20px;
       overflow-x: hidden;
       animation: gradientShift 15s ease infinite;
-      background-size: 200% 200%
+      background-size: 200% 200%;
     }
     @keyframes gradientShift {
       0% { background-position: 0% 50%; }
@@ -90,7 +90,7 @@
       background: linear-gradient(45deg, #0288d1, #01579b);
       box-shadow: 0 0 8px rgba(2, 136, 209, 0.5);
     }
-    #help-icon {
+    #help-icon, #vault-button {
       width: 32px;
       height: 32px;
       display: flex;
@@ -104,12 +104,13 @@
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 0 8px rgba(187, 134, 252, 0.3);
+      margin-left: 10px;
     }
-    #help-icon:hover {
+    #help-icon:hover, #vault-button:hover {
       transform: scale(1.1);
       box-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
     }
-    #contact-modal {
+    #tags-modal, #contact-modal, #vault-modal {
       display: none;
       position: fixed;
       top: 50%;
@@ -130,19 +131,19 @@
       from { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
       to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     }
-    #contact-modal h2 {
+    #tags-modal h2, #contact-modal h2, #vault-modal h2 {
       font-size: 1.6rem;
       color: #bb86fc;
       margin-bottom: 20px;
       text-align: center;
       text-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
     }
-    #contact-form {
+    #tags-form, #contact-form, #vault-form {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
-    #contact-form input, #contact-form textarea {
+    #tags-form input, #contact-form input, #contact-form textarea, #vault-form textarea {
       padding: 12px;
       border: 1px solid #bb86fc;
       border-radius: 8px;
@@ -152,16 +153,16 @@
       font-size: 0.95rem;
       transition: all 0.3s ease;
     }
-    #contact-form textarea {
+    #tags-form textarea, #contact-form textarea, #vault-form textarea {
       resize: vertical;
-      min-height: 120px;
+      min-height: 80px;
     }
-    #contact-form input:focus, #contact-form textarea:focus {
+    #tags-form input:focus, #contact-form input:focus, #contact-form textarea:focus, #vault-form textarea:focus {
       outline: none;
       border-color: #0288d1;
       box-shadow: 0 0 12px rgba(2, 136, 209, 0.5);
     }
-    #contact-form button {
+    #tags-form button, #contact-form button, #vault-form button {
       padding: 12px;
       border: none;
       border-radius: 8px;
@@ -172,15 +173,34 @@
       text-transform: uppercase;
       transition: all 0.3s ease;
     }
-    #contact-form button:hover {
+    #tags-form button:hover, #contact-form button:hover, #vault-form button:hover {
       transform: scale(1.05);
       box-shadow: 0 0 15px rgba(187, 134, 252, 0.6);
     }
-    #contact-form .close-button {
+    #tags-form .close-button, #contact-form .close-button, #vault-form .close-button {
       background: linear-gradient(45deg, #ff5252, #d32f2f);
     }
-    #contact-form .close-button:hover {
+    #tags-form .close-button:hover, #contact-form .close-button:hover, #vault-form .close-button:hover {
       box-shadow: 0 0 15px rgba(255, 82, 82, 0.6);
+    }
+    #trending-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    .trending-tag {
+      padding: 6px 12px;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #0288d1, #01579b);
+      color: #e0e0e0;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .trending-tag:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(2, 136, 209, 0.5);
     }
     #modal-overlay {
       display: none;
@@ -224,6 +244,8 @@
       font-family: 'Roboto Mono', monospace;
       font-size: 0.95rem;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      user-select: text;
     }
     #chat-log p:hover {
       transform: translateY(-2px);
@@ -242,6 +264,89 @@
       margin-right: 20%;
       margin-left: 10px;
       box-shadow: 0 2px 10px rgba(2, 136, 209, 0.5);
+    }
+    .save-quote-btn {
+      display: none;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: linear-gradient(45deg, #4caf50, #2e7d32);
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    #chat-log p:hover .save-quote-btn {
+      display: block;
+    }
+    .save-quote-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+    }
+    #vault-gallery {
+      max-height: 300px;
+      overflow-y: auto;
+      padding: 10px;
+      background: rgba(20, 20, 20, 0.8);
+      border-radius: 10px;
+      border: 1px solid #bb86fc;
+      scrollbar-width: thin;
+      scrollbar-color: #bb86fc #1e1e1e;
+    }
+    #vault-gallery::-webkit-scrollbar {
+      width: 8px;
+    }
+    #vault-gallery::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+    #vault-gallery::-webkit-scrollbar-thumb {
+      background: #bb86fc;
+      border-radius: 4px;
+    }
+    .quote-entry {
+      padding: 12px;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #0288d1, #01579b);
+      border-radius: 8px;
+      color: #e0e0e0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.95rem;
+      position: relative;
+    }
+    .quote-text {
+      margin-bottom: 5px;
+    }
+    .quote-meta {
+      font-size: 0.8rem;
+      color: #bb86fc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .vote-buttons {
+      display: flex;
+      gap: 5px;
+    }
+    .vote-btn {
+      padding: 5px 10px;
+      border-radius: 5px;
+      background: linear-gradient(45deg, #6200ea, #7b1fa2);
+      color: #fff;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .vote-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(98, 0, 234, 0.5);
+    }
+    .vote-btn.upvote {
+      background: linear-gradient(45deg, #4caf50, #2e7d32);
+    }
+    .vote-btn.downvote {
+      background: linear-gradient(45deg, #ff5252, #d32f2f);
     }
     #typing-indicator {
       font-size: 0.9rem;
@@ -344,15 +449,15 @@
       .top-right-controls {
         right: 10px;
       }
-      #help-icon {
+      #help-icon, #vault-button {
         width: 28px;
         height: 28px;
         font-size: 1rem;
       }
-      #contact-modal {
+      #tags-modal, #contact-modal, #vault-modal {
         padding: 20px;
       }
-      #contact-modal h2 {
+      #tags-modal h2, #contact-modal h2, #vault-modal h2 {
         font-size: 1.4rem;
       }
     }
@@ -360,6 +465,15 @@
 </head>
 <body>
   <div id="modal-overlay"></div>
+  <div id="tags-modal">
+    <h2>Select Your Interests</h2>
+    <div id="tags-form">
+      <div id="trending-tags"></div>
+      <input id="tags-input" type="text" placeholder="Enter tags (e.g., coding, movies, separated by commas)">
+      <button id="submit-tags">Join Chat</button>
+      <button class="close-button" id="close-tags">Close</button>
+    </div>
+  </div>
   <div id="contact-modal">
     <h2>Contact Us</h2>
     <div id="contact-form">
@@ -370,10 +484,18 @@
       <button class="close-button" id="close-contact">Close</button>
     </div>
   </div>
+  <div id="vault-modal">
+    <h2>Vault of Quotes</h2>
+    <div id="vault-gallery"></div>
+    <div id="vault-form">
+      <button class="close-button" id="close-vault">Close</button>
+    </div>
+  </div>
   <div id="chat-container">
     <h1>Night Hub</h1>
     <div class="top-left-controls">
       <div id="help-icon" title="Contact Us">?</div>
+      <div id="vault-button" title="View Vault">📜</div>
     </div>
     <div class="top-right-controls">
       <div id="safe-mode-toggle">
@@ -414,24 +536,101 @@
     const messageSound = document.getElementById('message-sound');
     const safeModeToggle = document.getElementById('safe-mode');
     const helpIcon = document.getElementById('help-icon');
+    const vaultButton = document.getElementById('vault-button');
+    const tagsModal = document.getElementById('tags-modal');
     const contactModal = document.getElementById('contact-modal');
+    const vaultModal = document.getElementById('vault-modal');
     const modalOverlay = document.getElementById('modal-overlay');
+    const tagsForm = document.getElementById('tags-form');
     const contactForm = document.getElementById('contact-form');
+    const tagsInput = document.getElementById('tags-input');
+    const submitTags = document.getElementById('submit-tags');
+    const closeTags = document.getElementById('close-tags');
     const contactName = document.getElementById('contact-name');
     const contactEmail = document.getElementById('contact-email');
     const contactMessage = document.getElementById('contact-message');
     const submitContact = document.getElementById('submit-contact');
     const closeContact = document.getElementById('close-contact');
+    const closeVault = document.getElementById('close-vault');
+    const trendingTags = document.getElementById('trending-tags');
+    const vaultGallery = document.getElementById('vault-gallery');
 
-    // Typing state
+    // State
     let isTyping = false;
     let typingTimeout;
+    let selectedText = '';
+
+    // Sanitize input to prevent XSS
+    function sanitizeInput(input) {
+      const div = document.createElement('div');
+      div.textContent = input;
+      return div.innerHTML;
+    }
+
+    // Fetch trending tags
+    function fetchTrendingTags() {
+      socket.emit('get_trending_tags');
+    }
+
+    // Render trending tags
+    socket.on('trending_tags', (tags) => {
+      trendingTags.innerHTML = '';
+      tags.forEach(tag => {
+        const tagBtn = document.createElement('div');
+        tagBtn.className = 'trending-tag';
+        tagBtn.textContent = tag;
+        tagBtn.addEventListener('click', () => {
+          const currentTags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+          if (!currentTags.includes(tag)) {
+            tagsInput.value = [...currentTags, tag].join(', ');
+          }
+        });
+        trendingTags.appendChild(tagBtn);
+      });
+    });
+
+    // Fetch vault quotes
+    function fetchVaultQuotes() {
+      socket.emit('get_vault_quotes');
+    }
+
+    // Render vault quotes
+    socket.on('vault_quotes', (quotes) => {
+      vaultGallery.innerHTML = '';
+      quotes.sort((a, b) => b.votes - a.votes); // Sort by votes descending
+      quotes.forEach(quote => {
+        const quoteEntry = document.createElement('div');
+        quoteEntry.className = 'quote-entry';
+        quoteEntry.innerHTML = `
+          <div class="quote-text">${sanitizeInput(quote.text)}</div>
+          <div class="quote-meta">
+            <span>${new Date(quote.timestamp).toLocaleString()}</span>
+            <div class="vote-buttons">
+              <button class="vote-btn upvote" data-id="${quote.id}">↑ ${quote.votes}</button>
+              <button class="vote-btn downvote" data-id="${quote.id}">↓</button>
+            </div>
+          </div>
+        `;
+        vaultGallery.appendChild(quoteEntry);
+      });
+
+      // Add vote button listeners
+      document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const quoteId = btn.dataset.id;
+          const voteType = btn.classList.contains('upvote') ? 'upvote' : 'downvote';
+          socket.emit('vote_quote', { quoteId, voteType });
+        });
+      });
+    });
 
     // Socket.IO event handlers
     socket.on('connect', () => {
       console.log('Connected to backend, Socket ID:', socket.id);
       chatLog.innerHTML += '<p>Connected to server.</p>';
       chatLog.scrollTop = chatLog.scrollHeight;
+      fetchTrendingTags();
+      fetchVaultQuotes();
     });
 
     socket.on('connect_error', (err) => {
@@ -442,9 +641,20 @@
 
     socket.on('message', (msg) => {
       console.log('Received message:', msg, 'Socket ID:', socket.id);
-      chatLog.innerHTML += `<p class="stranger"><strong>Stranger:</strong> ${msg}</p>`;
+      const msgElement = document.createElement('p');
+      msgElement.className = 'stranger';
+      msgElement.innerHTML = `<strong>Stranger:</strong> ${sanitizeInput(msg)}<button class="save-quote-btn">Save to Vault</button>`;
+      chatLog.appendChild(msgElement);
       messageSound.play().catch(err => console.error('Audio playback error:', err));
       chatLog.scrollTop = chatLog.scrollHeight;
+
+      // Add save quote listener
+      msgElement.querySelector('.save-quote-btn').addEventListener('click', () => {
+        const selected = window.getSelection().toString().trim() || msg;
+        if (selected) {
+          socket.emit('save_quote', selected);
+        }
+      });
     });
 
     socket.on('typing', (isTyping) => {
@@ -510,10 +720,32 @@
       modalOverlay.style.display = 'none';
     });
 
+    socket.on('quote_saved', (msg) => {
+      console.log('Quote saved:', msg, 'Socket ID:', socket.id);
+      chatLog.innerHTML += `<p style="color: #4caf50;">${msg}</p>`;
+      chatLog.scrollTop = chatLog.scrollHeight;
+      fetchVaultQuotes();
+    });
+
     // DOM event listeners
     startChatBtn.addEventListener('click', () => {
       console.log('Start chat clicked, Socket ID:', socket.id);
-      socket.emit('join');
+      tagsModal.style.display = 'block';
+      modalOverlay.style.display = 'block';
+      tagsInput.focus();
+    });
+
+    submitTags.addEventListener('click', () => {
+      const tags = tagsInput.value.split(',').map(t => sanitizeInput(t.trim())).filter(t => t);
+      if (tags.length === 0) {
+        chatLog.innerHTML += `<p style="color: #ff5252;">Error: At least one tag is required.</p>`;
+        chatLog.scrollTop = chatLog.scrollHeight;
+        return;
+      }
+      console.log('Submitting tags:', tags, 'Socket ID:', socket.id);
+      socket.emit('join', tags);
+      tagsModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
       startChatBtn.style.display = 'none';
       endChatBtn.style.display = 'inline';
       reportUserBtn.style.display = 'inline';
@@ -521,6 +753,11 @@
       chatInput.focus();
       chatLog.innerHTML += '<p>Connecting to a stranger...</p>';
       chatLog.scrollTop = chatLog.scrollHeight;
+    });
+
+    closeTags.addEventListener('click', () => {
+      tagsModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
     });
 
     endChatBtn.addEventListener('click', () => {
@@ -565,22 +802,36 @@
       contactMessage.focus();
     });
 
+    vaultButton.addEventListener('click', () => {
+      console.log('Vault button clicked, Socket ID:', socket.id);
+      vaultModal.style.display = 'block';
+      modalOverlay.style.display = 'block';
+      fetchVaultQuotes();
+    });
+
     closeContact.addEventListener('click', () => {
       contactModal.style.display = 'none';
       modalOverlay.style.display = 'none';
     });
 
+    closeVault.addEventListener('click', () => {
+      vaultModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
+    });
+
     modalOverlay.addEventListener('click', () => {
+      tagsModal.style.display = 'none';
       contactModal.style.display = 'none';
+      vaultModal.style.display = 'none';
       modalOverlay.style.display = 'none';
     });
 
     submitContact.addEventListener('click', () => {
       console.log('Submit contact clicked, Socket ID:', socket.id);
       const request = {
-        name: contactName.value.trim(),
-        email: contactEmail.value.trim(),
-        message: contactMessage.value.trim()
+        name: sanitizeInput(contactName.value.trim()),
+        email: sanitizeInput(contactEmail.value.trim()),
+        message: sanitizeInput(contactMessage.value.trim())
       };
       socket.emit('submit_request', request);
     });
@@ -605,12 +856,24 @@
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter' && chatInput.value.trim()) {
         console.log('Sending message:', chatInput.value, 'Socket ID:', socket.id);
-        socket.emit('message', chatInput.value);
-        chatLog.innerHTML += `<p class="you"><strong>You:</strong> ${chatInput.value}</p>`;
+        const msg = sanitizeInput(chatInput.value);
+        socket.emit('message', msg);
+        const msgElement = document.createElement('p');
+        msgElement.className = 'you';
+        msgElement.innerHTML = `<strong>You:</strong> ${msg}<button class="save-quote-btn">Save to Vault</button>`;
+        chatLog.appendChild(msgElement);
         chatInput.value = '';
         isTyping = false;
         socket.emit('typing', false);
         chatLog.scrollTop = chatLog.scrollHeight;
+
+        // Add save quote listener
+        msgElement.querySelector('.save-quote-btn').addEventListener('click', () => {
+          const selected = window.getSelection().toString().trim() || msg;
+          if (selected) {
+            socket.emit('save_quote', selected);
+          }
+        });
       }
     });
   </script>
