@@ -14,7 +14,7 @@
     }
     body {
       font-family: 'Orbitron', sans-serif;
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1f26 50%, #0a0e0a 100%);
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1f26 50%, #0a0a0a 100%);
       color: #e0e0e0;
       min-height: 100dvh;
       display: flex;
@@ -49,8 +49,8 @@
       box-shadow: 0 0 40px rgba(187, 134, 252, 0.5), 0 0 15px rgba(2, 136, 209, 0.3);
       backdrop-filter: blur(10px);
       position: relative;
-      z-index: 2;
-      animation: fadeInContainer 1s ease-in-out;
+      z-index: 1;
+      animation: fadeInContainer 1s ease-out;
     }
     @keyframes fadeInContainer {
       from { opacity: 0; transform: translateY(20px); }
@@ -61,14 +61,14 @@
       color: #bb86fc;
       text-align: center;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 4px;
       margin-bottom: 1.5rem;
-      text-shadow: 0 0 10px rgba(187, 134, 252, 0.8);
+      text-shadow: 0 0 20px rgba(187, 134, 252, 0.8);
       animation: neonFlicker 3s infinite alternate;
     }
     @keyframes neonFlicker {
-      0%, 100% { opacity: 1; text-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc; }
-      50% { opacity: 0.9; text-shadow: 0 0 15px #bb86fc, 0 0 30px #bb86fc; }
+      0%, 100% { text-shadow: 0 0 10px #bb86fc, 0 0 20px #bb86fc; }
+      50% { text-shadow: 0 0 15px #bb86fc, 0 0 30px #bb86fc; }
     }
     .top-controls {
       display: flex;
@@ -140,14 +140,14 @@
       from { opacity: 0; }
       to { opacity: 1; }
     }
-    #tags-modal, #contact-modal {
+    #tags-modal, #contact-modal, #admin-modal {
       display: none;
       position: fixed;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%) scale(0.9);
       width: 90%;
-      max-width: 500px;
+      max-width: 800px;
       background: rgba(15, 15, 15, 0.9);
       border: 2px solid #bb86fc;
       border-radius: 16px;
@@ -156,19 +156,21 @@
       backdrop-filter: blur(12px);
       z-index: 1000;
       animation: popIn 0.4s ease-out forwards;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     @keyframes popIn {
       from { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
       to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
     }
-    #tags-modal h2, #contact-modal h2 {
+    #tags-modal h2, #contact-modal h2, #admin-modal h2 {
       font-size: 1.5rem;
       color: #bb86fc;
       text-align: center;
       text-shadow: 0 0 15px rgba(187, 134, 252, 0.7);
       margin-bottom: 1rem;
     }
-    #tags-form, #contact-form {
+    #tags-form, #contact-form, #admin-content {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
@@ -192,7 +194,7 @@
       border-color: #0288d1;
       box-shadow: 0 0 15px rgba(2, 136, 209, 0.6);
     }
-    #tags-form button, #contact-form button {
+    #tags-form button, #contact-form button, #admin-content button {
       padding: 0.75rem;
       border: none;
       border-radius: 8px;
@@ -205,7 +207,7 @@
       transition: all 0.3s ease;
       box-shadow: 0 0 12px rgba(187, 134, 252, 0.5);
     }
-    #tags-form button:hover, #contact-form button:hover {
+    #tags-form button:hover, #contact-form button:hover, #admin-content button:hover {
       transform: scale(1.05);
       box-shadow: 0 0 20px rgba(187, 134, 252, 0.8);
       animation: pulseButton 1.5s infinite;
@@ -215,10 +217,10 @@
       50% { box-shadow: 0 0 20px rgba(187, 134, 252, 0.8); }
       100% { box-shadow: 0 0 12px rgba(187, 134, 252, 0.5); }
     }
-    #tags-form .close-button, #contact-form .close-button {
+    #tags-form .close-button, #contact-form .close-button, #admin-content .close-button {
       background: linear-gradient(45deg, #ff5252, #d32f2f);
     }
-    #tags-form .close-button:hover, #contact-form .close-button:hover {
+    #tags-form .close-button:hover, #contact-form .close-button:hover, #admin-content .close-button:hover {
       box-shadow: 0 0 20px rgba(255, 82, 82, 0.8);
     }
     #trending-tags {
@@ -307,11 +309,6 @@
       animation: pulse 1.5s infinite;
       font-family: 'Roboto Mono', monospace;
     }
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.5; }
-      100% { opacity: 1; }
-    }
     #countdown-timer {
       display: none;
       text-align: center;
@@ -371,11 +368,89 @@
     #cancel-disconnect:hover {
       box-shadow: 0 0 20px rgba(255, 82, 82, 0.8);
     }
+    #admin-content table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.9rem;
+    }
+    #admin-content th, #admin-content td {
+      padding: 0.5rem;
+      border: 1px solid #bb86fc;
+      text-align: left;
+    }
+    #admin-content th {
+      background: linear-gradient(45deg, #6200ea, #7b1fa2);
+      color: #fff;
+    }
+    #admin-content td {
+      background: rgba(30, 30, 30, 0.9);
+    }
+    #admin-content .ban-button {
+      background: linear-gradient(45deg, #ff5252, #d32f2f);
+    }
+    #admin-content .unban-button {
+      background: linear-gradient(45deg, #4caf50, #2e7d32);
+    }
+    #admin-content .observe-button {
+      background: linear-gradient(45deg, #0288d1, #01579b);
+    }
+    #admin-content .flagged {
+      background: rgba(255, 82, 82, 0.3);
+    }
+    #admin-chat-log {
+      height: 200px;
+      overflow-y: auto;
+      background: rgba(20, 20, 20, 0.9);
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
+      border: 1px solid #bb86fc;
+      scrollbar-width: thin;
+      scrollbar-color: #bb86fc #1e1e1e;
+    }
+    #admin-chat-log::-webkit-scrollbar {
+      width: 6px;
+    }
+    #admin-chat-log::-webkit-scrollbar-track {
+      background: #1e1e1e;
+    }
+    #admin-chat-log::-webkit-scrollbar-thumb {
+      background: #bb86fc;
+      border-radius: 3px;
+    }
+    #admin-chat-log p {
+      margin: 0.5rem 0;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.9rem;
+      color: #e0e0e0;
+    }
+    #stats-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .stat-card {
+      flex: 1;
+      min-width: 150px;
+      background: rgba(30, 30, 30, 0.9);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #bb86fc;
+      text-align: center;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.9rem;
+    }
+    .stat-card h3 {
+      color: #bb86fc;
+      margin-bottom: 0.5rem;
+    }
     @media (max-width: 768px) {
       body {
         padding: 0.5rem;
       }
-      #chat-container {
+      #chat-container, #admin-modal {
         padding: 1rem;
         border-radius: 12px;
       }
@@ -383,11 +458,11 @@
         font-size: 1.5rem;
         letter-spacing: 2px;
       }
-      #chat-log {
+      #chat-log, #admin-chat-log {
         height: 40vh;
         max-height: 350px;
       }
-      #chat-log p {
+      #chat-log p, #admin-chat-log p {
         font-size: 0.85rem;
         padding: 0.5rem 0.75rem;
       }
@@ -416,20 +491,20 @@
         height: 2rem;
         font-size: 1rem;
       }
-      #tags-modal, #contact-modal {
+      #tags-modal, #contact-modal, #admin-modal {
         width: 95%;
         padding: 1rem;
         max-height: 90vh;
         overflow-y: auto;
       }
-      #tags-modal h2, #contact-modal h2 {
+      #tags-modal h2, #contact-modal h2, #admin-modal h2 {
         font-size: 1.2rem;
       }
       #tags-form input, #contact-form input, #contact-form textarea {
         font-size: 0.85rem;
         padding: 0.6rem;
       }
-      #tags-form button, #contact-form button {
+      #tags-form button, #contact-form button, #admin-content button {
         font-size: 0.9rem;
         padding: 0.6rem;
       }
@@ -437,12 +512,19 @@
         font-size: 0.8rem;
         padding: 0.4rem 0.8rem;
       }
+      #admin-content table {
+        font-size: 0.8rem;
+      }
+      .stat-card {
+        min-width: 120px;
+        font-size: 0.8rem;
+      }
     }
     @media (max-width: 480px) {
       h1 {
         font-size: 1.2rem;
       }
-      #chat-log {
+      #chat-log, #admin-chat-log {
         height: 35vh;
         max-height: 300px;
       }
@@ -460,10 +542,10 @@
         height: 1.8rem;
         font-size: 0.9rem;
       }
-      #tags-modal, #contact-modal {
+      #tags-modal, #contact-modal, #admin-modal {
         padding: 0.75rem;
       }
-      #tags-modal h2, #contact-modal h2 {
+      #tags-modal h2, #contact-modal h2, #admin-modal h2 {
         font-size: 1rem;
       }
     }
@@ -484,18 +566,68 @@
   <div id="contact-modal">
     <h2>Contact Us</h2>
     <div id="contact-form">
-      <input type="text" id="name" placeholder="Name (optional)">
-      <input type="email" id="email" placeholder="Email (optional)">
-      <textarea id="message" placeholder="Your message (required)"></textarea>
+      <input type="text" id="contact-name" placeholder="Name (optional)">
+      <input type="email" id="contact-email" placeholder="Email (optional)">
+      <textarea id="contact-message" placeholder="Your message (required)"></textarea>
       <button id="submit-contact">Submit</button>
       <button class="close-button" id="close-contact">Close</button>
     </div>
   </div>
-  <div id="container">
+  <div id="admin-modal">
+    <h2>Admin Dashboard</h2>
+    <div id="admin-content">
+      <div id="stats-section">
+        <div class="stat-card">
+          <h3>Online Users</h3>
+          <p id="online-users">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Active Chats</h3>
+          <p id="active-chats">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Messages Sent</h3>
+          <p id="messages-sent">0</p>
+        </div>
+        <div class="stat-card">
+          <h3>Reports Filed</h3>
+          <p id="reports-filed">0</p>
+        </div>
+      </div>
+      <h3>User Management</h3>
+      <table id="user-table">
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Socket ID</th>
+            <th>Reports</th>
+            <th>Ban Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="user-table-body"></tbody>
+      </table>
+      <h3>Live Chats</h3>
+      <table id="chat-table">
+        <thead>
+          <tr>
+            <th>Pair ID</th>
+            <th>User IDs</th>
+            <th>Reports</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="chat-table-body"></tbody>
+      </table>
+      <div id="admin-chat-log"></div>
+      <button class="close-button" id="close-admin">Close</button>
+    </div>
+  </div>
+  <div id="chat-container">
     <h1>Night Hub</h1>
     <div class="top-controls">
       <div class="control-group">
-        <div id="help-icon">?</div>
+        <div id="help-icon" title="Contact Us">?</div>
       </div>
       <div class="control-group">
         <div id="safe-mode-toggle">
@@ -506,25 +638,25 @@
     </div>
     <div id="chat-log"></div>
     <div id="typing-indicator">Stranger is typing...</div>
-    <div id="countdown">Disconnecting in <span id="countdown-timer">5</span> seconds...</div>
+    <div id="countdown-timer">Disconnecting in <span id="countdown">5</span> seconds...</div>
     <input id="chat-input" type="text" placeholder="Type your message..." disabled>
     <div class="button-group">
       <button id="start-chat">Start Chat</button>
       <button id="end-chat" style="display:none;">End Chat</button>
-      <button id="report-user" style="display:none;">Delete User</button>
+      <button id="report-user" style="display:none;">Report User</button>
       <button id="cancel-disconnect" style="display:none;">Cancel Disconnect</button>
     </div>
   </div>
-  <audio id="audio" src="/assets/Notification.mp3"></audio>
+  <audio id="message-sound" src="/assets/Notification.mp3"></audio>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.js"></script>
   <script>
-    // Particle background
+    // Particle background effect
     const canvas = document.getElementById('particles');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const particlesArray = [];
+    const particles = [];
     const particleCount = 100;
 
     class Particle {
@@ -532,15 +664,15 @@
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * 2 + 0.5;
-        this.speedX = Math.random() * 0.4 - 0.2;
-        this.speedY = Math.random() * 0.4 - 0.2;
+        this.speedX = Math.random() * 0.2 - 0.1;
+        this.speedY = Math.random() * 0.2 - 0.1;
         this.opacity = Math.random() * 0.5 + 0.2;
       }
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
-        if (this.x < 0 || this.x >= canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y >= canvas.height) this.speedY *= -1;
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
         this.opacity += Math.random() * 0.02 - 0.01;
         if (this.opacity < 0.2) this.opacity = 0.2;
         if (this.opacity > 0.7) this.opacity = 0.7;
@@ -555,13 +687,13 @@
 
     function initParticles() {
       for (let i = 0; i < particleCount; i++) {
-        particlesArray.push(new Particle());
+        particles.push(new Particle());
       }
     }
 
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particlesArray.forEach(p => {
+      particles.forEach(p => {
         p.update();
         p.draw();
       });
@@ -590,29 +722,39 @@
     const reportUserBtn = document.getElementById('report-user');
     const cancelDisconnectBtn = document.getElementById('cancel-disconnect');
     const typingIndicator = document.getElementById('typing-indicator');
-    const countdownSpan = document.getElementById('countdown-timer');
-    const countdownTimer = document.getElementById('countdown');
-    const messageSound = document.getElementById('audio');
+    const countdownSpan = document.getElementById('countdown');
+    const countdownTimer = document.getElementById('countdown-timer');
+    const messageSound = document.getElementById('message-sound');
     const safeModeToggle = document.getElementById('safe-mode');
     const helpIcon = document.getElementById('help-icon');
     const tagsModal = document.getElementById('tags-modal');
     const contactModal = document.getElementById('contact-modal');
+    const adminModal = document.getElementById('admin-modal');
     const modalOverlay = document.getElementById('modal-overlay');
     const tagsForm = document.getElementById('tags-form');
     const contactForm = document.getElementById('contact-form');
     const tagsInput = document.getElementById('tags-input');
     const submitTags = document.getElementById('submit-tags');
     const closeTags = document.getElementById('close-tags');
-    const contactName = document.getElementById('name');
-    const contactEmail = document.getElementById('email');
-    const contactMessage = document.getElementById('message');
+    const contactName = document.getElementById('contact-name');
+    const contactEmail = document.getElementById('contact-email');
+    const contactMessage = document.getElementById('contact-message');
     const submitContact = document.getElementById('submit-contact');
     const closeContact = document.getElementById('close-contact');
+    const closeAdmin = document.getElementById('close-admin');
+    const userTableBody = document.getElementById('user-table-body');
+    const chatTableBody = document.getElementById('chat-table-body');
+    const adminChatLog = document.getElementById('admin-chat-log');
+    const onlineUsers = document.getElementById('online-users');
+    const activeChats = document.getElementById('active-chats');
+    const messagesSent = document.getElementById('messages-sent');
+    const reportsFiled = document.getElementById('reports-filed');
     const trendingTags = document.getElementById('trending-tags');
 
     // State
     let isTyping = false;
     let typingTimeout;
+    let currentObservedPairId = null;
 
     // Sanitize input
     function sanitizeInput(input) {
@@ -643,6 +785,75 @@
       });
     });
 
+    // Render admin dashboard
+    function renderAdminDashboard(data) {
+      // Update stats
+      onlineUsers.textContent = data.onlineUsers;
+      activeChats.textContent = data.activeChats;
+      messagesSent.textContent = data.messagesSent;
+      reportsFiled.textContent = data.reportsFiled;
+
+      // Update user table
+      userTableBody.innerHTML = '';
+      data.users.forEach(user => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${sanitizeInput(user.userId)}</td>
+          <td>${sanitizeInput(user.socketId)}</td>
+          <td>${user.reports}</td>
+          <td>${user.isBanned ? `Banned (${user.banDuration === Infinity ? 'Permanent' : `${Math.ceil((user.banEnd - Date.now()) / 60000)} min`})` : 'Not Banned'}</td>
+          <td>
+            <button class="ban-button" data-userid="${sanitizeInput(user.userId)}" ${user.isBanned ? 'disabled' : ''}>Ban</button>
+            <button class="unban-button" data-userid="${sanitizeInput(user.userId)}" ${!user.isBanned ? 'disabled' : ''}>Unban</button>
+          </td>
+        `;
+        userTableBody.appendChild(row);
+      });
+
+      // Update chat table
+      chatTableBody.innerHTML = '';
+      data.chats.forEach(chat => {
+        const row = document.createElement('tr');
+        row.className = chat.reports >= 5 ? 'flagged' : '';
+        row.innerHTML = `
+          <td>${sanitizeInput(chat.pairId)}</td>
+          <td>${sanitizeInput(chat.userIds.join(', '))}</td>
+          <td>${chat.reports}</td>
+          <td>
+            <button class="observe-button" data-pairid="${sanitizeInput(chat.pairId)}">Observe</button>
+          </td>
+        `;
+        chatTableBody.appendChild(row);
+      });
+
+      // Add event listeners for ban/unban
+      document.querySelectorAll('.ban-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const userId = btn.dataset.userid;
+          socket.emit('admin_ban', { userId, duration: 30 * 60 * 1000 }); // 30 min ban
+        });
+      });
+      document.querySelectorAll('.unban-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const userId = btn.dataset.userid;
+          socket.emit('admin_unban', { userId });
+        });
+      });
+
+      // Add event listeners for observe
+      document.querySelectorAll('.observe-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const pairId = btn.dataset.pairid;
+          if (currentObservedPairId) {
+            socket.emit('admin_leave_chat', { pairId: currentObservedPairId });
+          }
+          socket.emit('admin_observe_chat', { pairId });
+          currentObservedPairId = pairId;
+          adminChatLog.innerHTML = `<p>Observing chat ${sanitizeInput(pairId)}...</p>`;
+        });
+      });
+    }
+
     // Socket.IO event handlers
     socket.on('connect', () => {
       console.log('Connected to backend, Socket ID:', socket.id);
@@ -653,7 +864,7 @@
 
     socket.on('connect_error', (err) => {
       console.error('Connection error:', err.message);
-      chatLog.innerHTML += `<p style='color: #ff5252;'>Error: Failed to connect to server - ${err.message}</p>`;
+      chatLog.innerHTML += `<p style="color: #ff5252;">Error: Failed to connect to server - ${err.message}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
@@ -674,7 +885,7 @@
     });
 
     socket.on('countdown', (seconds) => {
-      console.log('Countdown:', seconds);
+      console.log('Countdown:', seconds, 'Socket ID:', socket.id);
       countdownSpan.textContent = seconds;
       countdownTimer.style.display = 'block';
     });
@@ -683,9 +894,10 @@
       console.log('Countdown cancelled, Socket ID:', socket.id);
       countdownTimer.style.display = 'none';
       cancelDisconnectBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline-block';
-      reportUserBtn.style.display = 'inline-block';
+      endChatBtn.style.display = 'inline';
+      reportUserBtn.style.display = 'inline';
       chatInput.disabled = false;
+      chatInput.focus();
     });
 
     socket.on('paired', () => {
@@ -696,9 +908,9 @@
     });
 
     socket.on('disconnected', () => {
-      console.log('Disconnected, Socket ID:', socket.id);
+      console.log('Stranger disconnected, Socket ID:', socket.id);
       chatLog.innerHTML += '<p>Stranger disconnected.</p>';
-      startChatBtn.style.display = 'inline-block';
+      startChatBtn.style.display = 'inline';
       endChatBtn.style.display = 'none';
       reportUserBtn.style.display = 'none';
       cancelDisconnectBtn.style.display = 'none';
@@ -708,11 +920,11 @@
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
-    socket.on('error', (err) => {
-      console.error('Server error:', err, 'Socket ID:', socket.id);
-      chatLog.innerHTML += `<p style='color: #ff5252;'>Error: ${err}</p>`;
+    socket.on('error', (msg) => {
+      console.error('Server error:', msg, 'Socket ID:', socket.id);
+      chatLog.innerHTML += `<p style="color: #ff5252;">Error: ${msg}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
-      if (err.includes('banned')) {
+      if (msg.includes('banned')) {
         startChatBtn.style.display = 'none';
         endChatBtn.style.display = 'none';
         reportUserBtn.style.display = 'none';
@@ -723,34 +935,59 @@
 
     socket.on('request_success', (msg) => {
       console.log('Request success:', msg, 'Socket ID:', socket.id);
-      chatLog.innerHTML += `<p style='color: green;'>${msg}</p>`;
+      chatLog.innerHTML += `<p style="color: #4caf50;">${msg}</p>`;
       chatLog.scrollTop = chatLog.scrollHeight;
       contactModal.style.display = 'none';
       modalOverlay.style.display = 'none';
     });
 
+    socket.on('admin_data', (data) => {
+      console.log('Received admin data:', data);
+      renderAdminDashboard(data);
+    });
+
+    socket.on('admin_message', ({ pairId, userId, message }) => {
+      if (pairId === currentObservedPairId) {
+        const msgElement = document.createElement('p');
+        msgElement.innerHTML = `<strong>User ${sanitizeInput(userId.slice(0, 8))}:</strong> ${sanitizeInput(message)}`;
+        adminChatLog.appendChild(msgElement);
+        adminChatLog.scrollTop = adminChatLog.scrollHeight;
+      }
+    });
+
     // DOM event listeners
     startChatBtn.addEventListener('click', () => {
       console.log('Start Chat clicked, Socket ID:', socket.id);
-      tagsModal.style.display = 'flex';
+      tagsModal.style.display = 'block';
       modalOverlay.style.display = 'block';
+      tagsInput.focus();
     });
 
     submitTags.addEventListener('click', () => {
-      const tags = tagsInput.value.split(',').map(t => t.trim()).filter(t => t);
+      const tags = tagsInput.value.split(',').map(t => sanitizeInput(t.trim())).filter(t => t);
+      if (tags.includes('ekandmc')) {
+        console.log('Admin access requested, Socket ID:', socket.id);
+        socket.emit('admin_login', { key: 'ekandmc' });
+        tagsModal.style.display = 'none';
+        modalOverlay.style.display = 'block';
+        adminModal.style.display = 'block';
+        tagsInput.value = '';
+        return;
+      }
       if (tags.length === 0) {
-        chatLog.innerHTML += `<p style='color: #ff4444;'>Error: At least one tag is required.</p>`;
+        chatLog.innerHTML += `<p style="color: #ff5252;">Error: At least one tag is required.</p>`;
         chatLog.scrollTop = chatLog.scrollHeight;
         return;
       }
-      console.log('Tags:', tags, 'Socket ID:', socket.id);
+      console.log('Submitting tags:', tags, 'Socket ID:', socket.id);
       socket.emit('join', tags);
       tagsModal.style.display = 'none';
       modalOverlay.style.display = 'none';
       startChatBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline-block';
-      reportUserBtn.style.display = 'inline-block';
+      endChatBtn.style.display = 'inline';
+      reportUserBtn.style.display = 'inline';
       chatInput.disabled = false;
+      chatInput.focus();
       chatLog.innerHTML += '<p>Connecting to a stranger...</p>';
       chatLog.scrollTop = chatLog.scrollHeight;
     });
@@ -764,47 +1001,42 @@
       console.log('End Chat clicked, Socket ID:', socket.id);
       socket.emit('leave');
       endChatBtn.style.display = 'none';
-      cancelDisconnectBtn.style.display = 'inline-block';
+      cancelDisconnectBtn.style.display = 'inline';
       countdownTimer.style.display = 'block';
       chatInput.disabled = true;
     });
 
     cancelDisconnectBtn.addEventListener('click', () => {
-      console.log('Cancel clicked, Socket ID:', socket.id);
+      console.log('Cancel Disconnect clicked, Socket ID:', socket.id);
       socket.emit('cancel_disconnect');
       cancelDisconnectBtn.style.display = 'none';
-      endChatBtn.style.display = 'inline-block';
+      endChatBtn.style.display = 'inline';
       countdownTimer.style.display = 'none';
       chatInput.disabled = false;
+      chatInput.focus();
     });
 
     reportUserBtn.addEventListener('click', () => {
-      console.log('Report clicked, Socket ID:', socket.id);
-      socket.emit('report', { timestamp: Date.now() });
-      chatLog.innerHTML += '<p style="color: #ffcc00;">User reported to moderators.</p>';
+      console.log('Report User clicked, Socket ID:', socket.id);
+      socket.emit('report', { timestamp: new Date().toISOString() });
+      chatLog.innerHTML += '<p>User reported to moderators.</p>';
       chatLog.scrollTop = chatLog.scrollHeight;
     });
 
     safeModeToggle.addEventListener('change', () => {
       const safeMode = safeModeToggle.checked;
-      console.log('Safe mode:', safeMode, 'Socket ID:', socket.id);
-      socket.emit('safe_mode', safeMode);
+      console.log('Safe Mode toggled:', safeMode, 'Socket ID:', socket.id);
+      socket.emit('toggle_safe_mode', safeMode);
     });
 
     helpIcon.addEventListener('click', () => {
-      console.log('Help clicked, Socket ID:', socket.id);
-      contactModal.style.display = 'flex';
+      console.log('Help Icon clicked, Socket ID:', socket.id);
+      contactModal.style.display = 'block';
       modalOverlay.style.display = 'block';
-    });
-
-    submitContact.addEventListener('click', () => {
-      console.log('Submit contact clicked, Socket ID:', socket.id);
-      const request = {
-        name: sanitizeInput(contactName.value),
-        email: sanitizeInput(contactEmail.value),
-        message: sanitizeInput(contactMessage.value)
-      };
-      socket.emit('contact', request);
+      contactName.value = '';
+      contactEmail.value = '';
+      contactMessage.value = '';
+      contactMessage.focus();
     });
 
     closeContact.addEventListener('click', () => {
@@ -812,10 +1044,34 @@
       modalOverlay.style.display = 'none';
     });
 
+    closeAdmin.addEventListener('click', () => {
+      if (currentObservedPairId) {
+        socket.emit('admin_leave_chat', { pairId: currentObservedPairId });
+        currentObservedPairId = null;
+      }
+      adminModal.style.display = 'none';
+      modalOverlay.style.display = 'none';
+    });
+
     modalOverlay.addEventListener('click', () => {
       tagsModal.style.display = 'none';
       contactModal.style.display = 'none';
+      adminModal.style.display = 'none';
+      if (currentObservedPairId) {
+        socket.emit('admin_leave_chat', { pairId: currentObservedPairId });
+        currentObservedPairId = null;
+      }
       modalOverlay.style.display = 'none';
+    });
+
+    submitContact.addEventListener('click', () => {
+      console.log('Submit Contact clicked, Socket ID:', socket.id);
+      const request = {
+        name: sanitizeInput(contactName.value.trim()),
+        email: sanitizeInput(contactEmail.value.trim()),
+        message: sanitizeInput(contactMessage.value.trim())
+      };
+      socket.emit('submit_request', request);
     });
 
     chatInput.addEventListener('input', () => {
@@ -832,12 +1088,12 @@
           isTyping = false;
           socket.emit('typing', false);
         }
-      }, 1000);
+      }, 2000);
     });
 
     chatInput.addEventListener('keypress', (e) => {
       if (e.key === 'Enter' && chatInput.value.trim()) {
-        console.log('Message:', chatInput.value, 'Socket ID:', socket.id);
+        console.log('Sending message:', chatInput.value, 'Socket ID:', socket.id);
         const msg = sanitizeInput(chatInput.value);
         socket.emit('message', msg);
         const msgElement = document.createElement('p');
