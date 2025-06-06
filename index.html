@@ -1,0 +1,163 @@
+```html
+     <!DOCTYPE html>
+     <html lang="en">
+     <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>NightHub - Learn Anything, Simply</title>
+       <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.18.9/babel.min.js"></script>
+       <link rel="stylesheet" href="styles.css">
+     </head>
+     <body>
+       <div id="root"></div>
+       <script type="text/babel">
+         const { useState, useEffect } = React;
+
+         // Header Component
+         function Header() {
+           return (
+             <header className="header">
+               <div className="logo">NightHub</div>
+               <nav>
+                 <a href="#courses">Courses</a>
+                 <a href="#about">About</a>
+                 <a href="#login">Login</a>
+                 <a href="#signup">Sign Up</a>
+               </nav>
+             </header>
+           );
+         }
+
+         // Hero Section
+         function Hero() {
+           return (
+             <section className="hero">
+               <h1>Learn Anything, Made Simple</h1>
+               <p>AI-powered education for all ages, explained so anyone can understand.</p>
+               <button className="cta-button">Get Started</button>
+             </section>
+           );
+         }
+
+         // Registration Form
+         function Register() {
+           const [formData, setFormData] = useState({ username: '', password: '' });
+
+           const handleChange = (e) => {
+             setFormData({ ...formData, [e.target.name]: e.target.value });
+           };
+
+           const handleSubmit = (e) => {
+             e.preventDefault();
+             fetch('https://your-backend.onrender.com/api/register', {
+               method: 'POST',
+               headers: { 'Content-Type': 'application/json' },
+               body: JSON.stringify(formData),
+             })
+               .then(res => res.json())
+               .then(data => alert(data.message))
+               .catch(err => alert('Error registering'));
+           };
+
+           return (
+             <section id="signup" className="register">
+               <h2>Join NightHub</h2>
+               <form onSubmit={handleSubmit}>
+                 <input
+                   type="text"
+                   name="username"
+                   placeholder="Username"
+                   value={formData.username}
+                   onChange={handleChange}
+                   required
+                 />
+                 <input
+                   type="password"
+                   name="password"
+                   placeholder="Password"
+                   value={formData.password}
+                   onChange={handleChange}
+                   required
+                 />
+                 <button type="submit" className="cta-button">Sign Up</button>
+               </form>
+             </section>
+           );
+         }
+
+         // Course Card Component
+         function CourseCard({ title, description }) {
+           return (
+             <div className="course-card">
+               <h3>{title}</h3>
+               <p>{description}</p>
+               <button className="enroll-button">Enroll Now</button>
+             </div>
+           );
+         }
+
+         // Courses Section
+         function Courses() {
+           const [courses, setCourses] = useState([]);
+
+           useEffect(() => {
+             fetch('https://your-backend.onrender.com/api/courses')
+               .then(res => res.json())
+               .then(data => setCourses(data))
+               .catch(err => console.error(err));
+           }, []);
+
+           return (
+             <section id="courses" className="courses">
+               <h2>Our Courses</h2>
+               <div className="course-grid">
+                 {courses.map(course => (
+                   <CourseCard key={course.id} title={course.title} description={course.description} />
+                 ))}
+               </div>
+             </section>
+           );
+         }
+
+         // Subscription Placeholder
+         function Subscribe() {
+           return (
+             <section id="subscribe" className="subscribe">
+               <h2>Subscribe to Learn</h2>
+               <p>Access all courses with a low-cost subscription (coming soon).</p>
+               <button className="cta-button" disabled>Subscribe Now</button>
+             </section>
+           );
+         }
+
+         // Footer Component
+         function Footer() {
+           return (
+             <footer className="footer">
+               <p>© 2025 NightHub.io. All rights reserved.</p>
+             </footer>
+           );
+         }
+
+         // Main App Component
+         function App() {
+           return (
+             <div>
+               <Header />
+               <Hero />
+               <Courses />
+               <Register />
+               <Subscribe />
+               <Footer />
+             </div>
+           );
+         }
+
+         // Render App
+         ReactDOM.render(<App />, document.getElementById('root'));
+       </script>
+     </body>
+     </html>
+     ```
