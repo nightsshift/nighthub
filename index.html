@@ -51,7 +51,7 @@
 
            const handleSubmit = (e) => {
              e.preventDefault();
-             fetch('https://your-backend.onrender.com/api/register', {
+             fetch('https://nighthub-backend.onrender.com/api/register', {
                method: 'POST',
                headers: { 'Content-Type': 'application/json' },
                body: JSON.stringify(formData),
@@ -103,7 +103,7 @@
            const [courses, setCourses] = useState([]);
 
            useEffect(() => {
-             fetch('https://your-backend.onrender.com/api/courses')
+             fetch('https://nighthub-backend.onrender.com/api/courses')
                .then(res => res.json())
                .then(data => setCourses(data))
                .catch(err => console.error(err));
