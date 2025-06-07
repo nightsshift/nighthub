@@ -1,0 +1,87 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #007aff;
+}
+
+body.dark .logo {
+  color: #4da8ff;
+}
+
+.welcome {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.terms {
+  margin-bottom: 20px;
+}
+
+.terms p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.terms a {
+  color: #007aff;
+  text-decoration: none;
+}
+
+.terms a:hover {
+  text-decoration: underline;
+}
+
+body.dark .terms a {
+  color: #4da8ff;
+}
+
+.start-chat {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 20px;
+  background-color: #007aff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.start-chat:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.start-chat:hover:not(:disabled) {
+  background-color: #005bb5;
+}
+
+@media (max-width: 600px) {
+  .logo {
+    font-size: 36px;
+  }
+
+  .welcome {
+    font-size: 16px;
+  }
+
+  .terms p {
+    font-size: 14px;
+  }
+
+  .start-chat {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
