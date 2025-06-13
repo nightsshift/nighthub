@@ -1,17 +1,23 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../../context/AppContext';
 import Button from './Button';
+import { motion } from 'framer-motion';
 
 const ThemeToggle = () => {
   const { theme, toggleTheme } = useContext(AppContext);
 
   return (
-    <Button
-      onClick={toggleTheme}
-      className="bg-[#00BFFF] text-white hover:bg-[#FF69B4]"
+    <motion.div
+      whileHover={{ rotate: 10 }}
+      className="relative"
     >
-      {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-    </Button>
+      <Button
+        onClick={toggleTheme}
+        className="bg-[#00BFFF] text-white hover:bg-[#A100F2]"
+      >
+        {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+      </Button>
+    </motion.div>
   );
 };
 

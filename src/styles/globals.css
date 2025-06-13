@@ -7,6 +7,7 @@
   --text: #FFFFFF;
   --accent: #00BFFF;
   --hover: #FF69B4;
+  --secondary: #A100F2;
   --button: #FFFFFF;
   --button-text: #1A1A1A;
 }
@@ -16,6 +17,7 @@
   --text: #1A1A1A;
   --accent: #00BFFF;
   --hover: #FF69B4;
+  --secondary: #A100F2;
   --button: #1A1A1A;
   --button-text: #FFFFFF;
 }
@@ -24,6 +26,7 @@ body {
   background-color: var(--background);
   color: var(--text);
   font-family: 'Montserrat', sans-serif;
+  overflow-x: hidden;
 }
 
 @keyframes bg-pulse {
@@ -35,4 +38,49 @@ body {
 .animate-bg-pulse {
   background-size: 200% 200%;
   animation: bg-pulse 10s ease infinite;
+}
+
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.gradient-border {
+  position: relative;
+  border: none;
+}
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  background: linear-gradient(45deg, #00BFFF, #A100F2, #FF69B4);
+  border-radius: inherit;
+  animation: gradient-rotate 3s linear infinite;
+}
+
+@keyframes gradient-rotate {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 400% 50%; }
+}
+
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+.ripple::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: scale(0);
+  top: var(--y);
+  left: var(--x);
+  animation: ripple-effect 0.6s ease-out;
+}
+@keyframes ripple-effect {
+  to { transform: scale(4); opacity: 0; }
 }

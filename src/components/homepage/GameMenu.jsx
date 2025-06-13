@@ -2,52 +2,69 @@ import React, { useContext } from 'react';
 import Link from 'next/link';
 import { AppContext } from '../../context/AppContext';
 import ThemeToggle from '../common/ThemeToggle';
+import ParticleBackground from '../common/ParticleBackground';
+import { motion } from 'framer-motion';
 
 const GameMenu = () => {
   const { notifications } = useContext(AppContext);
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-white flex flex-col items-center justify-center relative bg-gradient-to-br from-[#00BFFF]/20 to-[#A100F2]/20 animate-bg-pulse">
+    <div className="min-h-screen bg-[#1A1A1A] text-white flex flex-col items-center justify-center relative overflow-hidden">
+      <ParticleBackground />
       {notifications > 2 && (
-        <div
-          className="fixed top-4 bg-[#A100F2] text-white px-4 py-2 rounded-full cursor-pointer animate-pulse text-sm"
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="fixed top-4 bg-[#A100F2] text-white px-4 py-2 rounded-full cursor-pointer animate-pulse text-sm z-10"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           {notifications > 10 ? '10+ New Posts' : `${notifications} New Posts`}
-        </div>
+        </motion.div>
       )}
-      <h1 className="text-5xl font-bold text-[#00BFFF] mb-10 font-montserrat tracking-wide">
+      <motion.h1
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8 }}
+        className="text-6xl font-bold text-[#00BFFF] mb-12 font-montserrat tracking-wider"
+      >
         NightHub
-      </h1>
-      <div className="grid grid-cols-2 gap-6 max-w-md w-full px-6">
-        <Link
-          href="/chat"
-          className="bg-[#00BFFF] text-white p-8 rounded-xl text-center font-bold text-lg hover:bg-[#FF69B4] transition-transform transform hover:scale-105"
-        >
-          Chat
-        </Link>
-        <Link
-          href="/social"
-          className="bg-[#00BFFF] text-white p-8 rounded-xl text-center font-bold text-lg hover:bg-[#FF69B4] transition-transform transform hover:scale-105"
-        >
-          Social
-        </Link>
-        <Link
-          href="/hubs"
-          className="bg-[#00BFFF] text-white p-8 rounded-xl text-center font-bold text-lg hover:bg-[#FF69B4] transition-transform transform hover:scale-105"
-        >
-          Hubs
-        </Link>
-        <Link
-          href="/settings"
-          className="bg-[#00BFFF] text-white p-8 rounded-xl text-center font-bold text-lg hover:bg-[#FF69B4] transition-transform transform hover:scale-105"
-        >
-          Settings
-        </Link>
-      </div>
-      <div className="mt-10">
+      </motion.h1>
+      <motion.div
+        className="grid grid-cols-2 gap-8 max-w-md w-full px-6 z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        {[
+          { href: '/chat', label: 'Chat' },
+          { href: '/social', label: 'Social' },
+          { href: '/hubs', label: 'Hubs' },
+          { href: '/settings', label: 'Settings' },
+        ].map((item, index) => (
+          <motion.div
+            key={item.href}
+            initial={{ opacity: 0, rotateY: -90 }}
+            animate={{ opacity: 1, rotateY: 0 }}
+            transition={{ delay: 0.2 * index, duration: 0.5 }}
+            whileHover={{ scale: 1.1, rotateY: 10 }}
+          >
+            <Link
+              href={item.href}
+              className="block bg-[#00BFFF] text-white p-10 rounded-xl text-center font-bold text-xl glassmorphism gradient-border hover:bg-[#FF69B4] transition-transform"
+            >
+              {item.label}
+            </Link>
+          </motion.div>
+        ))}
+      </motion.div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="mt-12 z-10"
+      >
         <ThemeToggle />
-      </div>
+      </motion.div>
     </div>
   );
 };
