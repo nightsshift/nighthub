@@ -45,7 +45,7 @@ export default function Admin() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
+      <div className="min-h-screen gradient-bg flex items-center justify-center p-8">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -82,7 +82,7 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen gradient-bg p-4 md:p-8">
+    <div className="min-h-screen gradient-bg p-8">
       <div className="w-full max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0 }}

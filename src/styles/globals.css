@@ -20,13 +20,18 @@ body {
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, #121212 0%, #1F1F1F 100%);
+  background: linear-gradient(135deg, #121212 0%, #1F1F1F 70%, #2A2A2A 100%);
 }
 
 .card {
   background: var(--card-bg);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
 }
 
 @keyframes fade-in {
