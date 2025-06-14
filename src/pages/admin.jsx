@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import ParticleBackground from './common/ParticleBackground';
-import Button from './common/Button';
+import ParticleBackground from '../common/ParticleBackground';
+import Button from '../common/Button';
 
 export default function Admin() {
   const [username, setUsername] = useState('');
