@@ -1,73 +1,44 @@
 import React, { useContext } from 'react';
-import Modal from '../common/Modal';
-import Button from '../common/Button';
-import Link from 'next/link';
 import { AppContext } from '../../context/AppContext';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Button from '../common/Button';
 
 const TosModal = () => {
   const { acceptTos, tosAgreed } = useContext(AppContext);
 
+  if (tosAgreed) return null;
+
   return (
-    <Modal isOpen={!tosAgreed} onClose={() => {}}>
-      <motion.h2
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-4xl font-bold text-[#00BFFF] mb-6 font-montserrat tracking-wide"
-      >
-        Welcome to NightHub
-      </motion.h2>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
+    >
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="text-white text-sm mb-4"
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        className="w-full max-w-2xl mx-4 p-8 rounded-2xl bg-[#1F1F1F] text-white"
       >
-        <p>- 13+ to use NightHub.</p>
-        <p>- 18+ for mature content.</p>
-        <p>- Anonymous. No personal data unless you break rules.</p>
-        <p>- No illegal or harmful content.</p>
-        <p>- NightHub not liable for user posts.</p>
-        <p>- Report violations to us.</p>
+        <h2 className="text-3xl font-bold mb-6">Welcome to NightHub</h2>
+        <div className="space-y-4 text-sm text-gray-300">
+          <p>• 13+ to use NightHub; 18+ for mature content.</p>
+          <p>• Anonymous platform. No personal data collected unless you violate rules.</p>
+          <p>• No illegal or harmful content allowed.</p>
+          <p>• NightHub is not liable for user-generated content.</p>
+          <p>• Report violations to our team.</p>
+          <p>• IP logged only if reported. Chats are encrypted.</p>
+          <p>• Settings stored locally on your device.</p>
+        </div>
+        <div className="flex justify-between mt-6 text-sm">
+          <Link href="/tos" className="text-blue-400 hover:text-blue-300">Full Terms</Link>
+          <Link href="/privacy" className="text-blue-400 hover:text-blue-300">Privacy Policy</Link>
+        </div>
+        <div className="mt-8">
+          <Button onClick={acceptTos} className="w-full">Agree & Continue </Button>
+        </div>
       </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 }}
-        className="text-white text-sm mb-6"
-      >
-        <p>- No personal data collected unless reported.</p>
-        <p>- IP logged only if reported.</p>
-        <p>- Settings stored on your device.</p>
-        <p>- Cookies for session only.</p>
-        <p>- Chats encrypted.</p>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.6 }}
-        className="flex justify-between mb-6"
-      >
-        <Link href="/tos" className="text-[#00BFFF] hover:text-[#FF69B4] text-sm font-bold">
-          Full Terms
-        </Link>
-        <Link href="/privacy" className="text-[#00BFFF] hover:text-[#FF69B4] text-sm font-bold">
-          Full Privacy
-        </Link>
-      </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8 }}
-      >
-        <Button
-          onClick={acceptTos}
-          className="bg-white text-[#1A1A1A] w-full hover:bg-[#A100F2] hover:text-white"
-        >
-          Agree
-        </Button>
-      </motion.div>
-    </Modal>
+    </motion.div>
   );
 };
 

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import ParticleBackground from '../common/ParticleBackground';
 import Button from '../common/Button';
 
 export default function Admin() {
@@ -46,72 +45,36 @@ export default function Admin() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#1A1A1A] text-white flex items-center justify-center p-8 font-montserrat relative overflow-hidden">
-        <ParticleBackground />
+      <div className="min-h-screen gradient-bg flex items-center justify-center p-4">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-[#2A2A2A] rounded-2xl p-8 max-w-sm w-full glassmorphism shadow-2xl z-10"
+          className="w-full max-w-md p-8 rounded-2xl bg-[#1F1F1F] text-white"
         >
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="text-4xl font-bold text-[#00BFFF] mb-6"
-          >
-            Admin Login
-          </motion.h1>
-          {error && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-[#FF69B4] mb-4"
-            >
-              {error}
-            </motion.p>
-          )}
+          <h1 className="text-3xl font-bold mb-6">Admin Login</h1>
+          {error && <p className="text-red-400 mb-4">{error}</p>}
           <form onSubmit={handleLogin}>
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="mb-4"
-            >
-              <label className="block text-[#00BFFF] mb-1">Username</label>
+            <div className="mb-4">
+              <label className="block text-gray-300 mb-1">Username</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-3 rounded-lg bg-[#3A3A3A] text-white border border-[#00BFFF] focus:outline-none focus:border-[#A100F2]"
+                className="w-full p-3 rounded-lg bg-[#2A2A2A] text-white border border-gray-600 focus:border-blue-500 focus:outline-none"
                 required
               />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mb-6"
-            >
-              <label className="block text-[#00BFFF] mb-1">Password</label>
+            </div>
+            <div className="mb-6">
+              <label className="block text-gray-300 mb-1">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-3 rounded-lg bg-[#3A3A3A] text-white border border-[#00BFFF] focus:outline-none focus:border-[#A100F2]"
+                className="w-full p-3 rounded-lg bg-[#2A2A2A] text-white border border-gray-600 focus:border-blue-500 focus:outline-none"
                 required
               />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              <Button
-                type="submit"
-                className="w-full bg-[#00BFFF] text-white hover:bg-[#A100F2]"
-              >
-                Login
-              </Button>
-            </motion.div>
+            </div>
+            <Button type="submit" className="w-full">Login</Button>
           </form>
         </motion.div>
       </div>
@@ -119,67 +82,35 @@ export default function Admin() {
   }
 
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-white p-8 font-montserrat relative overflow-hidden">
-      <ParticleBackground />
-      <div className="max-w-4xl mx-auto z-10">
+    <div className="min-h-screen gradient-bg p-4 md:p-8">
+      <div className="w-full max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex justify-between items-center mb-6"
+          className="flex justify-between items-center mb-8"
         >
-          <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl font-bold text-[#00BFFF]"
-          >
-            Admin Dashboard
-          </motion.h1>
-          <Button
-            onClick={handleLogout}
-            className="bg-[#FF69B4] text-white hover:bg-[#A100F2]"
-          >
-            Logout
-          </Button>
+          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+          <Button onClick={handleLogout}>Logout</Button>
         </motion.div>
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#2A2A2A] rounded-2xl p-6 glassmorphism"
-          >
-            <h2 className="text-2xl font-bold text-[#00BFFF] mb-4">User Activities</h2>
-            <p>Monitor chats, posts, and hub messages. [Placeholder]</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#2A2A2A] rounded-2xl p-6 glassmorphism"
-          >
-            <h2 className="text-2xl font-bold text-[#00BFFF] mb-4">Reports</h2>
-            <p>View and resolve user reports. [Placeholder]</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#2A2A2A] rounded-2xl p-6 glassmorphism"
-          >
-            <h2 className="text-2xl font-bold text-[#00BFFF] mb-4">Bans</h2>
-            <p>Ban users with custom durations. [Placeholder]</p>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-[#2A2A2A] rounded-2xl p-6 glassmorphism"
-          >
-            <h2 className="text-2xl font-bold text-[#00BFFF] mb-4">Alerts</h2>
-            <p>Send site-wide or user-specific alerts. [Placeholder]</p>
-          </motion.div>
-        </motion.div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {[
+            { title: 'User Activities', desc: 'Monitor chats, posts, and hub messages.' },
+            { title: 'Reports', desc: 'View and resolve user reports.' },
+            { title: 'Bans', desc: 'Manage user bans with custom durations.' },
+            { title: 'Alerts', desc: 'Send site-wide or user-specific alerts.' },
+          ].map((item, index) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * index }}
+              className="card p-6"
+            >
+              <h2 className="text-xl font-semibold mb-2">{item.title}</h2>
+              <p className="text-gray-300">{item.desc} [Coming Soon]</p>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );

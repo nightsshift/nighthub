@@ -1,86 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
 :root {
-  --background: #1A1A1A;
+  --background: #121212;
   --text: #FFFFFF;
-  --accent: #00BFFF;
-  --hover: #FF69B4;
-  --secondary: #A100F2;
-  --button: #FFFFFF;
-  --button-text: #1A1A1A;
-}
-
-.light {
-  --background: #FFFFFF;
-  --text: #1A1A1A;
-  --accent: #00BFFF;
-  --hover: #FF69B4;
-  --secondary: #A100F2;
-  --button: #1A1A1A;
-  --button-text: #FFFFFF;
+  --secondary-text: #A1A1AA;
+  --accent: #3B82F6;
+  --card-bg: #1F1F1F;
 }
 
 body {
   background-color: var(--background);
   color: var(--text);
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
   overflow-x: hidden;
 }
 
-@keyframes bg-pulse {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+.gradient-bg {
+  background: linear-gradient(135deg, #121212 0%, #1F1F1F 100%);
 }
 
-.animate-bg-pulse {
-  background-size: 200% 200%;
-  animation: bg-pulse 10s ease infinite;
+.card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.glassmorphism {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.gradient-border {
-  position: relative;
-  border: none;
-}
-.gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  z-index: -1;
-  background: linear-gradient(45deg, #00BFFF, #A100F2, #FF69B4);
-  border-radius: inherit;
-  animation: gradient-rotate 3s linear infinite;
-}
-
-@keyframes gradient-rotate {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 400% 50%; }
-}
-
-.ripple {
-  position: relative;
-  overflow: hidden;
-}
-.ripple::after {
-  content: '';
-  position: absolute;
-  width: 100px;
-  height: 100px;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  transform: scale(0);
-  top: var(--y);
-  left: var(--x);
-  animation: ripple-effect 0.6s ease-out;
-}
-@keyframes ripple-effect {
-  to { transform: scale(4); opacity: 0; }
+.animate-fade-in {
+  animation: fade-in 0.8s ease-out;
 }

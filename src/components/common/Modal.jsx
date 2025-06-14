@@ -16,14 +16,14 @@ const Modal = ({ isOpen, onClose, children }) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
     >
       <motion.div
         {...handlers}
-        initial={{ y: 100, opacity: 0 }}
+        initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        exit={{ y: 100, opacity: 0 }}
-        className="bg-[#1A1A1A] rounded-2xl p-8 max-w-sm w-full mx-4 glassmorphism shadow-2xl"
+        exit={{ y: 50, opacity: 0 }}
+        className="w-full max-w-2xl mx-4 p-8 rounded-2xl bg-[#1F1F1F] text-white"
       >
         {children}
       </motion.div>
