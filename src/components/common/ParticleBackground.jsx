@@ -1,6 +1,6 @@
 import React from 'react';
-import Particles from 'react-tsparticles';
-import { loadSlim } from 'tsparticles-slim';
+import { Particles } from '@tsparticles/react';
+import { loadSlim } from '@tsparticles/slim';
 
 const ParticleBackground = () => {
   const particlesInit = async (engine) => {
@@ -23,18 +23,18 @@ const ParticleBackground = () => {
             speed: 1,
             direction: 'none',
             random: true,
-            out_mode: 'out',
+            outModes: 'out',
           },
         },
         interactivity: {
-          detect_on: 'canvas',
+          detectOn: 'canvas',
           events: {
-            onhover: { enable: true, mode: 'repulse' },
-            onclick: { enable: true, mode: 'push' },
+            onHover: { enable: true, mode: 'repulse' },
+            onClick: { enable: true, mode: 'push' },
             resize: true,
           },
         },
-        retina_detect: true,
+        retinaDetect: true,
       }}
       className="absolute inset-0 z-0"
     />
